@@ -2,69 +2,6 @@
 
 import React, { useState, useEffect } from 'react'
 
-interface CalendarDay {
-  day: number
-  isMuted?: boolean
-  isActiveToday?: boolean
-  events?: string[]
-  moreCount?: number
-}
-
-const calendarDays: CalendarDay[] = [
-  // Semana 1
-  { day: 28, isMuted: true },
-  { day: 29, isMuted: true },
-  { day: 30, isMuted: true },
-  { day: 1 },
-  { day: 2 },
-  { day: 3 },
-  { day: 4 },
-
-  // Semana 2
-  { day: 5 },
-  { day: 6 },
-  { day: 7 },
-  { day: 8 },
-  { day: 9 },
-  { day: 10 },
-  { day: 11 },
-
-  // Semana 3
-  { day: 12 },
-  { day: 13 },
-  { day: 14 },
-  { day: 15 },
-  { day: 16 },
-  { day: 17 },
-  { day: 18 },
-
-  // Semana 4
-  { day: 19 },
-  { day: 20 },
-  { day: 21 },
-  { day: 22 },
-  { day: 23 },
-  { day: 24 },
-  { day: 25 },
-
-  // Semana 5
-  {
-    day: 26,
-    isActiveToday: true,
-    events: ['09:00 Maria', '09:00 Leonardo', '09:00 Leonardo'],
-    moreCount: 4,
-  },
-  {
-    day: 27,
-    events: ['10:00 Amanda', '17:00 Ana'],
-  },
-  { day: 28 },
-  { day: 29 },
-  { day: 30 },
-  { day: 31 },
-  { day: 1, isMuted: true },
-]
-
 interface Professional {
   id: string
   name: string
@@ -103,6 +40,7 @@ const timeSlots = [
   '16:00',
 ]
 
+// Day 12 de Outubro appointments - shared source of truth
 const dayAppointments: DayAppointment[] = [
   // Rosiane
   {
@@ -193,12 +131,81 @@ const dayAppointments: DayAppointment[] = [
   },
 ]
 
+interface CalendarDay {
+  day: number
+  isMuted?: boolean
+  isActiveToday?: boolean
+  events?: string[]
+  moreCount?: number
+}
+
+// Outubro 2026 calendar days - synchronizing directly with 12 de Outubro
+const calendarDays: CalendarDay[] = [
+  // Semana 1 (Setembro/Outubro)
+  { day: 27, isMuted: true },
+  { day: 28, isMuted: true },
+  { day: 29, isMuted: true },
+  { day: 30, isMuted: true },
+  { day: 1 },
+  { day: 2 },
+  { day: 3 },
+
+  // Semana 2
+  { day: 4 },
+  { day: 5 },
+  { day: 6 },
+  { day: 7 },
+  { day: 8 },
+  { day: 9 },
+  { day: 10 },
+
+  // Semana 3 - Contém o dia 12 de Outubro com os mesmos dados da visão diária
+  { day: 11 },
+  {
+    day: 12,
+    isActiveToday: true,
+    // Mesmos agendamentos da visão diária:
+    events: ['09:15 Beatriz Ferreira', '09:45 Camila Santos', '10:00 Lucas Mendes'],
+    moreCount: 5, // Beatriz (11:30), Rafael (11:30), Mariana (12:15), Tiago.F (13:15), Tiago.F (13:15)
+  },
+  {
+    day: 13,
+    events: ['10:00 Amanda', '17:00 Ana'],
+  },
+  { day: 14 },
+  { day: 15 },
+  { day: 16 },
+  { day: 17 },
+
+  // Semana 4
+  { day: 18 },
+  { day: 19 },
+  { day: 20 },
+  { day: 21 },
+  { day: 22 },
+  { day: 23 },
+  { day: 24 },
+
+  // Semana 5
+  { day: 25 },
+  { day: 26 },
+  { day: 27 },
+  { day: 28 },
+  { day: 29 },
+  { day: 30 },
+  { day: 31 },
+]
+
 export const LiraCalendarView: React.FC = () => {
   const [viewMode, setViewMode] = useState<'month' | 'day'>('month')
+  const [selectedProfessional, setSelectedProfessional] = useState<string>('all')
+  const [isProfDropdownOpen, setIsProfDropdownOpen] = useState(false)
+  const [selectedStatus, setSelectedStatus] = useState<string>('all')
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false)
 
-  // Check URL hash or query params on load or change
+  // Sync with URL hash or query params
   useEffect(() => {
-    const checkHash = () => {
+    const handleHash = () => {
       if (typeof window !== 'undefined') {
         const hash = window.location.hash.toLowerCase()
         const search = window.location.search.toLowerCase()
@@ -210,18 +217,33 @@ export const LiraCalendarView: React.FC = () => {
       }
     }
 
-    checkHash()
-    window.addEventListener('hashchange', checkHash)
-    return () => window.removeEventListener('hashchange', checkHash)
+    handleHash()
+    window.addEventListener('hashchange', handleHash)
+    return () => window.removeEventListener('hashchange', handleHash)
   }, [])
 
   const switchView = (mode: 'month' | 'day') => {
     setViewMode(mode)
     if (typeof window !== 'undefined') {
-      const newHash = mode === 'day' ? '#dia' : '#mes'
-      window.history.replaceState(null, '', newHash)
+      window.history.replaceState(null, '', mode === 'day' ? '#dia' : '#mes')
     }
   }
+
+  // Filter appointments by selected professional and status
+  const filteredAppointments = dayAppointments.filter((appt) => {
+    if (selectedProfessional !== 'all' && appt.professionalId !== selectedProfessional) {
+      return false
+    }
+    if (selectedStatus !== 'all' && appt.status !== selectedStatus) {
+      return false
+    }
+    return true
+  })
+
+  // Visible professionals in day view
+  const visibleProfessionals = selectedProfessional === 'all'
+    ? professionals
+    : professionals.filter((p) => p.id === selectedProfessional)
 
   return (
     <section id="visao-geral-agenda" className="py-24 md:py-36 bg-[#070708] border-b border-[#1A1B1D] text-[#E5E2E3] relative overflow-hidden">
@@ -242,7 +264,7 @@ export const LiraCalendarView: React.FC = () => {
         </div>
 
         {/* ========================================================================= */}
-        {/* VIEW 1: MÊS (Month View - Image 1)                                        */}
+        {/* VIEW 1: MÊS (Month View - Image 1 com dados anexados a Outubro 2026)      */}
         {/* ========================================================================= */}
         {viewMode === 'month' && (
           <div className="max-w-6xl mx-auto bg-[#0A0B0E] border border-[#1A1C24] rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.8)] relative transition-opacity duration-300">
@@ -255,17 +277,17 @@ export const LiraCalendarView: React.FC = () => {
                 {/* Date Selector */}
                 <div className="flex items-center gap-2 bg-[#12131A] border border-[#1F212C] rounded-xl px-3 py-1.5 text-xs font-mono text-white select-none">
                   <button type="button" aria-label="Mês anterior" className="text-[#6B7280] hover:text-white transition-colors px-0.5 cursor-pointer">‹</button>
-                  <span className="font-semibold tracking-wider px-1">JUL. DE 2026</span>
+                  <span className="font-semibold tracking-wider px-1">OUT. DE 2026</span>
                   <button type="button" aria-label="Próximo mês" className="text-[#6B7280] hover:text-white transition-colors px-0.5 cursor-pointer">›</button>
                 </div>
 
-                {/* View Switcher (Dia | Mês) */}
-                <div className="flex items-center bg-[#12131A] border border-[#1F212C] rounded-xl p-1 text-xs font-mono z-20">
+                {/* View Switcher (Dia | Mês) - Estilo exato do crop enviado */}
+                <div className="inline-flex items-center bg-[#0F1015] border border-[#1E202B] rounded-full p-1 text-xs font-mono z-20">
+                  {/* Botão Dia (Inativo no modo Mês) */}
                   <button
                     type="button"
-                    data-testid="calendar-view-day-btn"
                     onClick={() => switchView('day')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-[#6B7280] hover:text-white hover:bg-white/5 transition-colors cursor-pointer select-none"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[#9CA3AF] hover:text-white transition-all cursor-pointer select-none"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="8" y1="6" x2="21" y2="6" />
@@ -277,11 +299,11 @@ export const LiraCalendarView: React.FC = () => {
                     </svg>
                     <span>Dia</span>
                   </button>
+                  {/* Botão Mês (Ativo com contorno ciano neon) */}
                   <button
                     type="button"
-                    data-testid="calendar-view-month-btn"
                     onClick={() => switchView('month')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2]/40 font-semibold shadow-sm cursor-pointer select-none"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2] font-semibold shadow-[0_0_12px_rgba(0,211,242,0.25)] cursor-pointer select-none"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="3" width="7" height="7" />
@@ -295,13 +317,20 @@ export const LiraCalendarView: React.FC = () => {
               </div>
 
               {/* Center Filter: Professional Dropdown */}
-              <div className="flex items-center">
-                <div className="flex items-center justify-between gap-3 bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] rounded-xl px-4 py-1.5 text-xs font-mono text-[#D8DAE2] transition-colors cursor-pointer w-full sm:w-auto">
+              <div className="relative">
+                <div
+                  onClick={() => setIsProfDropdownOpen(!isProfDropdownOpen)}
+                  className="flex items-center justify-between gap-3 bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] rounded-xl px-4 py-1.5 text-xs font-mono text-[#D8DAE2] transition-colors cursor-pointer select-none"
+                >
                   <div className="flex items-center gap-2">
                     <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
                     </svg>
-                    <span>Todos os Profissionais</span>
+                    <span>
+                      {selectedProfessional === 'all'
+                        ? 'Todos os Profissionais'
+                        : professionals.find((p) => p.id === selectedProfessional)?.name}
+                    </span>
                   </div>
                   <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -310,9 +339,38 @@ export const LiraCalendarView: React.FC = () => {
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
                 </div>
+
+                {isProfDropdownOpen && (
+                  <div className="absolute top-full mt-2 left-0 w-56 bg-[#12131A] border border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedProfessional('all')
+                        setIsProfDropdownOpen(false)
+                      }}
+                      className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3]"
+                    >
+                      Todos os Profissionais
+                    </button>
+                    {professionals.map((prof) => (
+                      <button
+                        key={prof.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedProfessional(prof.id)
+                          setIsProfDropdownOpen(false)
+                        }}
+                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3] flex justify-between"
+                      >
+                        <span>{prof.name}</span>
+                        <span className="text-[#6B7280]">{prof.role}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Right Action Buttons: Bloquear & Novo Agendamento */}
+              {/* Right Action Buttons */}
               <div className="flex items-center gap-2.5">
                 <button
                   type="button"
@@ -356,7 +414,8 @@ export const LiraCalendarView: React.FC = () => {
                     <div
                       key={idx}
                       onClick={() => {
-                        if (item.isActiveToday || item.events) {
+                        // Clicar no dia 12 direciona diretamente para o design diário
+                        if (item.day === 12 || item.isActiveToday) {
                           switchView('day')
                         }
                       }}
@@ -365,18 +424,23 @@ export const LiraCalendarView: React.FC = () => {
                       } ${
                         item.isMuted ? 'bg-[#090A0D]/50 text-[#303340]' : 'bg-[#0A0B0E] text-[#6B7280]'
                       } ${
-                        item.isActiveToday || item.events ? 'cursor-pointer hover:bg-[#111620]' : 'hover:bg-[#111218]/50'
+                        item.isActiveToday ? 'cursor-pointer hover:bg-[#111822]' : 'hover:bg-[#111218]/50'
                       } flex flex-col justify-start transition-colors group relative`}
                     >
                       {/* Day Number Header */}
                       <div className="flex items-center justify-between w-full">
                         {item.isActiveToday ? (
-                          <span className="w-5 h-5 rounded-md bg-[#00D3F2] text-[#070708] font-bold text-[10px] flex items-center justify-center shadow-[0_0_8px_rgba(0,211,242,0.4)]">
+                          <span className="w-5 h-5 rounded-md bg-[#00D3F2] text-[#070708] font-bold text-[10px] flex items-center justify-center shadow-[0_0_10px_rgba(0,211,242,0.5)]">
                             {item.day}
                           </span>
                         ) : (
                           <span className={`text-[11px] font-mono ${item.isMuted ? 'text-[#333544]' : 'text-[#6B7280]'}`}>
                             {item.day}
+                          </span>
+                        )}
+                        {item.isActiveToday && (
+                          <span className="text-[9px] font-mono text-[#00D3F2] font-semibold tracking-wider">
+                            HOJE
                           </span>
                         )}
                       </div>
@@ -393,8 +457,8 @@ export const LiraCalendarView: React.FC = () => {
                             </div>
                           ))}
                           {item.moreCount && (
-                            <span className="text-[9px] font-mono text-[#6B7280] block pl-0.5">
-                              + {item.moreCount} mais
+                            <span className="text-[9px] font-mono text-[#6B7280] block pl-0.5 group-hover:text-[#00D3F2] transition-colors">
+                              + {item.moreCount} mais (ver no Dia →)
                             </span>
                           )}
                         </div>
@@ -409,7 +473,7 @@ export const LiraCalendarView: React.FC = () => {
         )}
 
         {/* ========================================================================= */}
-        {/* VIEW 2: DIA (Day View - Image 2)                                          */}
+        {/* VIEW 2: DIA (Day View - Image 2 com os mesmos dados de 12 de Outubro)     */}
         {/* ========================================================================= */}
         {viewMode === 'day' && (
           <div className="max-w-6xl mx-auto space-y-4 transition-opacity duration-300">
@@ -426,13 +490,13 @@ export const LiraCalendarView: React.FC = () => {
                   <button type="button" aria-label="Próximo dia" className="text-[#6B7280] hover:text-white transition-colors px-1 cursor-pointer">›</button>
                 </div>
 
-                {/* View Switcher (Dia [active] | Mês) */}
-                <div className="flex items-center bg-[#12131A] border border-[#1F212C] rounded-xl p-1 text-xs font-mono z-20">
+                {/* View Switcher (Dia [active] | Mês) - Estilo exato do crop enviado */}
+                <div className="inline-flex items-center bg-[#0F1015] border border-[#1E202B] rounded-full p-1 text-xs font-mono z-20">
+                  {/* Botão Dia (Ativo com contorno ciano neon) */}
                   <button
                     type="button"
-                    data-testid="calendar-view-day-btn-active"
                     onClick={() => switchView('day')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2]/40 font-semibold shadow-sm cursor-pointer select-none"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2] font-semibold shadow-[0_0_12px_rgba(0,211,242,0.25)] cursor-pointer select-none"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="8" y1="6" x2="21" y2="6" />
@@ -444,11 +508,11 @@ export const LiraCalendarView: React.FC = () => {
                     </svg>
                     <span>Dia</span>
                   </button>
+                  {/* Botão Mês (Inativo) */}
                   <button
                     type="button"
-                    data-testid="calendar-view-month-btn-inactive"
                     onClick={() => switchView('month')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-[#6B7280] hover:text-white hover:bg-white/5 transition-colors cursor-pointer select-none"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[#9CA3AF] hover:text-white transition-all cursor-pointer select-none"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="3" width="7" height="7" />
@@ -464,29 +528,97 @@ export const LiraCalendarView: React.FC = () => {
               {/* Middle Filters: "Todos os Profissionais" + "Todos os Status" */}
               <div className="flex items-center gap-2.5 flex-wrap">
                 {/* Todos os Profissionais Dropdown */}
-                <div className="flex items-center justify-between gap-3 bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] rounded-xl px-3.5 py-1.5 text-xs font-mono text-[#D8DAE2] transition-colors cursor-pointer select-none">
-                  <div className="flex items-center gap-2">
+                <div className="relative">
+                  <div
+                    onClick={() => setIsProfDropdownOpen(!isProfDropdownOpen)}
+                    className="flex items-center justify-between gap-3 bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] rounded-xl px-3.5 py-1.5 text-xs font-mono text-[#D8DAE2] transition-colors cursor-pointer select-none"
+                  >
+                    <div className="flex items-center gap-2">
+                      <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                      </svg>
+                      <span>
+                        {selectedProfessional === 'all'
+                          ? 'Todos os Profissionais'
+                          : professionals.find((p) => p.id === selectedProfessional)?.name}
+                      </span>
+                    </div>
                     <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
-                    <span>Todos os Profissionais</span>
                   </div>
-                  <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
+
+                  {isProfDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 w-56 bg-[#12131A] border border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedProfessional('all')
+                          setIsProfDropdownOpen(false)
+                        }}
+                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3]"
+                      >
+                        Todos os Profissionais
+                      </button>
+                      {professionals.map((prof) => (
+                        <button
+                          key={prof.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedProfessional(prof.id)
+                            setIsProfDropdownOpen(false)
+                          }}
+                          className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3] flex justify-between"
+                        >
+                          <span>{prof.name}</span>
+                          <span className="text-[#6B7280]">{prof.role}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Todos os Status Dropdown (Image 2) */}
-                <div className="flex items-center gap-2 bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] rounded-xl px-3.5 py-1.5 text-xs font-mono text-[#D8DAE2] transition-colors cursor-pointer select-none">
-                  <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="4" y1="6" x2="20" y2="6" />
-                    <line x1="4" y1="12" x2="14" y2="12" />
-                    <line x1="4" y1="18" x2="18" y2="18" />
-                  </svg>
-                  <span>Todos os Status</span>
+                <div className="relative">
+                  <div
+                    onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
+                    className="flex items-center gap-2 bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] rounded-xl px-3.5 py-1.5 text-xs font-mono text-[#D8DAE2] transition-colors cursor-pointer select-none"
+                  >
+                    <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="4" y1="6" x2="20" y2="6" />
+                      <line x1="4" y1="12" x2="14" y2="12" />
+                      <line x1="4" y1="18" x2="18" y2="18" />
+                    </svg>
+                    <span>{selectedStatus === 'all' ? 'Todos os Status' : selectedStatus}</span>
+                  </div>
+
+                  {isStatusDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 w-44 bg-[#12131A] border border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedStatus('all')
+                          setIsStatusDropdownOpen(false)
+                        }}
+                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3]"
+                      >
+                        Todos os Status
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedStatus('CONCLUÍDO')
+                          setIsStatusDropdownOpen(false)
+                        }}
+                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#10B981]"
+                      >
+                        CONCLUÍDO
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -522,17 +654,17 @@ export const LiraCalendarView: React.FC = () => {
               <div className="overflow-x-auto">
                 <div className="min-w-[760px]">
                   
-                  {/* Table Column Headers (Empty corner + 3 Professionals) */}
-                  <div className="grid grid-cols-[76px_repeat(3,1fr)] border-b border-[#161720]">
+                  {/* Table Column Headers (Empty corner + Professionals) */}
+                  <div className={`grid grid-cols-[76px_repeat(${visibleProfessionals.length},1fr)] border-b border-[#161720]`}>
                     {/* Time Column header placeholder */}
                     <div className="border-r border-[#161720] h-[72px]" />
 
                     {/* Professionals Headers */}
-                    {professionals.map((prof, idx) => (
+                    {visibleProfessionals.map((prof, idx) => (
                       <div
                         key={prof.id}
                         className={`h-[72px] px-4 flex items-center justify-center gap-3 ${
-                          idx < professionals.length - 1 ? 'border-r border-[#161720]' : ''
+                          idx < visibleProfessionals.length - 1 ? 'border-r border-[#161720]' : ''
                         }`}
                       >
                         {/* Avatar Circle */}
@@ -553,8 +685,8 @@ export const LiraCalendarView: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* Schedule Body: Left Time Column + 3 Columns with Appointments */}
-                  <div className="grid grid-cols-[76px_repeat(3,1fr)] relative">
+                  {/* Schedule Body: Left Time Column + Columns with Appointments */}
+                  <div className={`grid grid-cols-[76px_repeat(${visibleProfessionals.length},1fr)] relative`}>
                     
                     {/* Left Column: Hour Labels and :15, :30, :45 subdivisions */}
                     <div className="border-r border-[#161720] select-none">
@@ -574,9 +706,9 @@ export const LiraCalendarView: React.FC = () => {
                       ))}
                     </div>
 
-                    {/* 3 Professional Columns with Appointments */}
-                    {professionals.map((prof, pIdx) => {
-                      const profAppointments = dayAppointments.filter(
+                    {/* Professional Columns with Appointments */}
+                    {visibleProfessionals.map((prof, pIdx) => {
+                      const profAppointments = filteredAppointments.filter(
                         (a) => a.professionalId === prof.id,
                       )
 
@@ -584,7 +716,7 @@ export const LiraCalendarView: React.FC = () => {
                         <div
                           key={prof.id}
                           className={`relative ${
-                            pIdx < professionals.length - 1 ? 'border-r border-[#161720]' : ''
+                            pIdx < visibleProfessionals.length - 1 ? 'border-r border-[#161720]' : ''
                           }`}
                           style={{ height: `${timeSlots.length * HOUR_HEIGHT}px` }}
                         >
