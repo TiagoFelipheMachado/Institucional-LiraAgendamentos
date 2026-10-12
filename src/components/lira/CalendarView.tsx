@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 interface CalendarDay {
   day: number
@@ -90,8 +90,6 @@ interface DayAppointment {
 }
 
 const HOUR_HEIGHT = 88 // pixels per hour
-const START_HOUR = 8 // 08:00
-const END_HOUR = 17 // 17:00
 
 const timeSlots = [
   '08:00',
@@ -198,6 +196,33 @@ const dayAppointments: DayAppointment[] = [
 export const LiraCalendarView: React.FC = () => {
   const [viewMode, setViewMode] = useState<'month' | 'day'>('month')
 
+  // Check URL hash or query params on load or change
+  useEffect(() => {
+    const checkHash = () => {
+      if (typeof window !== 'undefined') {
+        const hash = window.location.hash.toLowerCase()
+        const search = window.location.search.toLowerCase()
+        if (hash === '#dia' || search.includes('view=dia')) {
+          setViewMode('day')
+        } else if (hash === '#mes' || search.includes('view=mes')) {
+          setViewMode('month')
+        }
+      }
+    }
+
+    checkHash()
+    window.addEventListener('hashchange', checkHash)
+    return () => window.removeEventListener('hashchange', checkHash)
+  }, [])
+
+  const switchView = (mode: 'month' | 'day') => {
+    setViewMode(mode)
+    if (typeof window !== 'undefined') {
+      const newHash = mode === 'day' ? '#dia' : '#mes'
+      window.history.replaceState(null, '', newHash)
+    }
+  }
+
   return (
     <section id="visao-geral-agenda" className="py-24 md:py-36 bg-[#070708] border-b border-[#1A1B1D] text-[#E5E2E3] relative overflow-hidden">
       {/* Background ambient radial glow */}
@@ -220,7 +245,7 @@ export const LiraCalendarView: React.FC = () => {
         {/* VIEW 1: MÊS (Month View - Image 1)                                        */}
         {/* ========================================================================= */}
         {viewMode === 'month' && (
-          <div className="max-w-6xl mx-auto bg-[#0A0B0E] border border-[#1A1C24] rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.8)] relative transition-opacity duration-300 animate-fadeIn">
+          <div className="max-w-6xl mx-auto bg-[#0A0B0E] border border-[#1A1C24] rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.8)] relative transition-opacity duration-300">
             
             {/* Calendar Top Toolbar */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-[#161720]">
@@ -235,11 +260,12 @@ export const LiraCalendarView: React.FC = () => {
                 </div>
 
                 {/* View Switcher (Dia | Mês) */}
-                <div className="flex items-center bg-[#12131A] border border-[#1F212C] rounded-xl p-1 text-xs font-mono">
+                <div className="flex items-center bg-[#12131A] border border-[#1F212C] rounded-xl p-1 text-xs font-mono z-20">
                   <button
                     type="button"
-                    onClick={() => setViewMode('day')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-[#6B7280] hover:text-white transition-colors cursor-pointer"
+                    data-testid="calendar-view-day-btn"
+                    onClick={() => switchView('day')}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-[#6B7280] hover:text-white hover:bg-white/5 transition-colors cursor-pointer select-none"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="8" y1="6" x2="21" y2="6" />
@@ -253,8 +279,9 @@ export const LiraCalendarView: React.FC = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setViewMode('month')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2]/40 font-semibold shadow-sm cursor-pointer"
+                    data-testid="calendar-view-month-btn"
+                    onClick={() => switchView('month')}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2]/40 font-semibold shadow-sm cursor-pointer select-none"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="3" width="7" height="7" />
@@ -329,8 +356,8 @@ export const LiraCalendarView: React.FC = () => {
                     <div
                       key={idx}
                       onClick={() => {
-                        if (item.isActiveToday) {
-                          setViewMode('day')
+                        if (item.isActiveToday || item.events) {
+                          switchView('day')
                         }
                       }}
                       className={`min-h-[82px] sm:min-h-[96px] p-2 sm:p-2.5 border-b border-r border-[#14151E] ${
@@ -338,7 +365,7 @@ export const LiraCalendarView: React.FC = () => {
                       } ${
                         item.isMuted ? 'bg-[#090A0D]/50 text-[#303340]' : 'bg-[#0A0B0E] text-[#6B7280]'
                       } ${
-                        item.isActiveToday ? 'cursor-pointer hover:bg-[#111620]' : 'hover:bg-[#111218]/50'
+                        item.isActiveToday || item.events ? 'cursor-pointer hover:bg-[#111620]' : 'hover:bg-[#111218]/50'
                       } flex flex-col justify-start transition-colors group relative`}
                     >
                       {/* Day Number Header */}
@@ -385,7 +412,7 @@ export const LiraCalendarView: React.FC = () => {
         {/* VIEW 2: DIA (Day View - Image 2)                                          */}
         {/* ========================================================================= */}
         {viewMode === 'day' && (
-          <div className="max-w-6xl mx-auto space-y-4 transition-opacity duration-300 animate-fadeIn">
+          <div className="max-w-6xl mx-auto space-y-4 transition-opacity duration-300">
             
             {/* Top Toolbar Card matching Image 2 */}
             <div className="bg-[#0A0B0E] border border-[#1A1C24] rounded-2xl p-3 sm:px-5 sm:py-3.5 shadow-lg flex flex-col lg:flex-row lg:items-center justify-between gap-3 flex-wrap">
@@ -400,11 +427,12 @@ export const LiraCalendarView: React.FC = () => {
                 </div>
 
                 {/* View Switcher (Dia [active] | Mês) */}
-                <div className="flex items-center bg-[#12131A] border border-[#1F212C] rounded-xl p-1 text-xs font-mono">
+                <div className="flex items-center bg-[#12131A] border border-[#1F212C] rounded-xl p-1 text-xs font-mono z-20">
                   <button
                     type="button"
-                    onClick={() => setViewMode('day')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2]/40 font-semibold shadow-sm cursor-pointer"
+                    data-testid="calendar-view-day-btn-active"
+                    onClick={() => switchView('day')}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2]/40 font-semibold shadow-sm cursor-pointer select-none"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="8" y1="6" x2="21" y2="6" />
@@ -418,8 +446,9 @@ export const LiraCalendarView: React.FC = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setViewMode('month')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-[#6B7280] hover:text-white transition-colors cursor-pointer"
+                    data-testid="calendar-view-month-btn-inactive"
+                    onClick={() => switchView('month')}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-[#6B7280] hover:text-white hover:bg-white/5 transition-colors cursor-pointer select-none"
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="3" width="7" height="7" />
