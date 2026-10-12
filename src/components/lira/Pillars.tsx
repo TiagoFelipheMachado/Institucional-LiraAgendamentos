@@ -10,7 +10,7 @@ export const LiraPillars: React.FC = () => {
       desc: 'Sua recepção se divide entre atender pacientes presencialmente, responder o WhatsApp e atender ligações. O resultado? Espera longa e pacientes insatisfeitos.',
       solutionTag: 'Como o Lira resolve:',
       solution:
-        'A Amanda IA atende e agenda 24/7 no WhatsApp, permitindo que sua recepção dedique 100% da atenção ao paciente presencial.',
+        'A Amanda IA atende e agenda 24/7 no WhatsApp. O paciente não precisa baixar nenhum aplicativo para marcar, e sua recepção foca 100% no presencial.',
     },
     {
       stepNumber: '2',
@@ -36,7 +36,7 @@ export const LiraPillars: React.FC = () => {
     {
       step: '1',
       title: 'Formalize o atendimento com a Amanda IA',
-      desc: 'Conecte seu WhatsApp via QR Code em 2 minutos. A IA aprende seus procedimentos, durações e profissionais para responder com linguagem humanizada.',
+      desc: 'Conecte seu WhatsApp via QR Code em 2 minutos. A IA atende direto na conversa — o paciente não precisa de aplicativo nem cadastro.',
       linkText: 'Conhecer fluxo da IA →',
       linkHref: '#fluxo-ia',
     },
@@ -72,7 +72,7 @@ export const LiraPillars: React.FC = () => {
           {/* Badge / Pill */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#6366F1] text-white text-xs font-semibold tracking-wide shadow-[0_0_20px_rgba(99,102,241,0.35)] mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            <span>✦ Solução Completa · Lira Sistema</span>
+            <span>✦ 100% no WhatsApp e Web · Não precisa baixar app</span>
           </div>
 
           {/* Headline */}
@@ -86,7 +86,7 @@ export const LiraPillars: React.FC = () => {
 
           {/* Subtitle Paragraph */}
           <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-3xl">
-            O Lira resolve os três maiores gargalos que drenam o faturamento da sua clínica ou salão: recepção sobrecarregada, cancelamentos de última hora e fechamento financeiro complexo. Cada profissional recebe o que é seu, a agenda roda cheia e tudo fica registrado. Sem planilha e sem refazer contas todo mês.
+            O Lira resolve os três maiores gargalos que drenam o faturamento da sua clínica ou salão: recepção sobrecarregada, cancelamentos de última hora e fechamento financeiro complexo. Tudo funciona direto no WhatsApp e navegador — o paciente não precisa de app nem cadastro complicado. Sem planilha e sem refazer contas todo mês.
           </p>
         </div>
 
