@@ -55,19 +55,19 @@ export const LiraWhiteLabelSimulator: React.FC = () => {
   const resolved = resolveWhiteLabelTheme(tokens)
 
   return (
-    <section id="white-label" className="py-20 md:py-28 bg-[#070708] border-t border-[#1A1B1D]">
+    <section id="white-label" className="py-20 md:py-28 bg-white dark:bg-[#070708] border-t border-neutral-200 dark:border-[#1A1B1D] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0E1A1E] border border-[#14454F] mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#9034F3]" />
-            <span className="text-[12px] font-mono tracking-[0.08em] uppercase text-[#CEFAFE]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 dark:bg-[#0E1A1E] border border-purple-200 dark:border-[#14454F] mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 dark:bg-[#9034F3]" />
+            <span className="text-[12px] font-mono tracking-[0.08em] uppercase text-purple-800 dark:text-[#CEFAFE]">
               WHITE-LABEL PARA AGÊNCIAS DE TRÁFEGO
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] text-[#E5E2E3] mb-4">
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] mb-4">
             Simulador White-Label: Venda com a sua marca
           </h2>
-          <p className="text-base sm:text-lg text-[#9A9DA3]">
+          <p className="text-base sm:text-lg text-neutral-600 dark:text-[#9A9DA3]">
             A agência só precisa configurar 6 tokens. Todo o restante é derivado matematicamente pelo
             sistema para garantir contraste mínimo de 3:1 e legibilidade perfeita.
           </p>
@@ -75,9 +75,9 @@ export const LiraWhiteLabelSimulator: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
           {/* Controls */}
-          <div className="lg:col-span-5 bg-[#0E1A1E] border border-[#14454F] rounded-[20px] p-6 sm:p-8 space-y-6">
+          <div className="lg:col-span-5 bg-neutral-50 dark:bg-[#0E1A1E] border border-neutral-200 dark:border-[#14454F] rounded-[20px] p-6 sm:p-8 space-y-6">
             <div>
-              <span className="text-[12px] font-mono text-[#9A9DA3] uppercase tracking-[0.08em] block mb-3">
+              <span className="text-[12px] font-mono text-neutral-500 dark:text-[#9A9DA3] uppercase tracking-[0.08em] block mb-3">
                 PRESETS DE CLIENTES
               </span>
               <div className="grid grid-cols-2 gap-2">
@@ -93,8 +93,8 @@ export const LiraWhiteLabelSimulator: React.FC = () => {
                     }
                     className={`px-3 py-2 text-left rounded-[10px] text-[13px] border transition-all ${
                       tokens.accent === preset.tokens.accent
-                        ? 'border-[#00D3F2] bg-[#00D3F2]/10 text-white font-medium'
-                        : 'border-[#14454F] bg-[#070708]/60 text-[#9A9DA3] hover:text-[#E5E2E3]'
+                        ? 'border-cyan-500 bg-cyan-100/50 text-cyan-900 dark:border-[#00D3F2] dark:bg-[#00D3F2]/10 dark:text-white font-medium'
+                        : 'border-neutral-200 dark:border-[#14454F] bg-white dark:bg-[#070708]/60 text-neutral-600 dark:text-[#9A9DA3] hover:text-neutral-900 dark:hover:text-[#E5E2E3]'
                     }`}
                   >
                     {preset.name}
@@ -103,16 +103,16 @@ export const LiraWhiteLabelSimulator: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-4 pt-4 border-t border-[#14454F]/60">
-              <span className="text-[12px] font-mono text-[#9A9DA3] uppercase tracking-[0.08em] block">
+            <div className="space-y-4 pt-4 border-t border-neutral-200 dark:border-[#14454F]/60">
+              <span className="text-[12px] font-mono text-neutral-500 dark:text-[#9A9DA3] uppercase tracking-[0.08em] block">
                 OS 6 TOKENS ESSENCIAIS
               </span>
 
               {/* Token 1: Accent */}
               <div>
                 <div className="flex justify-between text-[13px] font-mono mb-1.5">
-                  <span className="text-[#CEFAFE]">--lira-accent</span>
-                  <span className="text-[#9A9DA3]">{tokens.accent}</span>
+                  <span className="text-neutral-900 dark:text-[#CEFAFE]">--lira-accent</span>
+                  <span className="text-neutral-500 dark:text-[#9A9DA3]">{tokens.accent}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <input
@@ -120,14 +120,14 @@ export const LiraWhiteLabelSimulator: React.FC = () => {
                     aria-label="Cor do acento (--lira-accent)"
                     value={tokens.accent}
                     onChange={(e) => setTokens({ ...tokens, accent: e.target.value })}
-                    className="w-10 h-10 rounded-[8px] bg-transparent border border-[#14454F] cursor-pointer"
+                    className="w-10 h-10 rounded-[8px] bg-transparent border border-neutral-300 dark:border-[#14454F] cursor-pointer"
                   />
                   <input
                     type="text"
                     aria-label="Cor do acento em hexadecimal (--lira-accent)"
                     value={tokens.accent}
                     onChange={(e) => setTokens({ ...tokens, accent: e.target.value })}
-                    className="w-full px-3 py-2 rounded-[8px] bg-[#070708] border border-[#14454F] font-mono text-[13px] text-[#E5E2E3] focus:border-[#00B8DB] outline-none"
+                    className="w-full px-3 py-2 rounded-[8px] bg-white dark:bg-[#070708] border border-neutral-300 dark:border-[#14454F] font-mono text-[13px] text-neutral-900 dark:text-[#E5E2E3] focus:border-cyan-500 dark:focus:border-[#00B8DB] outline-none"
                   />
                 </div>
               </div>
@@ -135,8 +135,8 @@ export const LiraWhiteLabelSimulator: React.FC = () => {
               {/* Token 2: Radius */}
               <div>
                 <div className="flex justify-between text-[13px] font-mono mb-1.5">
-                  <span className="text-[#CEFAFE]">--lira-radius</span>
-                  <span className="text-[#9A9DA3]">{tokens.radius}</span>
+                  <span className="text-neutral-900 dark:text-[#CEFAFE]">--lira-radius</span>
+                  <span className="text-neutral-500 dark:text-[#9A9DA3]">{tokens.radius}</span>
                 </div>
                 <input
                   type="range"
@@ -145,19 +145,19 @@ export const LiraWhiteLabelSimulator: React.FC = () => {
                   step="2"
                   value={parseInt(tokens.radius, 10) || 12}
                   onChange={(e) => setTokens({ ...tokens, radius: `${e.target.value}px` })}
-                  className="w-full h-2 bg-[#1A1B1D] rounded-lg appearance-none cursor-pointer accent-[#00D3F2]"
+                  className="w-full h-2 bg-neutral-200 dark:bg-[#1A1B1D] rounded-lg appearance-none cursor-pointer accent-[#00D3F2]"
                 />
               </div>
 
               {/* Token 3: Font */}
               <div>
                 <div className="flex justify-between text-[13px] font-mono mb-1.5">
-                  <span className="text-[#CEFAFE]">--lira-font</span>
+                  <span className="text-neutral-900 dark:text-[#CEFAFE]">--lira-font</span>
                 </div>
                 <select
                   value={tokens.font}
                   onChange={(e) => setTokens({ ...tokens, font: e.target.value })}
-                  className="w-full px-3 py-2 rounded-[8px] bg-[#070708] border border-[#14454F] text-[13px] text-[#E5E2E3] outline-none"
+                  className="w-full px-3 py-2 rounded-[8px] bg-white dark:bg-[#070708] border border-neutral-300 dark:border-[#14454F] text-[13px] text-neutral-900 dark:text-[#E5E2E3] outline-none"
                 >
                   <option value="Inter, sans-serif">Inter (Geométrica Neutra)</option>
                   <option value="Geist, sans-serif">Geist Sans</option>
@@ -169,8 +169,8 @@ export const LiraWhiteLabelSimulator: React.FC = () => {
               <div
                 className={`p-3.5 rounded-[10px] border text-[12px] flex items-center justify-between ${
                   resolved.fallbackTriggered
-                    ? 'bg-[#3A0D18]/60 border-[#7A1D32] text-[#FFA1B5]'
-                    : 'bg-[#05281E]/60 border-[#0D593E] text-[#A3F3D0]'
+                    ? 'bg-rose-50 border-rose-200 text-rose-800 dark:bg-[#3A0D18]/60 dark:border-[#7A1D32] dark:text-[#FFA1B5]'
+                    : 'bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-[#05281E]/60 dark:border-[#0D593E] dark:text-[#A3F3D0]'
                 }`}
               >
                 <span>
@@ -184,15 +184,15 @@ export const LiraWhiteLabelSimulator: React.FC = () => {
           </div>
 
           {/* Live Preview of Salon Widget / Card */}
-          <div className="lg:col-span-7 bg-[#0B0F19] border border-[#14454F] rounded-[24px] p-6 sm:p-8 space-y-6">
-            <div className="flex items-center justify-between border-b border-[#1A1B1D] pb-4">
+          <div className="lg:col-span-7 bg-neutral-100 dark:bg-[#0B0F19] border border-neutral-200 dark:border-[#14454F] rounded-[24px] p-6 sm:p-8 space-y-6">
+            <div className="flex items-center justify-between border-b border-neutral-200 dark:border-[#1A1B1D] pb-4">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: resolved.accent }} />
-                <span className="text-[13px] font-mono text-[#E5E2E3] uppercase tracking-wide">
+                <span className="text-[13px] font-mono text-neutral-900 dark:text-[#E5E2E3] uppercase tracking-wide">
                   Widget Emulado do Salão (White-Label)
                 </span>
               </div>
-              <span className="text-[11px] font-mono text-[#9A9DA3]">Modo Dark Balcão</span>
+              <span className="text-[11px] font-mono text-neutral-500 dark:text-[#9A9DA3]">Modo Dark Balcão</span>
             </div>
 
             {/* Simulated Booking Widget inside salon site */}
