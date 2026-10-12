@@ -91,36 +91,36 @@ export const LiraContactSection: React.FC = () => {
   }
 
   return (
-    <section id="contato" className="py-20 md:py-28 bg-[#070708] border-t border-[#1A1B1D]">
+    <section id="contato" className="py-20 md:py-28 bg-white dark:bg-[#070708] border-t border-neutral-200 dark:border-[#1A1B1D] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0E1A1E] border border-[#14454F] mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00D3F2]" />
-            <span className="text-[12px] font-mono tracking-[0.08em] uppercase text-[#CEFAFE]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 dark:bg-[#0E1A1E] border border-cyan-200 dark:border-[#14454F] mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0092B8] dark:bg-[#00D3F2]" />
+            <span className="text-[12px] font-mono tracking-[0.08em] uppercase text-cyan-800 dark:text-[#CEFAFE]">
               PARCERIA E CONTRATAÇÃO
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] text-[#E5E2E3] mb-4">
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] mb-4">
             Leve o Lira para os seus clientes
           </h2>
-          <p className="text-base sm:text-lg text-[#9A9DA3]">
+          <p className="text-base sm:text-lg text-neutral-600 dark:text-[#9A9DA3]">
             Preencha os dados abaixo para agendar uma demonstração completa do sistema e conhecer os
             planos com condições especiais para agências de tráfego.
           </p>
         </div>
 
         {/* Card and Form: Design Section 12: Raio 20 em card, 12 em campo e botão, Padding 32 em card */}
-        <div className="max-w-xl mx-auto bg-[#0E1A1E] border border-[#14454F] rounded-[20px] p-8 sm:p-10 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+        <div className="max-w-xl mx-auto bg-neutral-50 dark:bg-[#0E1A1E] border border-neutral-200 dark:border-[#14454F] rounded-[20px] p-8 sm:p-10 shadow-xl dark:shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
           {isSuccess ? (
             <div className="text-center py-10 space-y-4">
               <div
                 data-testid="icon-success-check"
-                className="w-16 h-16 rounded-full bg-[#34E5A0]/20 border border-[#34E5A0] mx-auto flex items-center justify-center text-[#34E5A0]"
+                className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-[#34E5A0]/20 border border-emerald-500 dark:border-[#34E5A0] mx-auto flex items-center justify-center text-emerald-600 dark:text-[#34E5A0]"
               >
                 <Icon name="check_circle" label="Sucesso" size={32} />
               </div>
-              <h3 className="text-2xl font-semibold text-white">Solicitação enviada com sucesso!</h3>
-              <p className="text-[#9A9DA3] text-sm max-w-md mx-auto">
+              <h3 className="text-2xl font-semibold text-neutral-900 dark:text-white">Solicitação enviada com sucesso!</h3>
+              <p className="text-neutral-600 dark:text-[#9A9DA3] text-sm max-w-md mx-auto">
                 Nossa equipe de especialistas entrará em contato direto pelo WhatsApp em até 15 minutos
                 com a proposta personalizada para seu modelo de negócio.
               </p>
@@ -137,7 +137,7 @@ export const LiraContactSection: React.FC = () => {
                     message: '',
                   })
                 }}
-                className="mt-4 px-6 py-2.5 rounded-[12px] text-sm font-semibold bg-[#1A1B1D] text-white border border-[#14454F] hover:border-[#00D3F2]"
+                className="mt-4 px-6 py-2.5 rounded-[12px] text-sm font-semibold bg-white dark:bg-[#1A1B1D] text-neutral-900 dark:text-white border border-neutral-300 dark:border-[#14454F] hover:border-cyan-500 dark:hover:border-[#00D3F2]"
               >
                 Enviar nova mensagem
               </button>
@@ -158,7 +158,7 @@ export const LiraContactSection: React.FC = () => {
 
               {/* Name field */}
               <div>
-                <label htmlFor="name" className="block text-[13px] font-medium text-[#E5E2E3] mb-1.5">
+                <label htmlFor="name" className="block text-[13px] font-medium text-neutral-800 dark:text-[#E5E2E3] mb-1.5">
                   Nome completo *
                 </label>
                 <input
@@ -168,14 +168,14 @@ export const LiraContactSection: React.FC = () => {
                   placeholder="Ex.: Marina Alves"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-[12px] bg-[#070708] text-[14px] text-white outline-none transition-all ${
+                  className={`w-full px-4 py-3 rounded-[12px] bg-white dark:bg-[#070708] text-[14px] text-neutral-900 dark:text-white outline-none transition-all ${
                     errors.name
-                      ? 'border border-[#FF4D6D] focus:ring-2 focus:ring-[#7A1D32]'
-                      : 'border border-[#14454F] focus:border-[#00B8DB] focus:ring-[3px] focus:ring-[#053345]'
+                      ? 'border border-rose-500 dark:border-[#FF4D6D] focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-[#7A1D32]'
+                      : 'border border-neutral-300 dark:border-[#14454F] focus:border-cyan-500 dark:focus:border-[#00B8DB] focus:ring-[3px] focus:ring-cyan-500/20 dark:focus:ring-[#053345]'
                   }`}
                 />
                 {errors.name && (
-                  <span className="text-[12px] text-[#FF4D6D] font-mono mt-1 block">
+                  <span className="text-[12px] text-rose-600 dark:text-[#FF4D6D] font-mono mt-1 block">
                     {errors.name}
                   </span>
                 )}
@@ -185,7 +185,7 @@ export const LiraContactSection: React.FC = () => {
               <div>
                 <label
                   htmlFor="whatsapp"
-                  className="block text-[13px] font-medium text-[#E5E2E3] mb-1.5"
+                  className="block text-[13px] font-medium text-neutral-800 dark:text-[#E5E2E3] mb-1.5"
                 >
                   WhatsApp com DDD *
                 </label>
@@ -196,14 +196,14 @@ export const LiraContactSection: React.FC = () => {
                   placeholder="(41) 98765-4321"
                   value={formData.whatsapp}
                   onChange={handlePhoneChange}
-                  className={`w-full px-4 py-3 rounded-[12px] bg-[#070708] font-mono text-[14px] text-white outline-none transition-all ${
+                  className={`w-full px-4 py-3 rounded-[12px] bg-white dark:bg-[#070708] font-mono text-[14px] text-neutral-900 dark:text-white outline-none transition-all ${
                     errors.whatsapp
-                      ? 'border border-[#FF4D6D] focus:ring-2 focus:ring-[#7A1D32]'
-                      : 'border border-[#14454F] focus:border-[#00B8DB] focus:ring-[3px] focus:ring-[#053345]'
+                      ? 'border border-rose-500 dark:border-[#FF4D6D] focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-[#7A1D32]'
+                      : 'border border-neutral-300 dark:border-[#14454F] focus:border-cyan-500 dark:focus:border-[#00B8DB] focus:ring-[3px] focus:ring-cyan-500/20 dark:focus:ring-[#053345]'
                   }`}
                 />
                 {errors.whatsapp && (
-                  <span className="text-[12px] text-[#FF4D6D] font-mono mt-1 block">
+                  <span className="text-[12px] text-rose-600 dark:text-[#FF4D6D] font-mono mt-1 block">
                     {errors.whatsapp}
                   </span>
                 )}
@@ -211,7 +211,7 @@ export const LiraContactSection: React.FC = () => {
 
               {/* Email field */}
               <div>
-                <label htmlFor="email" className="block text-[13px] font-medium text-[#E5E2E3] mb-1.5">
+                <label htmlFor="email" className="block text-[13px] font-medium text-neutral-800 dark:text-[#E5E2E3] mb-1.5">
                   E-mail profissional *
                 </label>
                 <input
@@ -221,14 +221,14 @@ export const LiraContactSection: React.FC = () => {
                   placeholder="contato@agencia.com.br"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-[12px] bg-[#070708] text-[14px] text-white outline-none transition-all ${
+                  className={`w-full px-4 py-3 rounded-[12px] bg-white dark:bg-[#070708] text-[14px] text-neutral-900 dark:text-white outline-none transition-all ${
                     errors.email
-                      ? 'border border-[#FF4D6D] focus:ring-2 focus:ring-[#7A1D32]'
-                      : 'border border-[#14454F] focus:border-[#00B8DB] focus:ring-[3px] focus:ring-[#053345]'
+                      ? 'border border-rose-500 dark:border-[#FF4D6D] focus:ring-2 focus:ring-rose-500/20 dark:focus:ring-[#7A1D32]'
+                      : 'border border-neutral-300 dark:border-[#14454F] focus:border-cyan-500 dark:focus:border-[#00B8DB] focus:ring-[3px] focus:ring-cyan-500/20 dark:focus:ring-[#053345]'
                   }`}
                 />
                 {errors.email && (
-                  <span className="text-[12px] text-[#FF4D6D] font-mono mt-1 block">
+                  <span className="text-[12px] text-rose-600 dark:text-[#FF4D6D] font-mono mt-1 block">
                     {errors.email}
                   </span>
                 )}
@@ -239,7 +239,7 @@ export const LiraContactSection: React.FC = () => {
                 <div>
                   <label
                     htmlFor="businessType"
-                    className="block text-[13px] font-medium text-[#E5E2E3] mb-1.5"
+                    className="block text-[13px] font-medium text-neutral-800 dark:text-[#E5E2E3] mb-1.5"
                   >
                     Tipo de negócio *
                   </label>
@@ -248,7 +248,7 @@ export const LiraContactSection: React.FC = () => {
                     name="businessType"
                     value={formData.businessType}
                     onChange={handleChange}
-                    className="w-full px-3 py-3 rounded-[12px] bg-[#070708] border border-[#14454F] text-[13px] text-white outline-none focus:border-[#00B8DB] focus:ring-[3px] focus:ring-[#053345]"
+                    className="w-full px-3 py-3 rounded-[12px] bg-white dark:bg-[#070708] border border-neutral-300 dark:border-[#14454F] text-[13px] text-neutral-900 dark:text-white outline-none focus:border-cyan-500 dark:focus:border-[#00B8DB] focus:ring-[3px] focus:ring-cyan-500/20 dark:focus:ring-[#053345]"
                   >
                     <option value="agencia">Agência de Tráfego / Gestor</option>
                     <option value="salao">Salão de Beleza / Barbearia</option>
@@ -260,7 +260,7 @@ export const LiraContactSection: React.FC = () => {
                 <div>
                   <label
                     htmlFor="monthlyAppointments"
-                    className="block text-[13px] font-medium text-[#E5E2E3] mb-1.5"
+                    className="block text-[13px] font-medium text-neutral-800 dark:text-[#E5E2E3] mb-1.5"
                   >
                     Volume mensal estimado
                   </label>
@@ -269,7 +269,7 @@ export const LiraContactSection: React.FC = () => {
                     name="monthlyAppointments"
                     value={formData.monthlyAppointments}
                     onChange={handleChange}
-                    className="w-full px-3 py-3 rounded-[12px] bg-[#070708] border border-[#14454F] text-[13px] text-white outline-none focus:border-[#00B8DB] focus:ring-[3px] focus:ring-[#053345]"
+                    className="w-full px-3 py-3 rounded-[12px] bg-white dark:bg-[#070708] border border-neutral-300 dark:border-[#14454F] text-[13px] text-neutral-900 dark:text-white outline-none focus:border-cyan-500 dark:focus:border-[#00B8DB] focus:ring-[3px] focus:ring-cyan-500/20 dark:focus:ring-[#053345]"
                   >
                     <option value="ate_100">Até 100 atendimentos/mês</option>
                     <option value="100_300">100 a 300 atendimentos/mês</option>
@@ -283,7 +283,7 @@ export const LiraContactSection: React.FC = () => {
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-[13px] font-medium text-[#E5E2E3] mb-1.5"
+                  className="block text-[13px] font-medium text-neutral-800 dark:text-[#E5E2E3] mb-1.5"
                 >
                   Mensagem ou dúvida específica (opcional)
                 </label>
@@ -294,7 +294,7 @@ export const LiraContactSection: React.FC = () => {
                   placeholder="Conte um pouco sobre sua operação atual..."
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-[12px] bg-[#070708] border border-[#14454F] text-[14px] text-white outline-none focus:border-[#00B8DB] focus:ring-[3px] focus:ring-[#053345] resize-none"
+                  className="w-full px-4 py-3 rounded-[12px] bg-white dark:bg-[#070708] border border-neutral-300 dark:border-[#14454F] text-[14px] text-neutral-900 dark:text-white outline-none focus:border-cyan-500 dark:focus:border-[#00B8DB] focus:ring-[3px] focus:ring-cyan-500/20 dark:focus:ring-[#053345] resize-none"
                 />
               </div>
 
@@ -302,13 +302,13 @@ export const LiraContactSection: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 min-h-[44px] rounded-[12px] text-[15px] font-semibold bg-white text-[#070708] hover:bg-neutral-100 transition-all shadow-[0_4px_20px_rgba(255,255,255,0.15)] disabled:opacity-50 active:scale-[0.99] cursor-pointer"
+                className="w-full py-3.5 min-h-[44px] rounded-[12px] text-[15px] font-semibold bg-neutral-900 text-white hover:bg-neutral-800 dark:bg-white dark:text-[#070708] dark:hover:bg-neutral-100 transition-all shadow-md dark:shadow-[0_4px_20px_rgba(255,255,255,0.15)] disabled:opacity-50 active:scale-[0.99] cursor-pointer"
               >
                 {isSubmitting ? 'Validando envio seguro...' : 'Solicitar demonstração e planos'}
               </button>
 
-              <div className="flex items-center justify-center gap-2 text-[11px] font-mono text-[#9A9DA3] pt-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#34E5A0]" />
+              <div className="flex items-center justify-center gap-2 text-[11px] font-mono text-neutral-500 dark:text-[#9A9DA3] pt-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-[#34E5A0]" />
                 <span>Dados protegidos com sanitização XSS e criptografia em trânsito.</span>
               </div>
             </form>

@@ -23,7 +23,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-@custom-variant dark (&:is([data-theme='dark'] *));
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 @custom-variant sm (@media (width >= theme(--breakpoint-sm)));
 @custom-variant md (@media (width >= theme(--breakpoint-md)));
 @custom-variant lg (@media (width >= theme(--breakpoint-lg)));

@@ -40,16 +40,16 @@ export const LiraFAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section id="faq" className="py-20 md:py-28 bg-[#070708] border-b border-[#1A1B1D]">
+    <section id="faq" className="py-20 md:py-28 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0E1A1E] border border-[#14454F] mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00D3F2]" />
-            <span className="text-[12px] font-mono tracking-[0.08em] uppercase text-[#CEFAFE]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 dark:bg-[#0E1A1E] border border-cyan-200 dark:border-[#14454F] mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0092B8] dark:bg-[#00D3F2]" />
+            <span className="text-[12px] font-mono tracking-[0.08em] uppercase text-cyan-800 dark:text-[#CEFAFE]">
               DÚVIDAS FREQUENTES
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] text-[#E5E2E3]">
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3]">
             Perguntas frequentes
           </h2>
         </div>
@@ -62,7 +62,7 @@ export const LiraFAQ: React.FC = () => {
             return (
               <div
                 key={item.question}
-                className="bg-[#0E1A1E]/60 border border-[#14454F] rounded-[16px] overflow-hidden"
+                className="bg-neutral-50 dark:bg-[#0E1A1E]/60 border border-neutral-200 dark:border-[#14454F] rounded-[16px] overflow-hidden transition-colors"
               >
                 <button
                   type="button"
@@ -70,18 +70,18 @@ export const LiraFAQ: React.FC = () => {
                   aria-expanded={isOpen}
                   aria-controls={answerId}
                   onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="w-full flex items-center justify-between gap-4 px-5 py-4 min-h-[44px] text-left text-[15px] font-medium text-white hover:text-[#53EAFD] transition-colors"
+                  className="w-full flex items-center justify-between gap-4 px-5 py-4 min-h-[44px] text-left text-[15px] font-medium text-neutral-900 dark:text-white hover:text-cyan-700 dark:hover:text-[#53EAFD] transition-colors"
                 >
                   <span>{item.question}</span>
                   <Icon
                     name={isOpen ? 'remove' : 'add'}
                     label={isOpen ? 'Recolher resposta' : 'Expandir resposta'}
                     size={20}
-                    className="shrink-0 text-[#9A9DA3]"
+                    className="shrink-0 text-neutral-500 dark:text-[#9A9DA3]"
                   />
                 </button>
                 {isOpen && (
-                  <div id={answerId} className="px-5 pb-4 text-[14px] text-[#9A9DA3] leading-relaxed">
+                  <div id={answerId} className="px-5 pb-4 text-[14px] text-neutral-600 dark:text-[#9A9DA3] leading-relaxed">
                     {item.answer}
                   </div>
                 )}
