@@ -8,45 +8,64 @@ describe('LiraPricing section (TDD)', () => {
   it('renders the section with id="planos" and all 3 plan names', () => {
     const html = renderToString(<LiraPricing />)
     expect(html).toContain('id="planos"')
-    expect(html).toContain('Lira Start')
-    expect(html).toContain('Lira Plus')
-    expect(html).toContain('Lira Vega')
+    expect(html).toContain('Essencial')
+    expect(html).toContain('Avançado')
+    expect(html).toContain('Profissional')
   })
 
-  it('highlights Lira Plus as the popular plan', () => {
+  it('highlights Avançado as the popular plan', () => {
     render(<LiraPricing />)
-    const plusCard = screen.getByText('Lira Plus').closest('[data-plan-id="plus"]')
-    expect(plusCard).not.toBeNull()
-    expect(plusCard?.getAttribute('data-popular')).toBe('true')
+    const card = screen.getByText('Avançado').closest('[data-plan-id="avancado"]')
+    expect(card).not.toBeNull()
+    expect(card?.getAttribute('data-popular')).toBe('true')
   })
 
-  it('shows the monthly price and first-month coupon price by default', () => {
+  it('shows annual pricing and savings pills by default', () => {
     render(<LiraPricing />)
-    expect(screen.getByText(/R\$\s?69,90/)).toBeTruthy()
-    expect(screen.getByText(/R\$\s?59,42/)).toBeTruthy()
+    expect(screen.getByText(/R\$\s?60,12/)).toBeTruthy()
+    expect(screen.getByText(/R\$\s?107,42/)).toBeTruthy()
+    expect(screen.getByText(/R\$\s?187,40/)).toBeTruthy()
+    expect(screen.getByText(/ECONOMIZE R\$\s?38,74/)).toBeTruthy()
   })
 
-  it('toggling to annual billing shows the annual-equivalent monthly price for Plus and Vega', () => {
+  it('toggling to monthly billing shows monthly prices and updates limits', () => {
     render(<LiraPricing />)
-    fireEvent.click(screen.getByRole('switch', { name: /anual/i }))
-    expect(screen.getByText(/R\$\s?79,92/)).toBeTruthy()
-    expect(screen.getByText(/R\$\s?111,92/)).toBeTruthy()
+    const switchBtn = screen.getByRole('switch', { name: /alternar/i })
+    fireEvent.click(switchBtn)
+
+    // Monthly prices
+    expect(screen.getByText(/R\$\s?99,86/)).toBeTruthy()
+    expect(screen.getByText(/R\$\s?178,43/)).toBeTruthy()
+    expect(screen.getByText(/R\$\s?311,29/)).toBeTruthy()
+
+    // Monthly WhatsApp limits
+    expect(screen.getByText(/50 mensagens WhatsApp/)).toBeTruthy()
+    expect(screen.getByText(/100 mensagens WhatsApp/)).toBeTruthy()
   })
 
-  it('Lira Start has no annual option and communicates it is monthly-only', () => {
+  it('clicking text buttons also switches between monthly and annual', () => {
     render(<LiraPricing />)
-    const startCard = screen.getByText('Lira Start').closest('[data-plan-id="start"]')
-    expect(startCard?.textContent).toMatch(/somente mensal/i)
+    const mensalBtn = screen.getByRole('button', { name: /plano mensal/i })
+    fireEvent.click(mensalBtn)
+
+    expect(screen.getByText(/R\$\s?99,86/)).toBeTruthy()
+
+    const anualBtn = screen.getByRole('button', { name: /plano anual/i })
+    fireEvent.click(anualBtn)
+
+    expect(screen.getByText(/R\$\s?60,12/)).toBeTruthy()
   })
 
-  it('every plan has an accessible CTA button', () => {
+  it('every plan has accessible CTA buttons and test link', () => {
     render(<LiraPricing />)
-    const ctas = screen.getAllByRole('link', { name: /assinar|come[cç]ar/i })
-    expect(ctas.length).toBeGreaterThanOrEqual(3)
+    const ctas = screen.getAllByRole('link', { name: /contratar plano/i })
+    expect(ctas.length).toBe(3)
+    const freeTrialLinks = screen.getAllByRole('link', { name: /continuar meu teste gr[aá]tis/i })
+    expect(freeTrialLinks.length).toBe(3)
   })
 
-  it('surfaces the launch coupon note in the section footer', () => {
+  it('does not render the countdown box', () => {
     const html = renderToString(<LiraPricing />)
-    expect(html).toMatch(/Bem-vindo 1 a 10/)
+    expect(html).not.toContain('O tempo está correndo!')
   })
 })

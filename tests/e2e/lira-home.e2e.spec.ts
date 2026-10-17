@@ -13,7 +13,7 @@ test.describe('Lira Agendamentos — institutional home', () => {
   })
 
   test('every section from the design system nav is present and reachable by anchor', async () => {
-    for (const id of ['desafios', 'pilares', 'produtos', 'como-funciona', 'calculadora', 'white-label', 'contato']) {
+    for (const id of ['desafios', 'pilares', 'produtos', 'como-funciona', 'white-label', 'contato']) {
       await expect(page.locator(`#${id}`)).toBeVisible()
     }
   })
@@ -37,23 +37,6 @@ test.describe('Lira Agendamentos — institutional home', () => {
 
     await page.getByRole('button', { name: /fechar menu/i }).click()
     await expect(toggle).toHaveAttribute('aria-expanded', 'false')
-  })
-
-  test('ROI calculator updates recovered revenue when a slider moves', async () => {
-    const recoveredBefore = await page
-      .locator('text=FATURAMENTO EXTRA RECUPERADO POR MÊS')
-      .locator('xpath=following-sibling::div[1]')
-      .innerText()
-
-    const appointmentsSlider = page.locator('#appointments-input')
-    await appointmentsSlider.fill('1000')
-
-    const recoveredAfter = await page
-      .locator('text=FATURAMENTO EXTRA RECUPERADO POR MÊS')
-      .locator('xpath=following-sibling::div[1]')
-      .innerText()
-
-    expect(recoveredAfter).not.toBe(recoveredBefore)
   })
 
   test('contact form shows validation errors for an incomplete submission', async () => {

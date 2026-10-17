@@ -8,12 +8,11 @@ import { LiraMetricsPreview } from './MetricsPreview'
 import { LiraHowItWorks } from './HowItWorks'
 import { LiraPillars } from './Pillars'
 import { LiraProducts } from './Products'
-import { LiraNiches } from './Niches'
+import { LiraCalendarView } from './CalendarView'
 import { LiraAIFlow } from './AIFlow'
-import { LiraTestimonials } from './Testimonials'
-import { LiraRoiCalculator } from './RoiCalculator'
+import { LiraSegments } from './Segments'
+import { LiraPlanTeaser } from './PlanTeaser'
 import { LiraPricing } from './Pricing'
-import { LiraWhiteLabelSimulator } from './WhiteLabelSimulator'
 import { LiraFAQ } from './FAQ'
 import { LiraContactSection } from './ContactSection'
 import { LiraFooter } from './Footer'
@@ -21,7 +20,7 @@ import { LiraWhatsAppButton } from './WhatsAppButton'
 
 export const LiraLandingPage: React.FC = () => {
   return (
-    <main className="min-h-screen bg-[#070708] text-[#E5E2E3] selection:bg-[#00D3F2]/30 selection:text-[#00D3F2]">
+    <main className="min-h-screen bg-white dark:bg-[#070708] text-neutral-900 dark:text-[#E5E2E3] selection:bg-[#00D3F2]/30 selection:text-cyan-800 dark:selection:text-[#00D3F2] transition-colors duration-200">
       <LiraNavbar />
       <LiraHero />
       <LiraFeatureHighlights />
@@ -31,12 +30,11 @@ export const LiraLandingPage: React.FC = () => {
       <LiraHowItWorks />
       <LiraPillars />
       <LiraProducts />
-      <LiraNiches />
+      <LiraCalendarView />
       <LiraAIFlow />
-      <LiraTestimonials />
-      <LiraRoiCalculator />
+      <LiraSegments />
+      <LiraPlanTeaser />
       <LiraPricing />
-      <LiraWhiteLabelSimulator />
       <LiraFAQ />
       <LiraContactSection />
       <LiraFooter />
