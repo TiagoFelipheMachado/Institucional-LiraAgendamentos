@@ -24,9 +24,10 @@ interface DayAppointment {
   service?: string
   status?: string
   showProfessionalTag?: boolean
+  isDarkSubtle?: boolean
 }
 
-const HOUR_HEIGHT = 88 // pixels per hour
+const HOUR_HEIGHT = 58 // pixels per hour (matches Month View grid height)
 
 const timeSlots = [
   '08:00',
@@ -40,7 +41,7 @@ const timeSlots = [
   '16:00',
 ]
 
-// Day 12 de Outubro appointments - shared source of truth
+// Day 12 de Outubro appointments - exact match to Image 2 reference
 const dayAppointments: DayAppointment[] = [
   // Rosiane
   {
@@ -61,6 +62,7 @@ const dayAppointments: DayAppointment[] = [
     timeRange: '11:30',
     startMinutes: 210, // 11:30 = 3h30m from 08:00
     durationMinutes: 48,
+    isDarkSubtle: true,
   },
   {
     id: 'ros-3',
@@ -139,7 +141,7 @@ interface CalendarDay {
   moreCount?: number
 }
 
-// Outubro 2026 calendar days - synchronizing directly with 12 de Outubro
+// Outubro 2026 calendar days
 const calendarDays: CalendarDay[] = [
   // Semana 1 (Setembro/Outubro)
   { day: 27, isMuted: true },
@@ -159,14 +161,13 @@ const calendarDays: CalendarDay[] = [
   { day: 9 },
   { day: 10 },
 
-  // Semana 3 - Contém o dia 12 de Outubro com os mesmos dados da visão diária
+  // Semana 3 - Contém o dia 12 de Outubro
   { day: 11 },
   {
     day: 12,
     isActiveToday: true,
-    // Mesmos agendamentos da visão diária:
     events: ['09:15 Beatriz Ferreira', '09:45 Camila Santos', '10:00 Lucas Mendes'],
-    moreCount: 5, // Beatriz (11:30), Rafael (11:30), Mariana (12:15), Tiago.F (13:15), Tiago.F (13:15)
+    moreCount: 5,
   },
   {
     day: 13,
@@ -203,7 +204,7 @@ export const LiraCalendarView: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('all')
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false)
 
-  // Sync with URL hash or query params
+  // Sync with URL hash or query params safely
   useEffect(() => {
     const handleHash = () => {
       if (typeof window !== 'undefined') {
@@ -224,8 +225,12 @@ export const LiraCalendarView: React.FC = () => {
 
   const switchView = (mode: 'month' | 'day') => {
     setViewMode(mode)
-    if (typeof window !== 'undefined') {
-      window.history.replaceState(null, '', mode === 'day' ? '#dia' : '#mes')
+    try {
+      if (typeof window !== 'undefined') {
+        window.history.replaceState(null, '', mode === 'day' ? '#dia' : '#mes')
+      }
+    } catch {
+      // Safely ignore if iframe prevents history replaceState
     }
   }
 
@@ -241,55 +246,80 @@ export const LiraCalendarView: React.FC = () => {
   })
 
   // Visible professionals in day view
-  const visibleProfessionals = selectedProfessional === 'all'
-    ? professionals
-    : professionals.filter((p) => p.id === selectedProfessional)
+  const visibleProfessionals =
+    selectedProfessional === 'all'
+      ? professionals
+      : professionals.filter((p) => p.id === selectedProfessional)
 
   return (
-    <section id="visao-geral-agenda" className="py-24 md:py-36 bg-[#070708] border-b border-[#1A1B1D] text-[#E5E2E3] relative overflow-hidden">
+    <section
+      id="visao-geral-agenda"
+      className="py-24 md:py-36 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] text-neutral-900 dark:text-[#E5E2E3] relative overflow-hidden transition-colors duration-200"
+    >
       {/* Background ambient radial glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-gradient-to-tr from-[#00D3F2]/[0.03] via-[#7C3AED]/[0.02] to-transparent blur-[150px] pointer-events-none rounded-full" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
         {/* Header section */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <h2 className="text-4xl sm:text-6xl lg:text-[54px] font-semibold tracking-[-0.03em] text-[#E5E2E3] leading-[1.08] mb-6">
+          <h2 className="text-4xl sm:text-6xl lg:text-[54px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.08] mb-6">
             Conduza cada decisão <br className="hidden sm:block" />
-            adiante<span className="text-[#00D3F2]">.</span>
+            adiante<span className="text-cyan-600 dark:text-[#53EAFD]">.</span>
           </h2>
-          <p className="text-base sm:text-lg text-[#9A9DA3] max-w-xl mx-auto leading-relaxed font-normal">
+          <p className="text-base sm:text-lg text-neutral-600 dark:text-[#9A9DA3] max-w-xl mx-auto leading-relaxed font-normal">
             Mapeie decisões estratégicas na linha do tempo da sua operação. Mantenha a execução sem gargalos, com clareza e controle total.
           </p>
         </div>
 
         {/* ========================================================================= */}
-        {/* VIEW 1: MÊS (Month View - Image 1 com dados anexados a Outubro 2026)      */}
+        {/* VIEW 1: MÊS (Month View)                                                  */}
         {/* ========================================================================= */}
         {viewMode === 'month' && (
-          <div className="max-w-6xl mx-auto bg-[#0A0B0E] border border-[#1A1C24] rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 shadow-[0_25px_60px_rgba(0,0,0,0.8)] relative transition-opacity duration-300">
-            
+          <div className="max-w-6xl mx-auto bg-neutral-50 dark:bg-[#0A0B0E] border border-neutral-200 dark:border-[#1A1C24] rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 shadow-xl dark:shadow-[0_25px_60px_rgba(0,0,0,0.8)] relative transition-opacity duration-300">
             {/* Calendar Top Toolbar */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-[#161720]">
-              
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-neutral-200 dark:border-[#161720]">
               {/* Left Controls: Date Switcher + Mode Toggle */}
               <div className="flex items-center gap-3 flex-wrap">
                 {/* Date Selector */}
-                <div className="flex items-center gap-2 bg-[#12131A] border border-[#1F212C] rounded-xl px-3 py-1.5 text-xs font-mono text-white select-none">
-                  <button type="button" aria-label="Mês anterior" className="text-[#6B7280] hover:text-white transition-colors px-0.5 cursor-pointer">‹</button>
-                  <span className="font-semibold tracking-wider px-1">OUT. DE 2026</span>
-                  <button type="button" aria-label="Próximo mês" className="text-[#6B7280] hover:text-white transition-colors px-0.5 cursor-pointer">›</button>
-                </div>
-
-                {/* View Switcher (Dia | Mês) - Estilo exato do crop enviado */}
-                <div className="inline-flex items-center bg-[#0F1015] border border-[#1E202B] rounded-full p-1 text-xs font-mono z-20">
-                  {/* Botão Dia (Inativo no modo Mês) */}
+                <div className="flex items-center gap-2 bg-white dark:bg-[#12131A] border border-neutral-300 dark:border-[#1F212C] rounded-xl px-3 py-1.5 text-xs font-mono text-neutral-900 dark:text-white select-none">
                   <button
                     type="button"
-                    onClick={() => switchView('day')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[#9CA3AF] hover:text-white transition-all cursor-pointer select-none"
+                    aria-label="Mês anterior"
+                    className="text-neutral-400 dark:text-[#6B7280] hover:text-neutral-900 dark:hover:text-white transition-colors px-0.5 cursor-pointer"
                   >
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    ‹
+                  </button>
+                  <span className="font-semibold tracking-wider px-1">OUT. DE 2026</span>
+                  <button
+                    type="button"
+                    aria-label="Próximo mês"
+                    className="text-neutral-400 dark:text-[#6B7280] hover:text-neutral-900 dark:hover:text-white transition-colors px-0.5 cursor-pointer"
+                  >
+                    ›
+                  </button>
+                </div>
+
+                {/* View Switcher (Dia | Mês) */}
+                <div className="inline-flex items-center bg-neutral-200/80 dark:bg-[#0F1015] border border-neutral-300 dark:border-[#1E202B] rounded-full p-1 text-xs font-mono z-20">
+                  {/* Botão Dia (Inativo - clica para ir ao Dia) */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      switchView('day')
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-neutral-600 dark:text-[#9CA3AF] hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer select-none"
+                  >
+                    <svg
+                      className="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <line x1="8" y1="6" x2="21" y2="6" />
                       <line x1="8" y1="12" x2="21" y2="12" />
                       <line x1="8" y1="18" x2="21" y2="18" />
@@ -299,13 +329,25 @@ export const LiraCalendarView: React.FC = () => {
                     </svg>
                     <span>Dia</span>
                   </button>
-                  {/* Botão Mês (Ativo com contorno ciano neon) */}
+                  {/* Botão Mês (Ativo) */}
                   <button
                     type="button"
-                    onClick={() => switchView('month')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2] font-semibold shadow-[0_0_12px_rgba(0,211,242,0.25)] cursor-pointer select-none"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      switchView('month')
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-[#0E2026] text-cyan-700 dark:text-[#00D3F2] border border-cyan-400 dark:border-[#00D3F2] font-semibold shadow-sm dark:shadow-[0_0_12px_rgba(0,211,242,0.25)] cursor-pointer select-none"
                   >
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      className="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <rect x="3" y="3" width="7" height="7" />
                       <rect x="14" y="3" width="7" height="7" />
                       <rect x="14" y="14" width="7" height="7" />
@@ -320,10 +362,18 @@ export const LiraCalendarView: React.FC = () => {
               <div className="relative">
                 <div
                   onClick={() => setIsProfDropdownOpen(!isProfDropdownOpen)}
-                  className="flex items-center justify-between gap-3 bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] rounded-xl px-4 py-1.5 text-xs font-mono text-[#D8DAE2] transition-colors cursor-pointer select-none"
+                  className="flex items-center justify-between gap-3 bg-white dark:bg-[#12131A] border border-neutral-300 dark:border-[#1F212C] hover:border-neutral-400 dark:hover:border-[#2C2F3E] rounded-xl px-4 py-1.5 text-xs font-mono text-neutral-800 dark:text-[#D8DAE2] transition-colors cursor-pointer select-none"
                 >
                   <div className="flex items-center gap-2">
-                    <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      className="w-3.5 h-3.5 text-neutral-400 dark:text-[#6B7280]"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
                     </svg>
                     <span>
@@ -332,7 +382,15 @@ export const LiraCalendarView: React.FC = () => {
                         : professionals.find((p) => p.id === selectedProfessional)?.name}
                     </span>
                   </div>
-                  <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    className="w-3.5 h-3.5 text-neutral-400 dark:text-[#6B7280]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -341,14 +399,14 @@ export const LiraCalendarView: React.FC = () => {
                 </div>
 
                 {isProfDropdownOpen && (
-                  <div className="absolute top-full mt-2 left-0 w-56 bg-[#12131A] border border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
+                  <div className="absolute top-full mt-2 left-0 w-56 bg-white dark:bg-[#12131A] border border-neutral-200 dark:border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
                     <button
                       type="button"
                       onClick={() => {
                         setSelectedProfessional('all')
                         setIsProfDropdownOpen(false)
                       }}
-                      className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3]"
+                      className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-neutral-800 dark:text-[#E5E2E3]"
                     >
                       Todos os Profissionais
                     </button>
@@ -360,10 +418,10 @@ export const LiraCalendarView: React.FC = () => {
                           setSelectedProfessional(prof.id)
                           setIsProfDropdownOpen(false)
                         }}
-                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3] flex justify-between"
+                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-neutral-800 dark:text-[#E5E2E3] flex justify-between"
                       >
                         <span>{prof.name}</span>
-                        <span className="text-[#6B7280]">{prof.role}</span>
+                        <span className="text-neutral-400 dark:text-[#6B7280]">{prof.role}</span>
                       </button>
                     ))}
                   </div>
@@ -374,9 +432,17 @@ export const LiraCalendarView: React.FC = () => {
               <div className="flex items-center gap-2.5">
                 <button
                   type="button"
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] text-xs font-mono text-[#D8DAE2] hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white dark:bg-[#12131A] border border-neutral-300 dark:border-[#1F212C] hover:border-neutral-400 dark:hover:border-[#2C2F3E] text-xs font-mono text-neutral-700 hover:text-neutral-950 dark:text-[#D8DAE2] dark:hover:text-white transition-colors cursor-pointer"
                 >
-                  <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    className="w-3.5 h-3.5 text-neutral-400 dark:text-[#6B7280]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <circle cx="12" cy="12" r="10" />
                     <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
                   </svg>
@@ -385,9 +451,17 @@ export const LiraCalendarView: React.FC = () => {
 
                 <button
                   type="button"
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-[#00D3F2] hover:bg-[#38E1F8] text-[#070708] text-xs font-bold transition-all shadow-[0_0_15px_rgba(0,211,242,0.3)] active:scale-[0.98] cursor-pointer"
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white dark:bg-[#00D3F2] dark:hover:bg-[#38E1F8] dark:text-[#070708] text-xs font-bold transition-all shadow-sm dark:shadow-[0_0_15px_rgba(0,211,242,0.3)] active:scale-[0.98] cursor-pointer"
                 >
-                  <svg className="w-3.5 h-3.5 text-[#070708]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    className="w-3.5 h-3.5 text-white dark:text-[#070708]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <circle cx="12" cy="12" r="10" />
                     <polyline points="12 6 12 12 16 14" />
                   </svg>
@@ -400,9 +474,12 @@ export const LiraCalendarView: React.FC = () => {
             <div className="overflow-x-auto">
               <div className="min-w-[680px]">
                 {/* Days Header */}
-                <div className="grid grid-cols-7 border-b border-[#161720] text-center">
+                <div className="grid grid-cols-7 border-b border-neutral-200 dark:border-[#161720] text-center">
                   {['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'].map((day) => (
-                    <div key={day} className="py-3 text-[11px] font-mono tracking-wider font-semibold text-[#6B7280]">
+                    <div
+                      key={day}
+                      className="py-3 text-[11px] font-mono tracking-wider font-semibold text-neutral-500 dark:text-[#6B7280]"
+                    >
                       {day}
                     </div>
                   ))}
@@ -419,27 +496,37 @@ export const LiraCalendarView: React.FC = () => {
                           switchView('day')
                         }
                       }}
-                      className={`min-h-[82px] sm:min-h-[96px] p-2 sm:p-2.5 border-b border-r border-[#14151E] ${
+                      className={`min-h-[82px] sm:min-h-[96px] p-2 sm:p-2.5 border-b border-r border-neutral-200 dark:border-[#14151E] ${
                         (idx + 1) % 7 === 0 ? 'border-r-0' : ''
                       } ${
-                        item.isMuted ? 'bg-[#090A0D]/50 text-[#303340]' : 'bg-[#0A0B0E] text-[#6B7280]'
+                        item.isMuted
+                          ? 'bg-neutral-100/60 dark:bg-[#090A0D]/50 text-neutral-400 dark:text-[#303340]'
+                          : 'bg-white dark:bg-[#0A0B0E] text-neutral-600 dark:text-[#6B7280]'
                       } ${
-                        item.isActiveToday ? 'cursor-pointer hover:bg-[#111822]' : 'hover:bg-[#111218]/50'
+                        item.isActiveToday
+                          ? 'cursor-pointer hover:bg-cyan-50/60 dark:hover:bg-[#111822]'
+                          : 'hover:bg-neutral-100/50 dark:hover:bg-[#111218]/50'
                       } flex flex-col justify-start transition-colors group relative`}
                     >
                       {/* Day Number Header */}
                       <div className="flex items-center justify-between w-full">
                         {item.isActiveToday ? (
-                          <span className="w-5 h-5 rounded-md bg-[#00D3F2] text-[#070708] font-bold text-[10px] flex items-center justify-center shadow-[0_0_10px_rgba(0,211,242,0.5)]">
+                          <span className="w-5 h-5 rounded-md bg-cyan-600 dark:bg-[#00D3F2] text-white dark:text-[#070708] font-bold text-[10px] flex items-center justify-center shadow-sm dark:shadow-[0_0_10px_rgba(0,211,242,0.5)]">
                             {item.day}
                           </span>
                         ) : (
-                          <span className={`text-[11px] font-mono ${item.isMuted ? 'text-[#333544]' : 'text-[#6B7280]'}`}>
+                          <span
+                            className={`text-[11px] font-mono ${
+                              item.isMuted
+                                ? 'text-neutral-400 dark:text-[#333544]'
+                                : 'text-neutral-700 dark:text-[#6B7280]'
+                            }`}
+                          >
                             {item.day}
                           </span>
                         )}
                         {item.isActiveToday && (
-                          <span className="text-[9px] font-mono text-[#00D3F2] font-semibold tracking-wider">
+                          <span className="text-[9px] font-mono text-cyan-700 dark:text-[#53EAFD] font-semibold tracking-wider">
                             HOJE
                           </span>
                         )}
@@ -451,13 +538,13 @@ export const LiraCalendarView: React.FC = () => {
                           {item.events.map((ev, eIdx) => (
                             <div
                               key={eIdx}
-                              className="px-1.5 py-0.5 rounded bg-[#0A1A20] border border-[#00D3F2]/50 text-[#CEFAFE] text-[10px] font-mono truncate"
+                              className="px-1.5 py-0.5 rounded bg-cyan-50 dark:bg-[#0A1A20] border border-cyan-200 dark:border-[#00D3F2]/50 text-cyan-800 dark:text-[#CEFAFE] text-[10px] font-mono truncate"
                             >
                               {ev}
                             </div>
                           ))}
                           {item.moreCount && (
-                            <span className="text-[9px] font-mono text-[#6B7280] block pl-0.5 group-hover:text-[#00D3F2] transition-colors">
+                            <span className="text-[9px] font-mono text-neutral-500 dark:text-[#6B7280] block pl-0.5 group-hover:text-cyan-700 dark:group-hover:text-[#53EAFD] transition-colors">
                               + {item.moreCount} mais (ver no Dia →)
                             </span>
                           )}
@@ -468,37 +555,58 @@ export const LiraCalendarView: React.FC = () => {
                 </div>
               </div>
             </div>
-
           </div>
         )}
 
         {/* ========================================================================= */}
-        {/* VIEW 2: DIA (Day View - Image 2 com os mesmos dados de 12 de Outubro)     */}
+        {/* VIEW 2: DIA (Day View - White/Light Mode & Exact Same Size as Month View) */}
         {/* ========================================================================= */}
         {viewMode === 'day' && (
-          <div className="max-w-6xl mx-auto space-y-4 transition-opacity duration-300">
-            
-            {/* Top Toolbar Card matching Image 2 */}
-            <div className="bg-[#0A0B0E] border border-[#1A1C24] rounded-2xl p-3 sm:px-5 sm:py-3.5 shadow-lg flex flex-col lg:flex-row lg:items-center justify-between gap-3 flex-wrap">
-              
+          <div className="max-w-6xl mx-auto bg-neutral-50 dark:bg-[#0A0B0E] border border-neutral-200 dark:border-[#1A1C24] rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 shadow-xl dark:shadow-[0_25px_60px_rgba(0,0,0,0.8)] relative transition-opacity duration-300">
+            {/* Top Toolbar (matches Month View toolbar layout and White Mode styling) */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-neutral-200 dark:border-[#161720]">
               {/* Left Controls: Date Switcher + View Mode */}
               <div className="flex items-center gap-3 flex-wrap">
                 {/* Date Switcher: "< 12 de out. >" */}
-                <div className="flex items-center gap-2 bg-[#12131A] border border-[#1F212C] rounded-xl px-3 py-1.5 text-xs font-mono text-white select-none">
-                  <button type="button" aria-label="Dia anterior" className="text-[#6B7280] hover:text-white transition-colors px-1 cursor-pointer">‹</button>
-                  <span className="font-semibold tracking-wider px-1">12 de out.</span>
-                  <button type="button" aria-label="Próximo dia" className="text-[#6B7280] hover:text-white transition-colors px-1 cursor-pointer">›</button>
-                </div>
-
-                {/* View Switcher (Dia [active] | Mês) - Estilo exato do crop enviado */}
-                <div className="inline-flex items-center bg-[#0F1015] border border-[#1E202B] rounded-full p-1 text-xs font-mono z-20">
-                  {/* Botão Dia (Ativo com contorno ciano neon) */}
+                <div className="flex items-center gap-2 bg-white dark:bg-[#12131A] border border-neutral-300 dark:border-[#1F212C] rounded-xl px-3 py-1.5 text-xs font-mono text-neutral-900 dark:text-white select-none">
                   <button
                     type="button"
-                    onClick={() => switchView('day')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0E2026] text-[#00D3F2] border border-[#00D3F2] font-semibold shadow-[0_0_12px_rgba(0,211,242,0.25)] cursor-pointer select-none"
+                    aria-label="Dia anterior"
+                    className="text-neutral-400 dark:text-[#6B7280] hover:text-neutral-900 dark:hover:text-white transition-colors px-0.5 cursor-pointer"
                   >
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    ‹
+                  </button>
+                  <span className="font-semibold tracking-wider px-1">12 de out.</span>
+                  <button
+                    type="button"
+                    aria-label="Próximo dia"
+                    className="text-neutral-400 dark:text-[#6B7280] hover:text-neutral-900 dark:hover:text-white transition-colors px-0.5 cursor-pointer"
+                  >
+                    ›
+                  </button>
+                </div>
+
+                {/* View Switcher (Dia [active] | Mês) */}
+                <div className="inline-flex items-center bg-neutral-200/80 dark:bg-[#0F1015] border border-neutral-300 dark:border-[#1E202B] rounded-full p-1 text-xs font-mono z-20">
+                  {/* Botão Dia (Ativo) */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      switchView('day')
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-[#0E2026] text-cyan-700 dark:text-[#00D3F2] border border-cyan-400 dark:border-[#00D3F2] font-semibold shadow-sm dark:shadow-[0_0_12px_rgba(0,211,242,0.25)] cursor-pointer select-none"
+                  >
+                    <svg
+                      className="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <line x1="8" y1="6" x2="21" y2="6" />
                       <line x1="8" y1="12" x2="21" y2="12" />
                       <line x1="8" y1="18" x2="21" y2="18" />
@@ -508,13 +616,25 @@ export const LiraCalendarView: React.FC = () => {
                     </svg>
                     <span>Dia</span>
                   </button>
-                  {/* Botão Mês (Inativo) */}
+                  {/* Botão Mês (Inativo - clica para ir ao Mês) */}
                   <button
                     type="button"
-                    onClick={() => switchView('month')}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[#9CA3AF] hover:text-white transition-all cursor-pointer select-none"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      switchView('month')
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-neutral-600 dark:text-[#9CA3AF] hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer select-none"
                   >
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      className="w-3.5 h-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <rect x="3" y="3" width="7" height="7" />
                       <rect x="14" y="3" width="7" height="7" />
                       <rect x="14" y="14" width="7" height="7" />
@@ -531,10 +651,18 @@ export const LiraCalendarView: React.FC = () => {
                 <div className="relative">
                   <div
                     onClick={() => setIsProfDropdownOpen(!isProfDropdownOpen)}
-                    className="flex items-center justify-between gap-3 bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] rounded-xl px-3.5 py-1.5 text-xs font-mono text-[#D8DAE2] transition-colors cursor-pointer select-none"
+                    className="flex items-center justify-between gap-3 bg-white dark:bg-[#12131A] border border-neutral-300 dark:border-[#1F212C] hover:border-neutral-400 dark:hover:border-[#2C2F3E] rounded-xl px-4 py-1.5 text-xs font-mono text-neutral-800 dark:text-[#D8DAE2] transition-colors cursor-pointer select-none"
                   >
                     <div className="flex items-center gap-2">
-                      <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg
+                        className="w-3.5 h-3.5 text-neutral-400 dark:text-[#6B7280]"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
                       </svg>
                       <span>
@@ -543,7 +671,15 @@ export const LiraCalendarView: React.FC = () => {
                           : professionals.find((p) => p.id === selectedProfessional)?.name}
                       </span>
                     </div>
-                    <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      className="w-3.5 h-3.5 text-neutral-400 dark:text-[#6B7280]"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                       <circle cx="9" cy="7" r="4" />
                       <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -552,14 +688,14 @@ export const LiraCalendarView: React.FC = () => {
                   </div>
 
                   {isProfDropdownOpen && (
-                    <div className="absolute top-full mt-2 left-0 w-56 bg-[#12131A] border border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
+                    <div className="absolute top-full mt-2 left-0 w-56 bg-white dark:bg-[#12131A] border border-neutral-200 dark:border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
                       <button
                         type="button"
                         onClick={() => {
                           setSelectedProfessional('all')
                           setIsProfDropdownOpen(false)
                         }}
-                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3]"
+                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-neutral-800 dark:text-[#E5E2E3]"
                       >
                         Todos os Profissionais
                       </button>
@@ -571,23 +707,31 @@ export const LiraCalendarView: React.FC = () => {
                             setSelectedProfessional(prof.id)
                             setIsProfDropdownOpen(false)
                           }}
-                          className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3] flex justify-between"
+                          className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-neutral-800 dark:text-[#E5E2E3] flex justify-between"
                         >
                           <span>{prof.name}</span>
-                          <span className="text-[#6B7280]">{prof.role}</span>
+                          <span className="text-neutral-400 dark:text-[#6B7280]">{prof.role}</span>
                         </button>
                       ))}
                     </div>
                   )}
                 </div>
 
-                {/* Todos os Status Dropdown (Image 2) */}
+                {/* Todos os Status Dropdown */}
                 <div className="relative">
                   <div
                     onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
-                    className="flex items-center gap-2 bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] rounded-xl px-3.5 py-1.5 text-xs font-mono text-[#D8DAE2] transition-colors cursor-pointer select-none"
+                    className="flex items-center gap-2 bg-white dark:bg-[#12131A] border border-neutral-300 dark:border-[#1F212C] hover:border-neutral-400 dark:hover:border-[#2C2F3E] rounded-xl px-3.5 py-1.5 text-xs font-mono text-neutral-800 dark:text-[#D8DAE2] transition-colors cursor-pointer select-none"
                   >
-                    <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      className="w-3.5 h-3.5 text-neutral-400 dark:text-[#6B7280]"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <line x1="4" y1="6" x2="20" y2="6" />
                       <line x1="4" y1="12" x2="14" y2="12" />
                       <line x1="4" y1="18" x2="18" y2="18" />
@@ -596,14 +740,14 @@ export const LiraCalendarView: React.FC = () => {
                   </div>
 
                   {isStatusDropdownOpen && (
-                    <div className="absolute top-full mt-2 left-0 w-44 bg-[#12131A] border border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
+                    <div className="absolute top-full mt-2 left-0 w-44 bg-white dark:bg-[#12131A] border border-neutral-200 dark:border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
                       <button
                         type="button"
                         onClick={() => {
                           setSelectedStatus('all')
                           setIsStatusDropdownOpen(false)
                         }}
-                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#E5E2E3]"
+                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-neutral-800 dark:text-[#E5E2E3]"
                       >
                         Todos os Status
                       </button>
@@ -613,7 +757,7 @@ export const LiraCalendarView: React.FC = () => {
                           setSelectedStatus('CONCLUÍDO')
                           setIsStatusDropdownOpen(false)
                         }}
-                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-[#1A1C26] text-[#10B981]"
+                        className="w-full text-left px-3 py-1.5 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-emerald-600 dark:text-[#10B981] font-semibold"
                       >
                         CONCLUÍDO
                       </button>
@@ -626,9 +770,17 @@ export const LiraCalendarView: React.FC = () => {
               <div className="flex items-center gap-2.5">
                 <button
                   type="button"
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#12131A] border border-[#1F212C] hover:border-[#2C2F3E] text-xs font-mono text-[#D8DAE2] hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white dark:bg-[#12131A] border border-neutral-300 dark:border-[#1F212C] hover:border-neutral-400 dark:hover:border-[#2C2F3E] text-xs font-mono text-neutral-700 hover:text-neutral-950 dark:text-[#D8DAE2] dark:hover:text-white transition-colors cursor-pointer"
                 >
-                  <svg className="w-3.5 h-3.5 text-[#6B7280]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    className="w-3.5 h-3.5 text-neutral-400 dark:text-[#6B7280]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <circle cx="12" cy="12" r="10" />
                     <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
                   </svg>
@@ -637,122 +789,150 @@ export const LiraCalendarView: React.FC = () => {
 
                 <button
                   type="button"
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-[#00D3F2] hover:bg-[#38E1F8] text-[#070708] text-xs font-bold transition-all shadow-[0_0_15px_rgba(0,211,242,0.3)] active:scale-[0.98] cursor-pointer"
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white dark:bg-[#00D3F2] dark:hover:bg-[#38E1F8] dark:text-[#070708] text-xs font-bold transition-all shadow-sm dark:shadow-[0_0_15px_rgba(0,211,242,0.3)] active:scale-[0.98] cursor-pointer"
                 >
-                  <svg className="w-3.5 h-3.5 text-[#070708]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    className="w-3.5 h-3.5 text-white dark:text-[#070708]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <circle cx="12" cy="12" r="10" />
                     <polyline points="12 6 12 12 16 14" />
                   </svg>
                   <span>Novo Agendamento</span>
                 </button>
               </div>
-
             </div>
 
-            {/* Main Day Schedule Card */}
-            <div className="bg-[#0A0B0E] border border-[#1A1C24] rounded-[24px] sm:rounded-[28px] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.8)]">
-              <div className="overflow-x-auto">
-                <div className="min-w-[760px]">
-                  
-                  {/* Table Column Headers (Empty corner + Professionals) */}
-                  <div className={`grid grid-cols-[76px_repeat(${visibleProfessionals.length},1fr)] border-b border-[#161720]`}>
-                    {/* Time Column header placeholder */}
-                    <div className="border-r border-[#161720] h-[72px]" />
+            {/* Day Schedule Table Grid (White Mode + Dark Mode, exact height of Month View) */}
+            <div className="overflow-x-auto">
+              <div className="min-w-[760px]">
+                {/* Table Column Headers (Empty corner + Professionals) */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: `76px repeat(${visibleProfessionals.length}, minmax(0, 1fr))`,
+                  }}
+                  className="border-b border-neutral-200 dark:border-[#161B26] bg-neutral-100/50 dark:bg-transparent"
+                >
+                  {/* Time Column header placeholder */}
+                  <div className="border-r border-neutral-200 dark:border-[#161B26] h-[44px]" />
 
-                    {/* Professionals Headers */}
-                    {visibleProfessionals.map((prof, idx) => (
+                  {/* Professionals Headers */}
+                  {visibleProfessionals.map((prof, idx) => (
+                    <div
+                      key={prof.id}
+                      className={`h-[44px] px-4 flex items-center justify-center gap-2.5 ${
+                        idx < visibleProfessionals.length - 1
+                          ? 'border-r border-neutral-200 dark:border-[#161B26]'
+                          : ''
+                      }`}
+                    >
+                      {/* Avatar Circle */}
+                      <div className="w-7 h-7 rounded-full bg-cyan-50 dark:bg-[#121622] border border-cyan-200 dark:border-[#23293D] flex items-center justify-center text-xs text-cyan-700 dark:text-[#9CA3AF] shrink-0 font-semibold">
+                        {prof.name.charAt(0)}
+                      </div>
+
+                      {/* Name & Role */}
+                      <div className="flex flex-col text-left">
+                        <span className="text-xs sm:text-[13px] font-semibold text-neutral-900 dark:text-white tracking-tight leading-tight">
+                          {prof.name}
+                        </span>
+                        <span className="text-[11px] text-neutral-500 dark:text-[#6B7280] leading-tight">
+                          {prof.role}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Schedule Body: Left Time Column + Columns with Appointments */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: `76px repeat(${visibleProfessionals.length}, minmax(0, 1fr))`,
+                  }}
+                  className="relative bg-white dark:bg-[#0A0B0E]"
+                >
+                  {/* Left Column: Hour Labels and :15, :30, :45 subdivisions */}
+                  <div className="border-r border-neutral-200 dark:border-[#161B26] select-none bg-neutral-100/60 dark:bg-[#090C12]/50">
+                    {timeSlots.map((time) => (
                       <div
-                        key={prof.id}
-                        className={`h-[72px] px-4 flex items-center justify-center gap-3 ${
-                          idx < visibleProfessionals.length - 1 ? 'border-r border-[#161720]' : ''
-                        }`}
+                        key={time}
+                        style={{ height: `${HOUR_HEIGHT}px` }}
+                        className="border-b border-neutral-200 dark:border-[#161B26] relative text-right pr-2.5 py-0.5 flex flex-col justify-between"
                       >
-                        {/* Avatar Circle */}
-                        <div className="w-8 h-8 rounded-full bg-[#141620] border border-[#232738] flex items-center justify-center text-xs text-[#9CA3AF] shrink-0 font-medium">
-                          {prof.name.charAt(0)}
-                        </div>
-
-                        {/* Name & Role */}
-                        <div className="flex flex-col text-left">
-                          <span className="text-xs sm:text-[13px] font-semibold text-[#E5E2E3] tracking-tight">
-                            {prof.name}
-                          </span>
-                          <span className="text-[11px] text-[#6B7280]">
-                            {prof.role}
-                          </span>
-                        </div>
+                        <span className="text-[11px] font-mono font-bold text-neutral-800 dark:text-white tracking-tight leading-none">
+                          {time}
+                        </span>
+                        <span className="text-[9px] font-mono text-neutral-400 dark:text-[#4B5563] leading-none">
+                          :15
+                        </span>
+                        <span className="text-[9px] font-mono text-neutral-400 dark:text-[#4B5563] leading-none">
+                          :30
+                        </span>
+                        <span className="text-[9px] font-mono text-neutral-400 dark:text-[#4B5563] leading-none">
+                          :45
+                        </span>
                       </div>
                     ))}
                   </div>
 
-                  {/* Schedule Body: Left Time Column + Columns with Appointments */}
-                  <div className={`grid grid-cols-[76px_repeat(${visibleProfessionals.length},1fr)] relative`}>
-                    
-                    {/* Left Column: Hour Labels and :15, :30, :45 subdivisions */}
-                    <div className="border-r border-[#161720] select-none">
-                      {timeSlots.map((time) => (
-                        <div
-                          key={time}
-                          style={{ height: `${HOUR_HEIGHT}px` }}
-                          className="border-b border-[#1A1C24] relative text-right pr-2.5 pt-1 flex flex-col justify-between pb-1"
-                        >
-                          <span className="text-xs font-mono font-bold text-[#E5E2E3] tracking-tight">
-                            {time}
-                          </span>
-                          <span className="text-[10px] font-mono text-[#4B5563]">:15</span>
-                          <span className="text-[10px] font-mono text-[#4B5563]">:30</span>
-                          <span className="text-[10px] font-mono text-[#4B5563]">:45</span>
-                        </div>
-                      ))}
-                    </div>
+                  {/* Professional Columns with Appointments */}
+                  {visibleProfessionals.map((prof, pIdx) => {
+                    const profAppointments = filteredAppointments.filter(
+                      (a) => a.professionalId === prof.id,
+                    )
 
-                    {/* Professional Columns with Appointments */}
-                    {visibleProfessionals.map((prof, pIdx) => {
-                      const profAppointments = filteredAppointments.filter(
-                        (a) => a.professionalId === prof.id,
-                      )
-
-                      return (
-                        <div
-                          key={prof.id}
-                          className={`relative ${
-                            pIdx < visibleProfessionals.length - 1 ? 'border-r border-[#161720]' : ''
-                          }`}
-                          style={{ height: `${timeSlots.length * HOUR_HEIGHT}px` }}
-                        >
-                          {/* Background Grid Horizontal Hour & Quarter Lines */}
-                          {timeSlots.map((_, hIdx) => (
+                    return (
+                      <div
+                        key={prof.id}
+                        className={`relative ${
+                          pIdx < visibleProfessionals.length - 1
+                            ? 'border-r border-neutral-200 dark:border-[#161B26]'
+                            : ''
+                        }`}
+                        style={{ height: `${timeSlots.length * HOUR_HEIGHT}px` }}
+                      >
+                        {/* Background Grid Horizontal Hour & Quarter Lines */}
+                        {timeSlots.map((_, hIdx) => (
+                          <div
+                            key={hIdx}
+                            style={{
+                              top: `${hIdx * HOUR_HEIGHT}px`,
+                              height: `${HOUR_HEIGHT}px`,
+                            }}
+                            className="absolute inset-x-0 border-b border-neutral-200 dark:border-[#161B26] pointer-events-none"
+                          >
+                            {/* 15m divider */}
                             <div
-                              key={hIdx}
-                              style={{
-                                top: `${hIdx * HOUR_HEIGHT}px`,
-                                height: `${HOUR_HEIGHT}px`,
-                              }}
-                              className="absolute inset-x-0 border-b border-[#1A1C24] pointer-events-none"
-                            >
-                              {/* 15m divider */}
-                              <div
-                                style={{ top: `${HOUR_HEIGHT * 0.25}px` }}
-                                className="absolute inset-x-0 border-t border-[#141620]/80 border-dashed"
-                              />
-                              {/* 30m divider */}
-                              <div
-                                style={{ top: `${HOUR_HEIGHT * 0.5}px` }}
-                                className="absolute inset-x-0 border-t border-[#171A24]"
-                              />
-                              {/* 45m divider */}
-                              <div
-                                style={{ top: `${HOUR_HEIGHT * 0.75}px` }}
-                                className="absolute inset-x-0 border-t border-[#141620]/80 border-dashed"
-                              />
-                            </div>
-                          ))}
+                              style={{ top: `${HOUR_HEIGHT * 0.25}px` }}
+                              className="absolute inset-x-0 border-t border-neutral-200/70 dark:border-[#131722] border-dashed"
+                            />
+                            {/* 30m divider */}
+                            <div
+                              style={{ top: `${HOUR_HEIGHT * 0.5}px` }}
+                              className="absolute inset-x-0 border-t border-neutral-200/90 dark:border-[#161B26]"
+                            />
+                            {/* 45m divider */}
+                            <div
+                              style={{ top: `${HOUR_HEIGHT * 0.75}px` }}
+                              className="absolute inset-x-0 border-t border-neutral-200/70 dark:border-[#131722] border-dashed"
+                            />
+                          </div>
+                        ))}
 
-                          {/* Appointment Cards */}
-                          {profAppointments.map((appt) => {
-                            const topPx = (appt.startMinutes / 60) * HOUR_HEIGHT
-                            const heightPx = (appt.durationMinutes / 60) * HOUR_HEIGHT
+                        {/* Appointment Cards */}
+                        {profAppointments.map((appt) => {
+                          const topPx = (appt.startMinutes / 60) * HOUR_HEIGHT
+                          const heightPx = (appt.durationMinutes / 60) * HOUR_HEIGHT
 
+                          // Subtle card variant (ex: 11:30 Beatriz Ferreira)
+                          if (appt.isDarkSubtle) {
                             return (
                               <div
                                 key={appt.id}
@@ -760,72 +940,87 @@ export const LiraCalendarView: React.FC = () => {
                                   top: `${topPx}px`,
                                   height: `${heightPx}px`,
                                 }}
-                                className="absolute left-2 right-2 z-10 rounded-xl bg-gradient-to-r from-[#061C18]/95 via-[#061A16]/95 to-[#051310]/95 border border-[#0D3B31] border-l-[3.5px] border-l-[#00D3F2] p-2.5 sm:p-3 flex flex-col justify-between shadow-[0_4px_16px_rgba(0,0,0,0.4)] hover:brightness-110 transition-all cursor-pointer group"
+                                className="absolute left-2 right-2 z-10 rounded-xl bg-cyan-50/90 dark:bg-[#0B1416] border border-cyan-200 dark:border-[#142629] border-l-[3.5px] border-l-cyan-500 dark:border-l-[#10B981] px-3 py-1 flex items-center justify-between shadow-xs dark:shadow-md hover:brightness-[0.98] dark:hover:brightness-110 transition-all cursor-pointer overflow-hidden"
                               >
-                                {/* Card Header: Status Badge + Client Name + Time */}
-                                <div className="flex items-start justify-between gap-1.5">
-                                  <div className="flex items-center gap-1.5 flex-wrap">
-                                    {appt.status && (
-                                      <span className="text-[10px] font-mono font-bold tracking-wider text-[#10B981] uppercase">
-                                        {appt.status}
-                                      </span>
-                                    )}
-                                    <span className="text-xs sm:text-[13px] font-semibold text-white tracking-tight truncate">
-                                      {appt.clientName}
-                                    </span>
-                                  </div>
+                                <span className="text-xs font-semibold text-neutral-900 dark:text-white tracking-tight truncate">
+                                  {appt.clientName}
+                                </span>
+                                <span className="text-[10px] font-mono text-neutral-500 dark:text-[#8E95A5] shrink-0 font-medium">
+                                  {appt.timeRange}
+                                </span>
+                              </div>
+                            )
+                          }
 
-                                  <span className="text-[10px] sm:text-[11px] font-mono text-[#8E95A5] shrink-0 font-medium">
-                                    {appt.timeRange}
+                          // Standard appointment card (White Mode + Dark Mode)
+                          return (
+                            <div
+                              key={appt.id}
+                              style={{
+                                top: `${topPx}px`,
+                                height: `${heightPx}px`,
+                              }}
+                              className="absolute left-2 right-2 z-10 rounded-xl bg-emerald-50/95 dark:bg-[#051C17] border border-emerald-200 dark:border-[#0D3B31] border-l-[3.5px] border-l-emerald-500 dark:border-l-[#10B981] px-2.5 py-1.5 flex flex-col justify-between shadow-xs dark:shadow-[0_4px_16px_rgba(0,0,0,0.5)] hover:brightness-[0.98] dark:hover:brightness-110 transition-all cursor-pointer group overflow-hidden"
+                            >
+                              {/* Card Header: Status Badge + Client Name + Time */}
+                              <div className="flex items-center justify-between gap-1.5 leading-tight">
+                                <div className="flex items-center gap-1.5 min-w-0">
+                                  {appt.status && (
+                                    <span className="text-[9.5px] font-mono font-bold tracking-wider text-emerald-700 dark:text-[#10B981] uppercase shrink-0">
+                                      {appt.status}
+                                    </span>
+                                  )}
+                                  <span className="text-xs font-semibold text-neutral-900 dark:text-white tracking-tight truncate">
+                                    {appt.clientName}
                                   </span>
                                 </div>
 
-                                {/* Service Row */}
-                                {appt.service && (
-                                  <div className="flex items-center gap-1.5 text-[11px] text-[#9CA3AF] my-auto">
-                                    {/* Service Scissors / Tool Icon */}
-                                    <svg
-                                      className="w-3 h-3 text-[#6B7280] shrink-0"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      strokeWidth="2"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    >
-                                      <circle cx="6" cy="6" r="3" />
-                                      <circle cx="6" cy="18" r="3" />
-                                      <line x1="20" y1="4" x2="8.12" y2="15.88" />
-                                      <line x1="14.47" y1="14.48" x2="20" y2="20" />
-                                      <line x1="8.12" y1="8.12" x2="12" y2="12" />
-                                    </svg>
-                                    <span className="truncate">{appt.service}</span>
-                                  </div>
-                                )}
-
-                                {/* Bottom Professional Tag if indicated */}
-                                {appt.showProfessionalTag && (
-                                  <div className="flex items-center gap-1.5 text-[10px] text-[#6B7280] font-mono mt-auto pt-1 border-t border-[#0F352E]/50">
-                                    <div className="w-3.5 h-3.5 rounded-full bg-[#142B25] border border-[#234A40]" />
-                                    <span>{prof.name}</span>
-                                  </div>
-                                )}
+                                <span className="text-[10px] font-mono text-neutral-500 dark:text-[#8E95A5] shrink-0 font-medium">
+                                  {appt.timeRange}
+                                </span>
                               </div>
-                            )
-                          })}
-                        </div>
-                      )
-                    })}
 
-                  </div>
+                              {/* Service Row */}
+                              {appt.service && (
+                                <div className="flex items-center gap-1.5 text-[10.5px] text-neutral-600 dark:text-[#9CA3AF] leading-tight my-auto">
+                                  {/* Service Scissors / Tool Icon */}
+                                  <svg
+                                    className="w-3 h-3 text-emerald-600/80 dark:text-[#6B7280] shrink-0"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    <circle cx="6" cy="6" r="3" />
+                                    <circle cx="6" cy="18" r="3" />
+                                    <line x1="20" y1="4" x2="8.12" y2="15.88" />
+                                    <line x1="14.47" y1="14.48" x2="20" y2="20" />
+                                    <line x1="8.12" y1="8.12" x2="12" y2="12" />
+                                  </svg>
+                                  <span className="truncate">{appt.service}</span>
+                                </div>
+                              )}
 
+                              {/* Bottom Professional Tag if indicated */}
+                              {appt.showProfessionalTag && (
+                                <div className="flex items-center gap-1.5 text-[9.5px] text-neutral-500 dark:text-[#6B7280] font-mono mt-auto pt-1 border-t border-emerald-200/70 dark:border-[#0F352E]/60 leading-none">
+                                  <div className="w-3 h-3 rounded-full bg-emerald-100 dark:bg-[#142B25] border border-emerald-300 dark:border-[#234A40]" />
+                                  <span>{prof.name}</span>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             </div>
-
           </div>
         )}
-
       </div>
     </section>
   )

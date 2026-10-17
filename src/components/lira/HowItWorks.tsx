@@ -72,10 +72,10 @@ const StepCard: React.FC<StepCardProps> = ({ step, isLeft }) => {
 
         {/* Top bar: Mobile step pill + Category Badge */}
         <div className="flex items-center justify-between gap-3 mb-4">
-          <span className="md:hidden inline-flex items-center px-2 py-0.5 rounded font-mono text-[10px] font-semibold text-cyan-700 dark:text-[#00D3F2] bg-cyan-50 dark:bg-[#00D3F2]/10 border border-cyan-200 dark:border-[#00D3F2]/25">
+          <span className="md:hidden inline-flex items-center px-2 py-0.5 rounded font-mono text-[10px] font-semibold text-cyan-700 dark:text-[#53EAFD] bg-cyan-50 dark:bg-[#00D3F2]/10 border border-cyan-200 dark:border-[#00D3F2]/25">
             ETAPA {step.step}
           </span>
-          <span className="ml-auto inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider font-semibold text-cyan-700 dark:text-[#00D3F2] bg-cyan-50 dark:bg-[#00D3F2]/10 border border-cyan-200 dark:border-[#00D3F2]/25">
+          <span className="ml-auto inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider font-semibold text-cyan-700 dark:text-[#53EAFD] bg-cyan-50 dark:bg-[#00D3F2]/10 border border-cyan-200 dark:border-[#00D3F2]/25">
             {step.badge}
           </span>
         </div>
@@ -107,7 +107,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isLeft }) => {
           <div className="mt-5 pt-4 border-t border-neutral-100 dark:border-[#181920] flex justify-end">
             <a
               href={step.link.href}
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-cyan-600 dark:text-[#00D3F2] hover:text-cyan-800 dark:hover:text-[#CEFAFE] transition-colors group/link uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-cyan-700 dark:text-[#53EAFD] hover:text-cyan-900 dark:hover:text-[#CEFAFE] transition-colors group/link uppercase tracking-wider"
             >
               <span>{step.link.label}</span>
               <span className="transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5">
@@ -130,7 +130,7 @@ export const LiraHowItWorks: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header matching Reference Image */}
         <div className="max-w-3xl mb-16 md:mb-24">
-          <div className="text-[12px] font-mono tracking-[0.14em] uppercase text-cyan-600 dark:text-[#00D3F2] font-semibold mb-3 flex items-center gap-2">
+          <div className="text-[12px] font-mono tracking-[0.14em] uppercase text-cyan-700 dark:text-[#53EAFD] font-semibold mb-3 flex items-center gap-2">
             <span>02 // COMO FUNCIONA</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.1] mb-4">
@@ -170,7 +170,7 @@ export const LiraHowItWorks: React.FC = () => {
 
                     {/* Step label beside the node */}
                     <div
-                      className={`absolute top-1/2 -translate-y-1/2 font-mono text-[11px] font-semibold text-cyan-600 dark:text-[#00D3F2] tracking-wider whitespace-nowrap flex items-center gap-1.5 ${
+                      className={`absolute top-1/2 -translate-y-1/2 font-mono text-[11px] font-semibold text-cyan-700 dark:text-[#53EAFD] tracking-wider whitespace-nowrap flex items-center gap-1.5 ${
                         isLeft ? 'left-6 flex-row' : 'right-6 flex-row-reverse'
                       }`}
                     >

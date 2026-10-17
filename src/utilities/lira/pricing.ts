@@ -1,84 +1,114 @@
-export type BillingCycle = 'monthly' | 'annual'
+export type BillingCycle = 'annual' | 'monthly'
+
+export interface PricingPlanFeatures {
+  professionals: string
+  whatsappMonthly: string
+  whatsappAnnual: string
+  simultaneousAppointments: string
+  clients: string
+  linkText: string
+  aiCredits: string
+}
 
 export interface PricingPlan {
-  id: 'start' | 'plus' | 'vega'
+  id: 'essencial' | 'avancado' | 'profissional'
   name: string
   audience: string
-  monthlyPrice: number | null
-  firstMonthDiscountPercent: number | null
-  firstMonthPrice: number | null
-  annualTotal: number | null
-  annualMonthlyEquivalent: number | null
-  annualDiscountPercent: number | null
-  billingOptions: BillingCycle[]
-  popular: boolean
-  couponNote: string | null
+  monthlyPrice: number
+  annualPricePerMonth: number
+  annualSavingsPerMonth: number
+  annualDiscountPercent: number
+  annualTotal: number
+  popular?: boolean
+  recommendedBadge?: string
+  savingsPill: string
+  couponText: string
+  features: PricingPlanFeatures
 }
 
 /**
- * Rounds to the nearest cent — plain float math (e.g. 69.9 * 0.85) can land on
- * values like 59.414999999999996, which must never leak into a displayed price.
+ * Rounds to the nearest cent.
  */
 export function roundToCents(value: number): number {
   return Math.round(value * 100) / 100
 }
 
 /**
- * Official plans from the Lira Agendamentos sales sheet. Prices are the
- * literal documented values (not derived from a formula) so a change on the
- * sales side can't silently drift from what ships here — the accompanying
- * test suite instead verifies these literals are internally consistent
- * (e.g. that the 15%/20% discounts actually produce the documented prices).
+ * Plans matching the reference layout (Essencial, Avançado, Profissional)
+ * with monthly and annual discount interactions.
  */
 export const LIRA_PRICING_PLANS: PricingPlan[] = [
   {
-    id: 'start',
-    name: 'Lira Start',
-    audience: 'Ideal para autônomos',
-    monthlyPrice: 69.9,
-    firstMonthDiscountPercent: 15,
-    firstMonthPrice: 59.42,
-    annualTotal: null,
-    annualMonthlyEquivalent: null,
-    annualDiscountPercent: null,
-    billingOptions: ['monthly'],
+    id: 'essencial',
+    name: 'Essencial',
+    audience: 'Controle e gestão essencial para o dia a dia de sua empresa',
+    monthlyPrice: 99.86,
+    annualPricePerMonth: 60.12,
+    annualSavingsPerMonth: 38.74,
+    annualDiscountPercent: 40,
+    annualTotal: 721.45,
     popular: false,
-    couponNote: 'Cupons Bem-vindo 1 a 10: 15% de desconto no 1º mês.',
+    savingsPill: 'ECONOMIZE R$ 38,74 AO MÊS',
+    couponText: 'CUPOM: BEMVINDO',
+    features: {
+      professionals: '2 profissionais cadastrados',
+      whatsappMonthly: '50 mensagens WhatsApp/mês',
+      whatsappAnnual: '200 mensagens WhatsApp/mês',
+      simultaneousAppointments: '4 agendamentos simultâneos',
+      clients: '2000 clientes cadastrados',
+      linkText: 'Link de agend. Seu Logo + Lira',
+      aiCredits: 'Até 200 créditos GAIA (IA)',
+    },
   },
   {
-    id: 'plus',
-    name: 'Lira Plus',
-    audience: 'Para equipes',
-    monthlyPrice: 99.9,
-    firstMonthDiscountPercent: 15,
-    firstMonthPrice: 84.92,
-    annualTotal: 959.04,
-    annualMonthlyEquivalent: 79.92,
-    annualDiscountPercent: 20,
-    billingOptions: ['monthly', 'annual'],
+    id: 'avancado',
+    name: 'Avançado',
+    audience: 'Agilize o crescimento de sua empresa com a Lira',
+    monthlyPrice: 178.43,
+    annualPricePerMonth: 107.42,
+    annualSavingsPerMonth: 71.01,
+    annualDiscountPercent: 40,
+    annualTotal: 1289.05,
     popular: true,
-    couponNote: 'Cupons Bem-vindo 1 a 10: 15% de desconto no 1º mês do plano mensal.',
+    recommendedBadge: 'Plano Recomendado',
+    savingsPill: 'ECONOMIZE R$ 71,01 AO MÊS',
+    couponText: 'CUPOM: BEMVINDO',
+    features: {
+      professionals: '6 profissionais cadastrados',
+      whatsappMonthly: '100 mensagens WhatsApp/mês',
+      whatsappAnnual: '400 mensagens WhatsApp/mês',
+      simultaneousAppointments: '12 agendamentos simultâneos',
+      clients: '5000 clientes cadastrados',
+      linkText: 'Link de agendamento com seu logo',
+      aiCredits: 'Até 400 créditos GAIA (IA)',
+    },
   },
   {
-    id: 'vega',
-    name: 'Lira Vega',
-    audience: 'Para redes e filiais',
-    monthlyPrice: null,
-    firstMonthDiscountPercent: null,
-    firstMonthPrice: null,
-    annualTotal: 1343.04,
-    annualMonthlyEquivalent: 111.92,
-    annualDiscountPercent: 20,
-    billingOptions: ['annual'],
+    id: 'profissional',
+    name: 'Profissional',
+    audience: 'Total controle de sua empresa e produtividade',
+    monthlyPrice: 311.29,
+    annualPricePerMonth: 187.40,
+    annualSavingsPerMonth: 123.89,
+    annualDiscountPercent: 40,
+    annualTotal: 2248.81,
     popular: false,
-    couponNote: null,
+    savingsPill: 'ECONOMIZE R$ 123,89 AO MÊS',
+    couponText: 'CUPOM: BEMVINDO',
+    features: {
+      professionals: '15 profissionais cadastrados',
+      whatsappMonthly: '200 mensagens WhatsApp/mês',
+      whatsappAnnual: '800 mensagens WhatsApp/mês',
+      simultaneousAppointments: '30 agendamentos simultâneos',
+      clients: 'Clientes Ilimitados',
+      linkText: 'Link de agendamento com seu logo',
+      aiCredits: 'Até 800 créditos GAIA (IA)',
+    },
   },
 ]
 
 /**
- * Formats a value as BRL with cents always shown — unlike
- * `formatBRL` in roi.ts (which intentionally rounds to whole reais for the
- * ROI calculator), pricing must never hide the exact promotional cents.
+ * Formats a value as BRL currency string (e.g. "R$ 99,86").
  */
 export function formatBRLWithCents(value: number): string {
   return new Intl.NumberFormat('pt-BR', {

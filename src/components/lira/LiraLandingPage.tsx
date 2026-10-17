@@ -9,12 +9,10 @@ import { LiraHowItWorks } from './HowItWorks'
 import { LiraPillars } from './Pillars'
 import { LiraProducts } from './Products'
 import { LiraCalendarView } from './CalendarView'
-import { LiraNiches } from './Niches'
 import { LiraAIFlow } from './AIFlow'
-import { LiraTestimonials } from './Testimonials'
-import { LiraRoiCalculator } from './RoiCalculator'
+import { LiraSegments } from './Segments'
+import { LiraPlanTeaser } from './PlanTeaser'
 import { LiraPricing } from './Pricing'
-import { LiraWhiteLabelSimulator } from './WhiteLabelSimulator'
 import { LiraFAQ } from './FAQ'
 import { LiraContactSection } from './ContactSection'
 import { LiraFooter } from './Footer'
@@ -33,12 +31,10 @@ export const LiraLandingPage: React.FC = () => {
       <LiraPillars />
       <LiraProducts />
       <LiraCalendarView />
-      <LiraNiches />
       <LiraAIFlow />
-      <LiraTestimonials />
-      <LiraRoiCalculator />
+      <LiraSegments />
+      <LiraPlanTeaser />
       <LiraPricing />
-      <LiraWhiteLabelSimulator />
       <LiraFAQ />
       <LiraContactSection />
       <LiraFooter />

@@ -21,27 +21,61 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   )
 
   const setTheme = useCallback((themeToSet: Theme | null) => {
+    const nextTheme: Theme = themeToSet && themeIsValid(themeToSet) ? themeToSet : defaultTheme
+
     if (themeToSet === null) {
-      window.localStorage.removeItem(themeLocalStorageKey)
-      document.documentElement.setAttribute('data-theme', defaultTheme)
-      setThemeState(defaultTheme)
+      try {
+        window.localStorage.removeItem(themeLocalStorageKey)
+      } catch {}
     } else {
-      setThemeState(themeToSet)
-      window.localStorage.setItem(themeLocalStorageKey, themeToSet)
-      document.documentElement.setAttribute('data-theme', themeToSet)
+      try {
+        window.localStorage.setItem(themeLocalStorageKey, nextTheme)
+      } catch {}
     }
+
+    if (canUseDOM) {
+      document.documentElement.setAttribute('data-theme', nextTheme)
+      if (nextTheme === 'dark') {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    }
+
+    setThemeState(nextTheme)
   }, [])
 
   useEffect(() => {
     let themeToSet: Theme = defaultTheme
-    const preference = window.localStorage.getItem(themeLocalStorageKey)
-
-    if (themeIsValid(preference)) {
-      themeToSet = preference
-    }
+    try {
+      const preference = window.localStorage.getItem(themeLocalStorageKey)
+      if (themeIsValid(preference)) {
+        themeToSet = preference
+      }
+    } catch {}
 
     document.documentElement.setAttribute('data-theme', themeToSet)
+    if (themeToSet === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
     setThemeState(themeToSet)
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === themeLocalStorageKey && e.newValue && themeIsValid(e.newValue)) {
+        document.documentElement.setAttribute('data-theme', e.newValue)
+        if (e.newValue === 'dark') {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+        setThemeState(e.newValue as Theme)
+      }
+    }
+
+    window.addEventListener('storage', handleStorage)
+    return () => window.removeEventListener('storage', handleStorage)
   }, [])
 
   return <ThemeContext value={{ setTheme, theme }}>{children}</ThemeContext>
