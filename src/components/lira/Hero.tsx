@@ -16,7 +16,14 @@ export const LiraHero: React.FC = () => {
             <img
               src="/hero-badge-link.svg"
               alt="20% OFF — pague menos na primeira mensalidade, mês ou ano"
-              className="inline-block h-auto mb-6"
+              className="inline-block dark:hidden h-auto mb-6"
+              style={{ width: 423, maxWidth: '100%' }}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element -- static dark-mode asset */}
+            <img
+              src="/hero-badge-link-dark.svg"
+              alt="20% OFF — pague menos na primeira mensalidade, mês ou ano"
+              className="hidden dark:inline-block h-auto mb-6"
               style={{ width: 423, maxWidth: '100%' }}
             />
 
@@ -69,11 +76,13 @@ export const LiraHero: React.FC = () => {
               Virtual), swapped in for the previous hand-built KPI/Agenda-de-hoje
               composition. */}
           <div className="relative max-w-lg mx-auto lg:mx-0 lg:ml-auto w-full">
+            {/* Ambient backlight glow ensuring seamless blending in light and dark modes */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 via-purple-500/10 to-transparent blur-2xl rounded-3xl -z-10" />
             {/* eslint-disable-next-line @next/next/no-img-element -- static provided asset */}
             <img
               src="/hero-visual-mockups.svg"
               alt="Mockup do widget de Agendamento e do Assistente Virtual do Lira"
-              className="w-full h-auto"
+              className="w-full h-auto drop-shadow-xl"
             />
           </div>
         </div>

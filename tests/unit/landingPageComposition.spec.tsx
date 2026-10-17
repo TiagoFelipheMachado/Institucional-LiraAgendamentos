@@ -15,7 +15,6 @@ describe('LiraLandingPage composition (TDD)', () => {
       'nichos',
       'como-funciona',
       'depoimentos',
-      'calculadora',
       'planos',
       'white-label',
       'faq',

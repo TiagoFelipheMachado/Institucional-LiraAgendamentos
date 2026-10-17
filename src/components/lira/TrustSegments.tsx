@@ -12,11 +12,18 @@ export const LiraTrustSegments: React.FC = () => {
         </p>
         
         <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 mb-10">
-          <div className="p-2.5 px-5 rounded-2xl bg-[#0B0C10] border border-neutral-800 shadow-xs dark:bg-transparent dark:p-0 dark:border-0 dark:shadow-none flex items-center justify-center">
+          <div className="p-3 px-6 rounded-2xl bg-neutral-100/70 hover:bg-neutral-100 dark:bg-[#0E1A1E]/50 dark:hover:bg-[#0E1A1E]/80 border border-neutral-200 dark:border-[#14454F] transition-colors flex items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element -- static partner brand asset */}
             <img 
-              src="/parceiro-1.png" 
+              src="/parceiro-1-for-light.png" 
               alt="Parceiro Barber El Patron" 
-              className="h-16 md:h-20 w-auto object-contain dark:mix-blend-lighten"
+              className="h-14 md:h-16 w-auto object-contain dark:hidden"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element -- static partner brand asset */}
+            <img 
+              src="/parceiro-1-for-dark.png" 
+              alt="Parceiro Barber El Patron" 
+              className="h-14 md:h-16 w-auto object-contain hidden dark:block"
             />
           </div>
           {/* Adicione mais tags <img> aqui conforme novos parceiros entrarem */}

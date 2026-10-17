@@ -3,58 +3,43 @@ import { LIRA_PRICING_PLANS, roundToCents, getPlanById } from '@/utilities/lira/
 
 describe('Lira pricing plans (TDD)', () => {
   it('exposes exactly the 3 official plans with stable ids', () => {
-    expect(LIRA_PRICING_PLANS.map((p) => p.id)).toEqual(['start', 'plus', 'vega'])
+    expect(LIRA_PRICING_PLANS.map((p) => p.id)).toEqual(['essencial', 'avancado', 'profissional'])
   })
 
-  it('marks exactly one plan as popular (Lira Plus)', () => {
+  it('marks exactly one plan as popular (Avançado)', () => {
     const popular = LIRA_PRICING_PLANS.filter((p) => p.popular)
     expect(popular).toHaveLength(1)
-    expect(popular[0].id).toBe('plus')
+    expect(popular[0].id).toBe('avancado')
   })
 
-  it('Lira Start: R$ 69,90/mês, only monthly billing, no annual option', () => {
-    const start = getPlanById('start')
-    expect(start.monthlyPrice).toBe(69.9)
-    expect(start.billingOptions).toEqual(['monthly'])
-    expect(start.annualTotal).toBeNull()
+  it('Essencial: R$ 99,86/mês and R$ 60,12/mês on annual (saving R$ 38,74/mês)', () => {
+    const plan = getPlanById('essencial')
+    expect(plan.monthlyPrice).toBe(99.86)
+    expect(plan.annualPricePerMonth).toBe(60.12)
+    expect(plan.annualSavingsPerMonth).toBe(38.74)
+    expect(plan.annualTotal).toBe(721.45)
+    expect(plan.features.whatsappMonthly).toBe('50 mensagens WhatsApp/mês')
+    expect(plan.features.whatsappAnnual).toBe('200 mensagens WhatsApp/mês')
   })
 
-  it('Lira Start: 1st-month coupon (15% off) matches the documented R$ 59,42', () => {
-    const start = getPlanById('start')
-    expect(start.firstMonthDiscountPercent).toBe(15)
-    expect(start.firstMonthPrice).toBe(59.42)
-    // Sanity check: the documented promo price must actually equal a 15% discount,
-    // not just a number that happens to be close to it.
-    expect(roundToCents(start.monthlyPrice! * 0.85)).toBe(start.firstMonthPrice)
+  it('Avançado: R$ 178,43/mês and R$ 107,42/mês on annual (saving R$ 71,01/mês)', () => {
+    const plan = getPlanById('avancado')
+    expect(plan.monthlyPrice).toBe(178.43)
+    expect(plan.annualPricePerMonth).toBe(107.42)
+    expect(plan.annualSavingsPerMonth).toBe(71.01)
+    expect(plan.annualTotal).toBe(1289.05)
+    expect(plan.features.whatsappMonthly).toBe('100 mensagens WhatsApp/mês')
+    expect(plan.features.whatsappAnnual).toBe('400 mensagens WhatsApp/mês')
   })
 
-  it('Lira Plus: R$ 99,90/mês with both monthly and annual billing', () => {
-    const plus = getPlanById('plus')
-    expect(plus.monthlyPrice).toBe(99.9)
-    expect(plus.billingOptions).toEqual(['monthly', 'annual'])
-  })
-
-  it('Lira Plus: 1st-month coupon (15% off) matches the documented R$ 84,92', () => {
-    const plus = getPlanById('plus')
-    expect(plus.firstMonthPrice).toBe(84.92)
-    expect(roundToCents(plus.monthlyPrice! * 0.85)).toBe(plus.firstMonthPrice)
-  })
-
-  it('Lira Plus: annual total (R$ 959,04) matches 12x the documented R$ 79,92/mês equivalent (20% off)', () => {
-    const plus = getPlanById('plus')
-    expect(plus.annualMonthlyEquivalent).toBe(79.92)
-    expect(plus.annualTotal).toBe(959.04)
-    expect(roundToCents(plus.monthlyPrice! * 0.8)).toBe(plus.annualMonthlyEquivalent)
-    expect(roundToCents(plus.annualMonthlyEquivalent! * 12)).toBe(plus.annualTotal)
-  })
-
-  it('Lira Vega: annual-only, R$ 1.343,04/ano equivalent to R$ 111,92/mês (20% off)', () => {
-    const vega = getPlanById('vega')
-    expect(vega.billingOptions).toEqual(['annual'])
-    expect(vega.monthlyPrice).toBeNull()
-    expect(vega.annualMonthlyEquivalent).toBe(111.92)
-    expect(vega.annualTotal).toBe(1343.04)
-    expect(roundToCents(vega.annualMonthlyEquivalent! * 12)).toBe(vega.annualTotal)
+  it('Profissional: R$ 311,29/mês and R$ 187,40/mês on annual (saving R$ 123,89/mês)', () => {
+    const plan = getPlanById('profissional')
+    expect(plan.monthlyPrice).toBe(311.29)
+    expect(plan.annualPricePerMonth).toBe(187.40)
+    expect(plan.annualSavingsPerMonth).toBe(123.89)
+    expect(plan.annualTotal).toBe(2248.81)
+    expect(plan.features.whatsappMonthly).toBe('200 mensagens WhatsApp/mês')
+    expect(plan.features.whatsappAnnual).toBe('800 mensagens WhatsApp/mês')
   })
 
   it('roundToCents rounds to the nearest cent like currency math requires', () => {

@@ -64,16 +64,6 @@ export const LiraFooter: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="#white-label" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
-                  White-Label (6 Tokens)
-                </Link>
-              </li>
-              <li>
-                <Link href="#calculadora" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
-                  Calculadora ROI (-68%)
-                </Link>
-              </li>
-              <li>
                 <Link href="#faq" className="hover:text-neutral-900 dark:hover:text-white transition-colors">
                   Perguntas Frequentes
                 </Link>

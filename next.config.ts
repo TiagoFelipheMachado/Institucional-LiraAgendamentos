@@ -1,5 +1,6 @@
 import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
+import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -11,7 +12,22 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
+const localNetworkIps = Object.values(os.networkInterfaces())
+  .flat()
+  .filter((iface): iface is os.NetworkInterfaceInfo => Boolean(iface && iface.family === 'IPv4'))
+  .map((iface) => iface.address)
+
 const nextConfig: NextConfig = {
+  allowedDevOrigins: Array.from(
+    new Set([
+      'localhost',
+      '127.0.0.1',
+      '100.76.162.11',
+      '192.168.100.5',
+      '*.local',
+      ...localNetworkIps,
+    ]),
+  ),
   // Temporarily required on Windows until Next.js fixes Turbopack Sass resolution.
   // See: https://github.com/vercel/next.js/issues/86431
   sassOptions: {
