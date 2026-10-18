@@ -5,28 +5,21 @@ import { LiraTrustSegments } from '@/components/lira/TrustSegments'
 import { LiraLandingPage } from '@/components/lira/LiraLandingPage'
 
 describe('LiraTrustSegments strip (TDD)', () => {
-  it('renders a muted segment strip with a neutral heading (no fabricated customer/partner claim)', () => {
+  it('renders the partner trust strip with heading', () => {
     const html = renderToString(<LiraTrustSegments />)
-    expect(html).toMatch(/segmentos|feito para|pensado para/i)
-    expect(html).not.toMatch(/confiam|clientes ativos|empresas atendidas/i)
+    expect(html).toContain('PARCEIROS QUE CONFIAM NO LIRA')
   })
 
-  it('lists the real Lira segments, not fabricated third-party company names', () => {
+  it('renders the real partner logo assets and Google rating', () => {
     const html = renderToString(<LiraTrustSegments />)
-    ;['Barbearia', 'Salão de Beleza', 'Clínica de Estética'].forEach((seg) =>
-      expect(html).toContain(seg)
-    )
-  })
-
-  it('uses no <img> — no third-party logos, matching the design system icon-only rule', () => {
-    const html = renderToString(<LiraTrustSegments />)
-    expect(html).not.toContain('<img')
+    expect(html).toContain('/parceiro-1-for-light.png')
+    expect(html).toContain('/parceiro-1-for-dark.png')
+    expect(html).toContain('5,0')
+    expect(html).toContain('Google')
   })
 
   it('is placed on the landing page', () => {
     const html = renderToString(<LiraLandingPage />)
-    const matches = html.match(/Barbearia/g) || []
-    // Appears once in LiraNiches already; this asserts LiraTrustSegments adds a second occurrence.
-    expect(matches.length).toBeGreaterThanOrEqual(2)
+    expect(html).toContain('PARCEIROS QUE CONFIAM NO LIRA')
   })
 })

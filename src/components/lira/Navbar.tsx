@@ -8,12 +8,12 @@ import { ThemeSwitch } from '@/components/ThemeSwitch'
 // Native aspect ratio of public/logo-lira.svg (the official brand asset).
 const LOGO_ASPECT_RATIO = 280 / 43
 
-export const LiraLogo: React.FC<{ size?: number }> = ({ size = 32 }) => {
+export const LiraLogo: React.FC<{ size?: number; className?: string }> = ({ size = 32, className = '' }) => {
   const width = Math.round(size * LOGO_ASPECT_RATIO)
 
   return (
     // eslint-disable-next-line @next/next/no-img-element -- static brand asset, no need for next/image optimization here
-    <img src="/logo-lira.svg" alt="Lira Agendamentos" width={width} height={size} className="shrink-0" />
+    <img src="/logo-lira.svg" alt="Lira Agendamentos" width={width} height={size} className={`shrink-0 h-6 sm:h-8 w-auto ${className}`} />
   )
 }
 
@@ -22,10 +22,10 @@ export const LiraLogo: React.FC<{ size?: number }> = ({ size = 32 }) => {
 // stay reachable via scroll and the footer's "Sistema" links instead of
 // being added here, per explicit instruction to match the reference 1:1.
 const NAV_LINKS: Array<{ href: string; label: string }> = [
-  { href: '#desafios', label: 'Desafios' },
-  { href: '#pilares', label: 'Pilares' },
-  { href: '#primeiros-passos', label: 'Como Funciona' },
-  { href: '#contato', label: 'Contato' },
+  { href: '/#desafios', label: 'Desafios' },
+  { href: '/#pilares', label: 'Pilares' },
+  { href: '/#primeiros-passos', label: 'Como Funciona' },
+  { href: '/contato', label: 'Contato' },
 ]
 
 export const LiraNavbar: React.FC = () => {
@@ -52,8 +52,10 @@ export const LiraNavbar: React.FC = () => {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Theme switch toggle */}
-          <ThemeSwitch />
+          {/* Theme switch toggle (visible on tablet and desktop, mobile drawer has it) */}
+          <div className="hidden sm:flex items-center">
+            <ThemeSwitch />
+          </div>
 
           {/*
             Points at the documented product domain (app.liragenda.com.br,
@@ -71,7 +73,7 @@ export const LiraNavbar: React.FC = () => {
           {/* Design rule: BRANCO/ALTO CONTRASTE É O CTA DO SITE, CIANO É O CTA DE PRODUTO. Alvo mínimo 44px. Raio 12px per design system section 12. */}
           <Link
             href="#planos"
-            className="inline-flex items-center justify-center px-5 py-2.5 min-h-[44px] rounded-[12px] text-[14px] font-semibold bg-neutral-900 text-white hover:bg-neutral-800 shadow-[0_2px_12px_rgba(0,0,0,0.12)] dark:bg-white dark:text-[#070708] dark:hover:bg-neutral-100 dark:shadow-[0_2px_12px_rgba(255,255,255,0.15)] transition-all active:scale-[0.98]"
+            className="inline-flex items-center justify-center px-3.5 sm:px-5 py-2 sm:py-2.5 min-h-[44px] rounded-[12px] text-xs sm:text-[14px] font-semibold bg-neutral-900 text-white hover:bg-neutral-800 shadow-[0_2px_12px_rgba(0,0,0,0.12)] dark:bg-white dark:text-[#070708] dark:hover:bg-neutral-100 dark:shadow-[0_2px_12px_rgba(255,255,255,0.15)] transition-all active:scale-[0.98]"
           >
             Cadastre-se
           </Link>

@@ -29,7 +29,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
 
-  if (pathname === '/') {
+  if (
+    pathname === '/' ||
+    pathname === '/contato' ||
+    pathname.startsWith('/blog') ||
+    pathname.startsWith('/posts')
+  ) {
     return null
   }
 

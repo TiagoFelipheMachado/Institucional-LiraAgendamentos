@@ -6,10 +6,9 @@ import { LiraHero } from '@/components/lira/Hero'
 describe('LiraHero — Section_01 reference replication (TDD)', () => {
   it('replicates the exact headline, subtitle and both CTAs from the reference', () => {
     const html = renderToString(<LiraHero />)
-    expect(html).toMatch(/Agenda cheia\.?/)
-    expect(html).toMatch(/Caixa em dia\.?/)
+    expect(html).toMatch(/Cadeiras ocupadas|Agenda cheia/i)
+    expect(html).toMatch(/Finanças no verde|Caixa em dia/i)
     expect(html).toMatch(/voltam/i)
-    expect(html).toContain('Clube de Assinaturas')
     expect(html).toContain('Fazer teste grátis 14 dias')
     expect(html).toContain('Conhecer Planos disponíveis')
     expect(html).toContain('min-h-[44px]')
@@ -24,19 +23,21 @@ describe('LiraHero — Section_01 reference replication (TDD)', () => {
 
   it('shows the guarantee trust row without any fabricated business-metrics claim', () => {
     const html = renderToString(<LiraHero />)
-    expect(html).toContain('Faça o teste sem registrar nenhuma forma de pagamento')
+    expect(html).toContain('Inicie seu teste sem cartão de crédito')
     expect(html).toContain('Cancele quando quiser')
     expect(html).toContain('Suporte disponível 24h')
     expect(html).not.toMatch(/negócios ativos/i)
   })
 
-  it('renders the provided Agendamento/Assistente Virtual visual as a static asset, replacing the hand-built KPI/Agenda-de-hoje mockup', () => {
+  it('renders the dashboard agenda mockup in code, showing available balance and next appointments', () => {
     const html = renderToString(<LiraHero />)
-    expect(html).toContain('/hero-visual-mockups.svg')
-    expect(html).toMatch(/alt="[^"]+"/)
-    // The old hand-built composition should be gone now that the asset replaces it.
-    expect(html).not.toMatch(/Agenda de hoje/i)
-    expect(html).not.toMatch(/Receita recorrente/i)
-    expect(html).not.toMatch(/agenda no caderninho/i)
+    expect(html).toContain('SALDO DISPONÍVEL')
+    expect(html).toContain('R$ 14.820,00')
+    expect(html).toContain('AGENDAMENTOS HOJE')
+    expect(html).toContain('12')
+    expect(html).toContain('Próximos Horários')
+    expect(html).toContain('Ana Clara')
+    expect(html).toContain('Beatriz Silva')
+    expect(html).toContain('Carla Santos')
   })
 })

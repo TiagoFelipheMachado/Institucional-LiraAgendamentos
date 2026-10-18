@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { HeroDashboardMockup } from './HeroDashboardMockup'
 
 export const LiraHero: React.FC = () => {
   return (
@@ -27,25 +28,22 @@ export const LiraHero: React.FC = () => {
               style={{ width: 423, maxWidth: '100%' }}
             />
 
-            <h1 className="text-4xl sm:text-6xl lg:text-[52px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.1] mb-6">
-              Agenda cheia.
+            <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.12] mb-5 sm:mb-6">
+              Cadeiras ocupadas.
               <br />
-              Caixa em dia.
+              Finanças no verde.
               <br />
               Clientes que{' '}
               <span className="italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
-                voltam.
+                voltam sempre.
               </span>
             </h1>
 
-            <p className="text-lg text-neutral-600 dark:text-[#9A9DA3] max-w-xl mx-auto lg:mx-0 mb-8 font-normal leading-relaxed">
-              Agendamento, financeiro, WhatsApp e assinaturas em um só lugar. Desbloqueie a infinita gestão de sua agenda.
+            <p className="text-base sm:text-lg text-neutral-600 dark:text-[#9A9DA3] max-w-xl mx-auto lg:mx-0 mb-8 font-normal leading-relaxed">
+              Plataforma completa de agendamento online, comissões automáticas, IA no WhatsApp e clube de assinaturas. Menos tempo na recepção, mais previsibilidade no seu caixa.
             </p>
 
-            {/* CTAs: Design rule kept consistent with the rest of the Lira site
-                (BRANCO/ALTO CONTRASTE É O CTA DO SITE) rather than the reference's blue/purple
-                solid button, so this section doesn't clash with every other CTA
-                already shipped across the page. */}
+            {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-8">
               <Link
                 href="#contato"
@@ -62,9 +60,9 @@ export const LiraHero: React.FC = () => {
               </Link>
             </div>
 
-            {/* Trust row — guarantee line only, no business-metrics claim. */}
+            {/* Trust row */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-2 gap-y-1.5 text-[13px] text-neutral-500 dark:text-[#9A9DA3]">
-              <span>Faça o teste sem registrar nenhuma forma de pagamento</span>
+              <span>Inicie seu teste sem cartão de crédito</span>
               <span className="text-neutral-300 dark:text-[#14454F]">·</span>
               <span>Cancele quando quiser</span>
               <span className="text-neutral-300 dark:text-[#14454F]">·</span>
@@ -72,19 +70,8 @@ export const LiraHero: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: product mockup — provided asset (Agendamento + Assistente
-              Virtual), swapped in for the previous hand-built KPI/Agenda-de-hoje
-              composition. */}
-          <div className="relative max-w-lg mx-auto lg:mx-0 lg:ml-auto w-full">
-            {/* Ambient backlight glow ensuring seamless blending in light and dark modes */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 via-purple-500/10 to-transparent blur-2xl rounded-3xl -z-10" />
-            {/* eslint-disable-next-line @next/next/no-img-element -- static provided asset */}
-            <img
-              src="/hero-visual-mockups.svg"
-              alt="Mockup do widget de Agendamento e do Assistente Virtual do Lira"
-              className="w-full h-auto drop-shadow-xl"
-            />
-          </div>
+          {/* Right: interactive dashboard mockup created in code */}
+          <HeroDashboardMockup />
         </div>
       </div>
     </section>

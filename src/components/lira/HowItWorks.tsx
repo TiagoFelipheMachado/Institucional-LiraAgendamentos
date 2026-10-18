@@ -16,28 +16,28 @@ const STEPS: Step[] = [
   {
     step: '01',
     badge: 'CONFIGURAÇÃO',
-    title: 'Setup e Regras do Estabelecimento',
+    title: 'Setup Personalizado & Regras',
     desc: 'Cadastre sua equipe, serviços e horários em poucos minutos. Defina a exigência de sinal via Pix para confirmar reservas e configure as regras de comissão dos profissionais.',
     tags: ['Agenda por Profissional', 'Sinal via Pix', 'Cálculo de Comissões', 'Prevenção de Conflitos'],
   },
   {
     step: '02',
     badge: 'WHATSAPP COM IA',
-    title: 'Recepcionista Virtual 24 Horas',
+    title: 'Ativação & Atendimento 24h',
     desc: 'A inteligência artificial atende seus clientes no WhatsApp com conversação natural: identifica o serviço, confere a agenda em tempo real e marca o horário — mesmo de portas fechadas.',
     tags: ['Atendimento 24/7', 'Conversação Natural', 'Atendimento Híbrido', 'Sem Espera'],
   },
   {
     step: '03',
     badge: 'RESERVA & PIX',
-    title: 'Sinal via Pix e Bloqueio em Tempo Real',
+    title: 'Agendamento Autônomo com Sinal Pix',
     desc: 'O cliente garante o horário com pagamento antecipado do sinal via Pix. O sistema valida e bloqueia a vaga instantaneamente, eliminando conflitos de horários e reduzindo o no-show.',
     tags: ['Redução de Faltas', 'Sinal Antecipado Pix', 'Zero Horários Duplicados', 'Lembretes Automáticos'],
   },
   {
     step: '04',
     badge: 'GESTÃO & REPASSES',
-    title: 'Atendimento Concluído e Comissões',
+    title: 'Fechamento Simplificado & Comissões',
     desc: 'Ao finalizar o serviço, o Lira calcula automaticamente a comissão de cada profissional e o lucro da casa. Gestão completa do estabelecimento e modelo white-label para agências.',
     tags: ['Comissões Automáticas', 'Relatórios em Tempo Real', 'Gestão Multi-unidade', 'Modelo White-Label'],
     link: {
@@ -66,7 +66,7 @@ const StepCard: React.FC<StepCardProps> = ({ step, isLeft }) => {
       />
 
       {/* Main Card */}
-      <div className="relative w-full bg-white dark:bg-[#0C0D10]/90 backdrop-blur-md border border-neutral-200 dark:border-[#1A1B22] hover:border-cyan-400 dark:hover:border-[#00D3F2]/40 rounded-2xl p-6 sm:p-8 transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] group-hover:shadow-[0_10px_35px_rgba(0,211,242,0.12)]">
+      <div className="relative w-full bg-white dark:bg-[#0C0D10]/90 backdrop-blur-md border border-neutral-200 dark:border-[#1A1B22] hover:border-cyan-400 dark:hover:border-[#00D3F2]/40 rounded-2xl p-4 sm:p-6 md:p-8 transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] group-hover:shadow-[0_10px_35px_rgba(0,211,242,0.12)]">
         {/* Subtle hover background glow */}
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/[0.04] dark:from-[#00D3F2]/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
@@ -152,11 +152,11 @@ export const LiraHowItWorks: React.FC = () => {
           {/* Mobile Left Vertical Line */}
           <div
             aria-hidden="true"
-            className="md:hidden absolute left-5 top-4 bottom-8 w-px bg-gradient-to-b from-cyan-400/20 via-cyan-500/40 to-cyan-400/20 dark:from-[#14454F]/20 dark:via-[#00D3F2]/40 dark:to-[#14454F]/20"
+            className="md:hidden absolute left-3.5 sm:left-5 top-4 bottom-8 w-px bg-gradient-to-b from-cyan-400/20 via-cyan-500/40 to-cyan-400/20 dark:from-[#14454F]/20 dark:via-[#00D3F2]/40 dark:to-[#14454F]/20"
           />
 
           {/* Steps List */}
-          <div className="space-y-12 md:space-y-20">
+          <div className="space-y-10 sm:space-y-14 md:space-y-20">
             {STEPS.map((step, idx) => {
               const isLeft = idx % 2 === 0
               return (
@@ -180,7 +180,7 @@ export const LiraHowItWorks: React.FC = () => {
                   </div>
 
                   {/* Mobile Node */}
-                  <div className="md:hidden absolute left-5 top-7 -translate-x-1/2 z-20">
+                  <div className="md:hidden absolute left-3.5 sm:left-5 top-7 -translate-x-1/2 z-20">
                     <div className="w-3 h-3 rounded-full bg-white dark:bg-[#070708] border-2 border-cyan-500 dark:border-[#00D3F2] shadow-[0_0_10px_rgba(0,211,242,0.5)] flex items-center justify-center">
                       <div className="w-1 h-1 rounded-full bg-cyan-500 dark:bg-[#00D3F2]" />
                     </div>
@@ -189,12 +189,12 @@ export const LiraHowItWorks: React.FC = () => {
                   {/* Grid for alternating layout on desktop */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
                     {/* Left Column */}
-                    <div className={`${isLeft ? 'block' : 'hidden md:block md:invisible'} pl-12 md:pl-0`}>
+                    <div className={`${isLeft ? 'block' : 'hidden md:block md:invisible'} pl-8 sm:pl-12 md:pl-0`}>
                       {isLeft && <StepCard step={step} isLeft={true} />}
                     </div>
 
                     {/* Right Column */}
-                    <div className={`${!isLeft ? 'block' : 'hidden md:block md:invisible'} pl-12 md:pl-0`}>
+                    <div className={`${!isLeft ? 'block' : 'hidden md:block md:invisible'} pl-8 sm:pl-12 md:pl-0`}>
                       {!isLeft && <StepCard step={step} isLeft={false} />}
                     </div>
                   </div>

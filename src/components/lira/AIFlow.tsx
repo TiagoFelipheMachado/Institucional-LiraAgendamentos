@@ -316,7 +316,7 @@ const ConversationCard: React.FC<ConversationCardProps> = ({
           <span
             className={`text-[10px] font-mono font-semibold px-2.5 py-1 rounded-full border shrink-0 ${
               currentScenario.statusType === 'ia'
-                ? 'text-cyan-800 dark:text-[#00D3F2] bg-cyan-50 dark:bg-[#09222C] border-cyan-300 dark:border-[#00D3F2]/40'
+                ? 'text-cyan-800 dark:text-[#53EAFD] bg-cyan-50 dark:bg-[#09222C] border-cyan-300 dark:border-[#00D3F2]/40'
                 : currentScenario.statusType === 'human'
                   ? 'text-purple-800 dark:text-[#C4B5FD] bg-purple-50 dark:bg-[#1E1436] border-purple-300 dark:border-[#7C3AED]/50'
                   : 'text-emerald-800 dark:text-[#34D399] bg-emerald-50 dark:bg-[#06281E] border-emerald-300 dark:border-[#10B981]/40'
@@ -434,12 +434,6 @@ export const LiraAIFlow: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 dark:bg-[#0E1A1E] border border-cyan-200 dark:border-[#14454F] mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-[#00D3F2]" />
-            <span className="text-[12px] font-mono tracking-[0.08em] uppercase text-cyan-800 dark:text-[#CEFAFE]">
-              AUTOMAÇÃO INTELIGENTE & WHATSAPP
-            </span>
-          </div>
           <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] mb-4 leading-[1.12]">
             Conversa com a IA e transbordo humano
           </h2>
