@@ -3,34 +3,50 @@ import Link from 'next/link'
 
 export const LiraPlanTeaser: React.FC = () => {
   return (
-    <section className="relative py-20 sm:py-24 md:py-28 bg-[#FAF7FD] dark:bg-[#0B0A10] border-b border-neutral-200/80 dark:border-[#1A1824] transition-colors duration-200">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+    <section className="relative py-20 sm:py-24 md:py-28 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] text-neutral-900 dark:text-[#E5E2E3] overflow-hidden transition-colors duration-200">
+      {/* Background ambient glow matching Lira site standard */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-[#9034F3]/10 via-[#00D3F2]/10 to-transparent blur-[120px] pointer-events-none rounded-full" />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
+
         {/* Main Headline */}
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] font-bold tracking-tight text-neutral-900 dark:text-white leading-[1.2] mb-5 sm:mb-6">
+        <h2 className="text-3xl sm:text-5xl lg:text-[48px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.15] mb-5 sm:mb-6 max-w-3xl">
           Um plano para cada{' '}
-          <span className="font-serif italic font-normal text-purple-600 dark:text-purple-400">
-            tamanho de
+          <span className="inline-block italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent pr-1">
+            tamanho de negócio.
           </span>
-          <br className="hidden sm:inline" />{' '}
-          <span className="font-serif italic font-normal text-purple-600 dark:text-purple-400">
-            negócio
-          </span>
-          .
         </h2>
 
         {/* Subtitle */}
-        <p className="text-sm sm:text-base md:text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-2xl font-normal mb-8 sm:mb-10">
-          Do profissional solo à rede com mais de 100 colaboradores: começa em R$ 69,90/mês no plano anual e cresce junto com o seu negócio.
+        <p className="text-base sm:text-lg text-neutral-600 dark:text-[#9A9DA3] leading-relaxed max-w-2xl font-normal mb-8 sm:mb-10">
+          Do profissional solo à rede com mais de 100 colaboradores: comece a partir de R$ 69,90/mês no plano anual e impulsione sua operação com tecnologia que cresce junto com o seu negócio.
         </p>
 
-        {/* CTA Button */}
+        {/* CTA Button following Lira Primary Site CTA rules */}
         <Link
           href="#planos"
-          className="inline-flex items-center justify-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-full bg-[#0066FF] hover:bg-[#0052CC] text-white font-medium text-sm sm:text-base shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-200 active:scale-[0.98]"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-9 py-3.5 min-h-[44px] rounded-[14px] text-[15px] font-semibold bg-neutral-900 text-white hover:bg-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.12)] dark:bg-white dark:text-[#070708] dark:hover:bg-neutral-100 dark:shadow-[0_4px_24px_rgba(255,255,255,0.18)] transition-all duration-200 active:scale-[0.98] group"
         >
-          Comparar todos os planos
+          <span>Comparar todos os planos</span>
+          <span
+            className="material-symbols-rounded text-neutral-400 group-hover:text-white dark:text-neutral-500 dark:group-hover:text-[#070708] group-hover:translate-x-1 transition-all"
+            style={{ fontSize: '18px' }}
+            aria-hidden="true"
+          >
+            arrow_forward
+          </span>
         </Link>
+
+        {/* Assurance / Trust Microcopy */}
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-neutral-500 dark:text-[#9A9DA3] mt-5 select-none">
+          <span>14 dias de teste grátis</span>
+          <span className="hidden sm:inline text-neutral-300 dark:text-neutral-700">•</span>
+          <span>Sem cartão de crédito</span>
+          <span className="hidden sm:inline text-neutral-300 dark:text-neutral-700">•</span>
+          <span>Cancele quando quiser</span>
+        </div>
       </div>
     </section>
   )
 }
+

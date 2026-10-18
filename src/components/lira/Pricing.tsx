@@ -233,7 +233,7 @@ export const LiraPricing: React.FC = () => {
     <section id="planos" className="py-16 md:py-24 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main card modal wrapper */}
-        <div className="bg-white dark:bg-[#0C0D0F] rounded-3xl p-6 sm:p-10 md:p-12 border border-neutral-200 dark:border-neutral-800 shadow-xl max-w-5xl mx-auto">
+        <div className="bg-white dark:bg-[#0C0D0F] rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-12 border border-neutral-200 dark:border-neutral-800 shadow-xl max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-white mb-2">
@@ -319,7 +319,7 @@ export const LiraPricing: React.FC = () => {
           </div>
 
           {/* 3 Pricing Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 items-stretch">
             {LIRA_PRICING_PLANS.map((plan) => (
               <PricingCard key={plan.id} plan={plan} isAnnual={isAnnual} />
             ))}
