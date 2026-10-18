@@ -33,4 +33,19 @@ describe('LiraLogo — new brand asset (TDD)', () => {
     expect(Number(widthMatch?.[1])).toBeGreaterThanOrEqual(205)
     expect(Number(widthMatch?.[1])).toBeLessThanOrEqual(211)
   })
+
+  it('site favicon uses the Lira logo symbol with gradient colors', () => {
+    const faviconSvgPath = path.resolve(process.cwd(), 'public/favicon.svg')
+    expect(fs.existsSync(faviconSvgPath)).toBe(true)
+
+    const contents = fs.readFileSync(faviconSvgPath, 'utf-8')
+    expect(contents).toContain('#22D3EE')
+    expect(contents).toContain('#A855F7')
+    expect(contents).toContain('viewBox="-2 -2 47 47"')
+
+    const faviconIcoPath = path.resolve(process.cwd(), 'public/favicon.ico')
+    expect(fs.existsSync(faviconIcoPath)).toBe(true)
+    const icoStat = fs.statSync(faviconIcoPath)
+    expect(icoStat.size).toBeGreaterThan(500)
+  })
 })
