@@ -72,7 +72,7 @@ export default buildConfig({
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
-  secret: process.env.PAYLOAD_SECRET,
+  secret: process.env.PAYLOAD_SECRET || 'lira-default-payload-secret-key-change-in-production',
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
