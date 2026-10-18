@@ -69,7 +69,10 @@ const professionals: Professional[] = [
 
 export const LiraProducts: React.FC = () => {
   return (
-    <section id="financeiro-repasse" className="py-20 md:py-32 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] text-neutral-900 dark:text-[#E5E2E3] relative overflow-hidden transition-colors duration-200">
+    <section id="produtos" className="py-20 md:py-32 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] text-neutral-900 dark:text-[#E5E2E3] relative overflow-hidden transition-colors duration-200">
+      {/* Anchor alias for existing links */}
+      <div id="financeiro-repasse" className="scroll-mt-24" />
+
       {/* Background ambient glow */}
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-bl from-cyan-500/[0.04] dark:from-[#00D3F2]/[0.03] via-emerald-500/[0.03] dark:via-[#34D399]/[0.02] to-transparent blur-[140px] pointer-events-none rounded-full" />
 
@@ -78,13 +81,13 @@ export const LiraProducts: React.FC = () => {
           
           {/* Left Column: Heading & Description */}
           <div className="lg:col-span-5 text-left">
-            <h2 className="text-4xl sm:text-5xl lg:text-[54px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.08] mb-6">
-              Turn signals into <br className="hidden sm:block" />
-              focus<span className="text-cyan-600 dark:text-[#00D3F2]">.</span>
+            <h2 className="text-4xl sm:text-5xl lg:text-[50px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.12] mb-6">
+              Transforme dados <br />
+              em lucro real<span className="text-cyan-600 dark:text-[#53EAFD]">.</span>
             </h2>
 
             <p className="text-base sm:text-lg text-neutral-600 dark:text-[#9A9DA3] leading-relaxed font-normal max-w-md">
-              Aggregate noise from across your tools into a single, structured signal stream. Romer identifies anomalies and surfaces what matters.
+              Diga adeus a planilhas confusas e discussões no fechamento. O Lira calcula a divisão exata entre casa e equipe com segurança jurídica total na Lei do Salão Parceiro.
             </p>
           </div>
 
@@ -106,7 +109,7 @@ export const LiraProducts: React.FC = () => {
                     </span>
                   </div>
                   <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white dark:bg-[#141620] border border-neutral-200 dark:border-[#1E202C] text-[10px] font-mono text-neutral-600 dark:text-[#9A9DA3] w-fit shadow-xs">
-                    <span className="text-cyan-600 dark:text-[#00D3F2]">↗</span>
+                    <span className="text-cyan-600 dark:text-[#53EAFD]">↗</span>
                     <span>Atendimentos no período</span>
                   </div>
                 </div>

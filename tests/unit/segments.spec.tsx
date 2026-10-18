@@ -18,9 +18,9 @@ describe('LiraSegments section (TDD)', () => {
     expect(html).toContain('SEGMENTOS')
   })
 
-  it('renders all 6 segment cards with images, descriptions and CTAs', () => {
+  it('renders all 3 segment cards with images, descriptions and CTAs', () => {
     const html = renderToString(<LiraSegments />)
-    expect(SEGMENT_ITEMS).toHaveLength(6)
+    expect(SEGMENT_ITEMS).toHaveLength(3)
 
     SEGMENT_ITEMS.forEach((item) => {
       expect(html).toContain(item.title)
@@ -28,6 +28,10 @@ describe('LiraSegments section (TDD)', () => {
       expect(html).toContain(item.ctaText.replace(/&/g, '&amp;'))
       expect(html).toContain(item.image)
     })
+
+    expect(html).not.toContain('Podologia')
+    expect(html).not.toContain('Esmalteria')
+    expect(html).not.toContain('Sobrancelhas e cílios')
   })
 
   it('renders the "Outro segmento?" footer with contact link', () => {

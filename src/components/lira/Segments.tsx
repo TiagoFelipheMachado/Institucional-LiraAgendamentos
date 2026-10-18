@@ -31,27 +31,6 @@ export const SEGMENT_ITEMS: SegmentItem[] = [
     ctaText: 'Ver solução para clínicas de estética',
     image: '/segmentos/estetica.jpg',
   },
-  {
-    id: 'podologia',
-    title: 'Podologia',
-    description: 'Retornos recorrentes e prontuário com foto de evolução.',
-    ctaText: 'Ver solução para podologia',
-    image: '/segmentos/podologia.jpg',
-  },
-  {
-    id: 'esmalteria',
-    title: 'Esmalteria',
-    description: 'Alta rotatividade sem fila e clientes da semana fidelizadas.',
-    ctaText: 'Ver solução para esmalterias',
-    image: '/segmentos/esmalteria.jpg',
-  },
-  {
-    id: 'sobrancelhas-e-cilios',
-    title: 'Sobrancelhas e cílios',
-    description: 'Retorno de manutenção agendado e recorrência que vira faturamento.',
-    ctaText: 'Ver solução para studios de sobrancelhas & cílios',
-    image: '/segmentos/cilios.jpg',
-  },
 ]
 
 export const LiraSegments: React.FC = () => {
@@ -66,24 +45,28 @@ export const LiraSegments: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section — Left aligned matching layout reference */}
         <div className="max-w-3xl mb-12 sm:mb-16">
-          <p className="text-xs sm:text-[13px] font-bold font-mono tracking-[0.1em] uppercase text-purple-600 dark:text-purple-400 mb-3">
+          <p className="text-xs sm:text-[13px] font-bold font-mono tracking-[0.1em] uppercase text-cyan-600 dark:text-[#53EAFD] mb-3">
             SEGMENTOS
           </p>
-          <h2 className="text-3xl sm:text-4xl md:text-[44px] font-bold tracking-tight text-neutral-900 dark:text-white leading-[1.15] mb-4">
-            Feito para o <span className="font-serif italic font-normal text-purple-600 dark:text-purple-400">seu</span> negócio.
+          <h2 className="text-3xl sm:text-4xl md:text-[44px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.15] mb-4">
+            Feito para o{' '}
+            <span className="italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
+              seu
+            </span>{' '}
+            negócio.
           </h2>
-          <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-2xl font-normal">
+          <p className="text-sm sm:text-base text-neutral-600 dark:text-[#9A9DA3] leading-relaxed max-w-2xl font-normal">
             Cada segmento tem seu ritmo. O Lira se adapta ao seu — com funcionalidades, números de mercado e planos de assinatura pensados para a sua realidade.
           </p>
         </div>
 
-        {/* 6 Segment Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+        {/* 3 Segment Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
           {SEGMENT_ITEMS.map((item) => (
             <Link
               key={item.id}
               href="#contato"
-              className="group relative rounded-[24px] overflow-hidden aspect-[4/5] min-h-[380px] sm:min-h-[420px] bg-neutral-900 shadow-sm hover:shadow-2xl hover:shadow-purple-900/20 border border-neutral-200/40 dark:border-white/10 transition-all duration-300 flex flex-col justify-end"
+              className="group relative rounded-[24px] overflow-hidden aspect-[4/5] min-h-[380px] sm:min-h-[420px] bg-neutral-900 shadow-sm hover:shadow-2xl hover:shadow-cyan-950/30 border border-neutral-200/40 dark:border-white/10 hover:border-cyan-500/50 dark:hover:border-cyan-400/50 transition-all duration-300 flex flex-col justify-end"
             >
               {/* Background Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -105,7 +88,7 @@ export const LiraSegments: React.FC = () => {
                 <p className="text-xs sm:text-[13px] text-neutral-200/90 leading-snug mb-5 font-normal max-w-xs">
                   {item.description}
                 </p>
-                <div className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-medium text-white/95 group-hover:text-purple-300 transition-colors">
+                <div className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-medium text-white/95 group-hover:text-cyan-300 dark:group-hover:text-[#53EAFD] transition-colors">
                   <span>{item.ctaText}</span>
                   <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
                     →
@@ -117,12 +100,12 @@ export const LiraSegments: React.FC = () => {
         </div>
 
         {/* Bottom Note / Footer */}
-        <div className="mt-12 sm:mt-14 text-left text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
+        <div className="mt-12 sm:mt-14 text-left text-xs sm:text-sm text-neutral-600 dark:text-[#9A9DA3]">
           <strong className="font-semibold text-neutral-900 dark:text-white">Outro segmento?</strong>{' '}
           <span>O Lira também atende spas, estúdios de tatuagem, clínicas e outros negócios que vivem de agenda.</span>{' '}
           <Link
             href="#contato"
-            className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-semibold underline underline-offset-4 ml-1 inline-flex items-center gap-1"
+            className="text-cyan-600 dark:text-[#00D3F2] hover:text-cyan-700 dark:hover:text-[#53EAFD] font-semibold underline underline-offset-4 ml-1 inline-flex items-center gap-1"
           >
             Falar com nosso time →
           </Link>

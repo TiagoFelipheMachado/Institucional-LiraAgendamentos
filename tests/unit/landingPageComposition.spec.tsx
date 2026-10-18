@@ -12,11 +12,10 @@ describe('LiraLandingPage composition (TDD)', () => {
       'primeiros-passos',
       'pilares',
       'produtos',
-      'nichos',
+      'visao-geral-agenda',
       'como-funciona',
-      'depoimentos',
+      'nichos',
       'planos',
-      'white-label',
       'faq',
       'contato',
     ]
@@ -33,7 +32,7 @@ describe('LiraLandingPage composition (TDD)', () => {
 
   it('includes the hero slogan and footer in the same page', () => {
     const html = renderToString(<LiraLandingPage />)
-    expect(html).toContain('preenche sozinha')
+    expect(html).toContain('Cadeiras ocupadas')
     expect(html).toContain('Todos os direitos reservados')
   })
 })

@@ -137,11 +137,14 @@ interface CalendarDay {
   day: number
   isMuted?: boolean
   isActiveToday?: boolean
+  badgeCount?: number
+  isHighlighted?: boolean
+  isSpecialDay17?: boolean
   events?: string[]
   moreCount?: number
 }
 
-// Outubro 2026 calendar days
+// Outubro 2026 calendar days - 42 células fiéis à Imagem 2
 const calendarDays: CalendarDay[] = [
   // Semana 1 (Setembro/Outubro)
   { day: 27, isMuted: true },
@@ -171,16 +174,30 @@ const calendarDays: CalendarDay[] = [
   },
   {
     day: 13,
+    badgeCount: 1,
     events: ['10:00 Amanda', '17:00 Ana'],
   },
   { day: 14 },
-  { day: 15 },
-  { day: 16 },
-  { day: 17 },
+  {
+    day: 15,
+    badgeCount: 1,
+    isHighlighted: true,
+  },
+  {
+    day: 16,
+    badgeCount: 3,
+  },
+  {
+    day: 17,
+    isSpecialDay17: true,
+  },
 
   // Semana 4
   { day: 18 },
-  { day: 19 },
+  {
+    day: 19,
+    badgeCount: 2,
+  },
   { day: 20 },
   { day: 21 },
   { day: 22 },
@@ -195,6 +212,15 @@ const calendarDays: CalendarDay[] = [
   { day: 29 },
   { day: 30 },
   { day: 31 },
+
+  // Semana 6 (Novembro) - Fiel à imagem 2
+  { day: 1, isMuted: true },
+  { day: 2, isMuted: true },
+  { day: 3, isMuted: true },
+  { day: 4, isMuted: true },
+  { day: 5, isMuted: true },
+  { day: 6, isMuted: true },
+  { day: 7, isMuted: true },
 ]
 
 export const LiraCalendarView: React.FC = () => {
@@ -263,11 +289,11 @@ export const LiraCalendarView: React.FC = () => {
         {/* Header section */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
           <h2 className="text-4xl sm:text-6xl lg:text-[54px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.08] mb-6">
-            Conduza cada decisão <br className="hidden sm:block" />
-            adiante<span className="text-cyan-600 dark:text-[#53EAFD]">.</span>
+            Sua agenda completa em <br className="hidden sm:block" />
+            uma só visão<span className="text-cyan-600 dark:text-[#53EAFD]">.</span>
           </h2>
           <p className="text-base sm:text-lg text-neutral-600 dark:text-[#9A9DA3] max-w-xl mx-auto leading-relaxed font-normal">
-            Mapeie decisões estratégicas na linha do tempo da sua operação. Mantenha a execução sem gargalos, com clareza e controle total.
+            Acompanhe a escala da sua equipe no dia ou no mês. Encaixe novos clientes sem conflito de horários e tenha controle visual de cada cadeira em tempo real.
           </p>
         </div>
 
@@ -275,7 +301,285 @@ export const LiraCalendarView: React.FC = () => {
         {/* VIEW 1: MÊS (Month View)                                                  */}
         {/* ========================================================================= */}
         {viewMode === 'month' && (
-          <div className="max-w-6xl mx-auto bg-neutral-50 dark:bg-[#0A0B0E] border border-neutral-200 dark:border-[#1A1C24] rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 shadow-xl dark:shadow-[0_25px_60px_rgba(0,0,0,0.8)] relative transition-opacity duration-300">
+          <>
+            {/* ========================================================================= */}
+            {/* VERSÃO CELULAR (md:hidden) - Fiel 1:1 à Imagem 2 de referência              */}
+            {/* ========================================================================= */}
+            <div className="md:hidden max-w-md mx-auto space-y-3">
+              {/* Card 1: Painel de Controles / Toolbar */}
+              <div className="bg-white dark:bg-[#0B0D13] border border-neutral-200 dark:border-[#1B1E28] rounded-2xl p-3.5 space-y-2.5 shadow-xl">
+                {/* 1. Barra de Navegação de Data */}
+                <div className="flex items-center justify-between bg-neutral-100 dark:bg-[#080A10] border border-neutral-300 dark:border-[#1A1D28] rounded-xl px-4 py-2.5 text-neutral-900 dark:text-white">
+                  <button
+                    type="button"
+                    aria-label="Mês anterior"
+                    className="text-neutral-500 dark:text-[#8E92A0] hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer p-1"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <span className="font-bold text-xs tracking-wider uppercase font-mono">
+                    OUT. DE 2026
+                  </span>
+                  <button
+                    type="button"
+                    aria-label="Próximo mês"
+                    className="text-neutral-500 dark:text-[#8E92A0] hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer p-1"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* 2. Seletor de Visão (Dia | Mês) */}
+                <div className="grid grid-cols-2 gap-1.5 bg-neutral-100 dark:bg-[#080A10] border border-neutral-300 dark:border-[#1A1D28] rounded-xl p-1 text-xs">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      switchView('day')
+                    }}
+                    className="flex items-center justify-center gap-2 py-2 rounded-lg text-neutral-600 dark:text-[#8E92A0] hover:text-neutral-900 dark:hover:text-white transition-all cursor-pointer font-medium"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="8" y1="6" x2="21" y2="6" />
+                      <line x1="8" y1="12" x2="21" y2="12" />
+                      <line x1="8" y1="18" x2="21" y2="18" />
+                      <line x1="3" y1="6" x2="3.01" y2="6" />
+                      <line x1="3" y1="12" x2="3.01" y2="12" />
+                      <line x1="3" y1="18" x2="3.01" y2="18" />
+                    </svg>
+                    <span>Dia</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      switchView('month')
+                    }}
+                    className="flex items-center justify-center gap-2 py-2 rounded-lg bg-white dark:bg-[#131F2A] text-cyan-700 dark:text-[#00D3F2] font-semibold border border-neutral-200 dark:border-[#00D3F2]/40 shadow-xs dark:shadow-[0_0_12px_rgba(0,211,242,0.15)] cursor-pointer"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="7" height="7" />
+                      <rect x="14" y="3" width="7" height="7" />
+                      <rect x="14" y="14" width="7" height="7" />
+                      <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                    <span>Mês</span>
+                  </button>
+                </div>
+
+                {/* 3. Filtro: Todos os Profissionais */}
+                <div className="relative">
+                  <div
+                    onClick={() => setIsProfDropdownOpen(!isProfDropdownOpen)}
+                    className="w-full flex items-center justify-between bg-neutral-100 dark:bg-[#080A10] border border-neutral-300 dark:border-[#1A1D28] rounded-xl px-4 py-2.5 text-xs text-neutral-900 dark:text-white cursor-pointer select-none"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <svg className="w-3.5 h-3.5 text-neutral-500 dark:text-[#8E92A0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                      </svg>
+                      <span className="font-semibold">
+                        {selectedProfessional === 'all'
+                          ? 'Todos os Profissionais'
+                          : professionals.find((p) => p.id === selectedProfessional)?.name}
+                      </span>
+                    </div>
+                    <svg className="w-4 h-4 text-neutral-500 dark:text-[#8E92A0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </div>
+
+                  {isProfDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 right-0 bg-white dark:bg-[#0E1017] border border-neutral-200 dark:border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedProfessional('all')
+                          setIsProfDropdownOpen(false)
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-neutral-900 dark:text-[#E5E2E3]"
+                      >
+                        Todos os Profissionais
+                      </button>
+                      {professionals.map((prof) => (
+                        <button
+                          key={prof.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedProfessional(prof.id)
+                            setIsProfDropdownOpen(false)
+                          }}
+                          className="w-full text-left px-3 py-2 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-neutral-900 dark:text-[#E5E2E3] flex justify-between"
+                        >
+                          <span>{prof.name}</span>
+                          <span className="text-neutral-500 dark:text-[#6B7280]">{prof.role}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* 4. Filtro: Todos os Status */}
+                <div className="relative">
+                  <div
+                    onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
+                    className="w-full flex items-center gap-2.5 bg-neutral-100 dark:bg-[#080A10] border border-neutral-300 dark:border-[#1A1D28] rounded-xl px-4 py-2.5 text-xs text-neutral-900 dark:text-white cursor-pointer select-none"
+                  >
+                    <svg className="w-3.5 h-3.5 text-neutral-500 dark:text-[#8E92A0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="4" y1="6" x2="20" y2="6" />
+                      <line x1="4" y1="12" x2="14" y2="12" />
+                      <line x1="4" y1="18" x2="18" y2="18" />
+                    </svg>
+                    <span className="font-semibold">
+                      {selectedStatus === 'all' ? 'Todos os Status' : selectedStatus}
+                    </span>
+                  </div>
+
+                  {isStatusDropdownOpen && (
+                    <div className="absolute top-full mt-2 left-0 right-0 bg-white dark:bg-[#0E1017] border border-neutral-200 dark:border-[#1F212C] rounded-xl shadow-2xl p-1 z-30">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedStatus('all')
+                          setIsStatusDropdownOpen(false)
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-neutral-900 dark:text-[#E5E2E3]"
+                      >
+                        Todos os Status
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedStatus('CONCLUÍDO')
+                          setIsStatusDropdownOpen(false)
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs font-mono rounded-lg hover:bg-neutral-100 dark:hover:bg-[#1A1C26] text-emerald-600 dark:text-[#10B981] font-semibold"
+                      >
+                        CONCLUÍDO
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* 5. Botões de Ação: Bloquear e Agendar */}
+                <div className="grid grid-cols-2 gap-2.5 pt-0.5">
+                  <button
+                    type="button"
+                    className="flex items-center justify-center gap-2 py-2.5 rounded-2xl bg-neutral-100 dark:bg-[#12141D] border border-neutral-300 dark:border-[#232736] text-neutral-800 dark:text-white hover:text-neutral-950 dark:hover:text-white/80 text-xs font-semibold cursor-pointer transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5 text-neutral-500 dark:text-[#8E92A0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                    </svg>
+                    <span>Bloquear</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="flex items-center justify-center gap-2 py-2.5 rounded-2xl bg-cyan-600 hover:bg-cyan-500 text-white dark:bg-[#00D3F2] dark:hover:bg-[#38E1F8] dark:text-[#050B14] text-xs font-bold shadow-md dark:shadow-[0_0_20px_rgba(0,211,242,0.35)] cursor-pointer transition-all active:scale-[0.98]"
+                  >
+                    <svg className="w-3.5 h-3.5 text-white dark:text-[#050B14]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <span>Agendar</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Card 2: Grade Compacta do Calendário (7 colunas exatas 100% de largura) */}
+              <div className="bg-white dark:bg-[#0B0D13] border border-neutral-200 dark:border-[#1B1E28] rounded-2xl p-2.5 shadow-xl">
+                {/* Dias da Semana */}
+                <div className="grid grid-cols-7 text-center pb-2 border-b border-neutral-200 dark:border-[#181B26]">
+                  {['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'].map((d) => (
+                    <div key={d} className="text-[10px] font-bold text-neutral-500 dark:text-[#8E92A0] tracking-wider">
+                      {d}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Células 6 semanas x 7 dias */}
+                <div className="grid grid-cols-7 border-l border-t border-neutral-200 dark:border-[#181B26]">
+                  {calendarDays.map((item, idx) => {
+                    const isWeekend = idx % 7 === 0 || idx % 7 === 6
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          if (item.day === 12 || item.isActiveToday || item.badgeCount) {
+                            switchView('day')
+                          }
+                        }}
+                        className={`aspect-square min-h-[46px] p-1 flex flex-col justify-between border-r border-b border-neutral-200 dark:border-[#181B26] relative transition-colors ${
+                          isWeekend
+                            ? 'bg-rose-50/60 dark:bg-[#180C10]/70'
+                            : item.isHighlighted
+                            ? 'bg-cyan-50/80 dark:bg-[#202738]'
+                            : item.isMuted
+                            ? 'bg-neutral-100/50 dark:bg-[#08090D]/50'
+                            : 'bg-white dark:bg-[#0E1017]'
+                        } ${(item.day === 12 || item.badgeCount) ? 'cursor-pointer hover:brightness-105 dark:hover:brightness-125' : ''}`}
+                      >
+                        {/* Topo da Célula: Número do Dia + Ícone de Bloqueado no Fim de Semana */}
+                        <div className="flex items-center justify-between w-full leading-none">
+                          {item.isSpecialDay17 ? (
+                            <span className="w-4 h-4 rounded bg-cyan-600 dark:bg-[#00D3F2] text-white dark:text-[#070708] font-bold text-[9px] flex items-center justify-center shadow-xs">
+                              17
+                            </span>
+                          ) : (
+                            <span
+                              className={`text-[11px] font-bold ${
+                                item.isMuted
+                                  ? 'text-neutral-400 dark:text-[#3E4354]'
+                                  : 'text-neutral-800 dark:text-[#D5D8E4]'
+                              }`}
+                            >
+                              {item.day}
+                            </span>
+                          )}
+
+                          {isWeekend && (
+                            <svg
+                              className="w-2.5 h-2.5 text-rose-500/80 dark:text-rose-500/80 shrink-0"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                            >
+                              <circle cx="12" cy="12" r="10" />
+                              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                            </svg>
+                          )}
+                        </div>
+
+                        {/* Rodapé da Célula: Indicador de Agendamentos */}
+                        {item.badgeCount ? (
+                          <div className="w-full flex justify-center pb-0.5">
+                            <span className="w-3.5 h-3.5 rounded-full bg-cyan-600 dark:bg-[#00D3F2] text-white dark:text-[#070708] font-bold text-[9px] flex items-center justify-center shadow-[0_0_8px_rgba(0,211,242,0.4)]">
+                              {item.badgeCount}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="h-3.5" />
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* ========================================================================= */}
+            {/* VERSÃO DESKTOP / TABLET (hidden md:block) - Tabela Expandida Completa     */}
+            {/* ========================================================================= */}
+            <div className="hidden md:block max-w-6xl mx-auto bg-neutral-50 dark:bg-[#0A0B0E] border border-neutral-200 dark:border-[#1A1C24] rounded-[24px] sm:rounded-[28px] p-4 sm:p-6 shadow-xl dark:shadow-[0_25px_60px_rgba(0,0,0,0.8)] relative transition-opacity duration-300">
             {/* Calendar Top Toolbar */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-neutral-200 dark:border-[#161720]">
               {/* Left Controls: Date Switcher + Mode Toggle */}
@@ -556,6 +860,7 @@ export const LiraCalendarView: React.FC = () => {
               </div>
             </div>
           </div>
+          </>
         )}
 
         {/* ========================================================================= */}
