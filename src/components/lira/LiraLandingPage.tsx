@@ -1,4 +1,5 @@
 import React from 'react'
+import { NotionScrollController } from './NotionScrollController'
 import { LiraNavbar } from './Navbar'
 import { LiraHero } from './Hero'
 import { LiraFeatureHighlights } from './FeatureHighlights'
@@ -20,7 +21,8 @@ import { LiraWhatsAppButton } from './WhatsAppButton'
 
 export const LiraLandingPage: React.FC = () => {
   return (
-    <main className="min-h-screen bg-white dark:bg-[#070708] text-neutral-900 dark:text-[#E5E2E3] selection:bg-[#00D3F2]/30 selection:text-cyan-800 dark:selection:text-[#00D3F2] transition-colors duration-200">
+    <main className="min-h-screen w-full overflow-x-hidden bg-white dark:bg-[#070708] text-neutral-900 dark:text-[#E5E2E3] selection:bg-[#00D3F2]/30 selection:text-cyan-800 dark:selection:text-[#00D3F2] transition-colors duration-200">
+      <NotionScrollController />
       <LiraNavbar />
       <LiraHero />
       <LiraFeatureHighlights />

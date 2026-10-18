@@ -15,7 +15,12 @@ interface FooterClientProps {
 export const FooterClient: React.FC<FooterClientProps> = ({ data }) => {
   const pathname = usePathname()
 
-  if (pathname === '/') {
+  if (
+    pathname === '/' ||
+    pathname === '/contato' ||
+    pathname.startsWith('/blog') ||
+    pathname.startsWith('/posts')
+  ) {
     return null
   }
 

@@ -590,40 +590,40 @@ const WhatsAppChatMockup: React.FC = () => {
 
 const features: Feature[] = [
   {
-    tag: 'AGENDA INTELIGENTE',
-    title: 'Sua agenda não perde mais nenhum ',
-    titleHighlight: 'horário.',
-    desc: 'Redução drástica do no-show com sinal Pix antecipado. O cliente agenda sozinho pelo link e o horário entra direto no painel do salão.',
+    tag: 'AGENDA INTELIGENTE & NO-SHOW ZERO',
+    title: 'Fim das faltas e cadeiras vazias com ',
+    titleHighlight: 'reserva confirmada.',
+    desc: 'Combata o no-show na raiz com sinal Pix antecipado. O cliente escolhe o profissional e o horário pelo link em segundos, sem sobrecarregar sua equipe.',
     bullets: [
-      'Agendamento 24h sem baixar aplicativo',
-      'Pagamento de sinal via Pix trava o horário e evita faltas',
-      'Visão em grade por profissional para organização visual',
+      'Agendamento rápido 24h sem precisar baixar nenhum aplicativo',
+      'Confirmação com sinal via Pix que trava o horário e zera o No-show',
+      'Visualização panorâmica em grade por profissional para organização visual',
     ],
     imagePos: 'right',
     mockup: 'charts',
   },
   {
-    tag: 'FINANCEIRO E COMISSÕES',
-    title: 'Repasses automáticos sem usar ',
+    tag: 'FINANCEIRO & COMISSÕES',
+    title: 'Repasses exatos e controle de caixa sem ',
     titleHighlight: 'planilhas.',
-    desc: 'Toda comanda finalizada já calcula a comissão exata do profissional e o lucro da barbearia, com transparência e regras flexíveis.',
+    desc: 'Esqueça cálculos manuais e desentendimentos. A cada atendimento finalizado, o Lira divide as comissões instantaneamente e atualiza o fluxo financeiro.',
     bullets: [
-      'Regras personalizadas: percentual ou fixo, por serviço e produto',
-      'Caixa e previsão de faturamento integrados na mesma tela',
-      'Visibilidade financeira total para o dono e para o profissional',
+      'Regras flexíveis de comissão: percentual ou fixo, por serviço e produto',
+      'Previsão de receitas e controle de caixa integrados na mesma tela',
+      'Transparência total para o gestor e extrato claro para os parceiros',
     ],
     imagePos: 'left',
     mockup: 'schedule',
   },
   {
-    tag: 'WHATSAPP COM IA',
-    title: 'O seu atendimento no ',
-    titleHighlight: 'piloto automático.',
-    desc: 'Não perca clientes por demora na resposta. A inteligência artificial atende, agenda e envia lembretes para que você foque no serviço.',
+    tag: 'WHATSAPP & ATENDIMENTO VIRTUAL',
+    title: 'Sua recepção sempre ativa no ',
+    titleHighlight: 'WhatsApp.',
+    desc: 'Não perca clientes por demora na resposta. A inteligência artificial acolhe, consulta a grade e confirma horários 24 horas por dia no WhatsApp.',
     bullets: [
-      'IA que responde, confere agenda e marca clientes 24h por dia',
-      'Lembretes automáticos de agendamento por WhatsApp',
-      'Relatórios de captação e fluxo contínuo para sua barbearia',
+      'Atendimento imediato no WhatsApp com linguagem humanizada e natural',
+      'Lembretes preventivos de agendamento que evitam esquecimentos',
+      'Transição suave para atendimento humano sempre que você preferir',
     ],
     imagePos: 'right',
     mockup: 'whatsapp',
@@ -632,21 +632,17 @@ const features: Feature[] = [
 
 export const LiraChallenges: React.FC = () => {
   return (
-    <section id="funcionalidades" className="bg-neutral-50/70 dark:bg-[#070708] py-20 md:py-32 border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors duration-200">
+    <section id="funcionalidades" className="relative bg-neutral-50/70 dark:bg-[#070708] py-20 md:py-32 border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors duration-200">
+      {/* Anchor for legacy #desafios links */}
+      <span id="desafios" className="absolute -top-24 left-0 pointer-events-none opacity-0" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="max-w-2xl mb-20 md:mb-32">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 dark:bg-[#0E1A1E] border border-cyan-200 dark:border-[#14454F] mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 dark:bg-[#00D3F2] animate-pulse" />
-            <span className="text-[10px] font-mono tracking-[0.08em] uppercase text-cyan-800 dark:text-[#CEFAFE]">
-              FUNCIONALIDADES
-            </span>
-          </div>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.1]">
-            Tudo que o seu negócio precisa, em um só{' '}
+            Toda a gestão do seu espaço em uma só{' '}
             <em className="italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
-              sistema.
+              plataforma.
             </em>
           </h2>
         </div>
@@ -663,7 +659,7 @@ export const LiraChallenges: React.FC = () => {
               
               {/* Text content */}
               <div className="flex-1 w-full">
-                <span className="text-[11px] font-mono tracking-[0.08em] text-cyan-600 dark:text-[#00D3F2] uppercase mb-4 block">
+                <span className="text-[11px] font-mono tracking-[0.08em] text-cyan-600 dark:text-[#53EAFD] uppercase mb-4 block">
                   {feature.tag}
                 </span>
                 <h3 className="text-3xl md:text-4xl font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.1] mb-6">

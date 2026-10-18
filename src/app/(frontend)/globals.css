@@ -237,9 +237,36 @@
 
 html {
   opacity: 0;
+  scroll-behavior: smooth;
 }
 
 html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
+}
+
+/* ==========================================================================
+   Notion Scroll Motion System
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+  .notion-scroll-reveal {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .notion-scroll-reveal.notion-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Cascading Stagger Delays */
+  .notion-stagger-1 { transition-delay: 50ms; }
+  .notion-stagger-2 { transition-delay: 100ms; }
+  .notion-stagger-3 { transition-delay: 150ms; }
+  .notion-stagger-4 { transition-delay: 200ms; }
+  .notion-stagger-5 { transition-delay: 250ms; }
+  .notion-stagger-6 { transition-delay: 300ms; }
 }
