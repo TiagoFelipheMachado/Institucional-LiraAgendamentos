@@ -591,8 +591,8 @@ const WhatsAppChatMockup: React.FC = () => {
 const features: Feature[] = [
   {
     tag: 'AGENDA INTELIGENTE & NO-SHOW ZERO',
-    title: 'Fim das faltas e cadeiras vazias com ',
-    titleHighlight: 'reserva confirmada.',
+    title: 'Agendamento Online ',
+    titleHighlight: 'Instantâneo.',
     desc: 'Combata o no-show na raiz com sinal Pix antecipado. O cliente escolhe o profissional e o horário pelo link em segundos, sem sobrecarregar sua equipe.',
     bullets: [
       'Agendamento rápido 24h sem precisar baixar nenhum aplicativo',
@@ -638,11 +638,11 @@ export const LiraChallenges: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="max-w-2xl mb-20 md:mb-32">
+        <div className="max-w-3xl mb-20 md:mb-32">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.1]">
-            Toda a gestão do seu espaço em uma só{' '}
+            Tudo o que o seu negócio precisa,{' '}
             <em className="italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
-              plataforma.
+              sem planilhas confusas.
             </em>
           </h2>
         </div>
