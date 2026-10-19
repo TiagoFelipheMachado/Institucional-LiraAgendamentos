@@ -47,7 +47,7 @@ const SCHEDULING_SCENARIOS: ConversationScenario[] = [
     clientName: 'Beatriz.F',
     clientRole: 'WhatsApp • Aguardando atendente',
     clientAvatar:
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=160&h=160&q=80',
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&h=160&q=80',
     statusBadge: 'TRANSBORDO HUMANO',
     statusType: 'human',
     greeting:
