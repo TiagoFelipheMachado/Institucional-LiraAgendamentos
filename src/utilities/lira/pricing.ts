@@ -1,17 +1,7 @@
 export type BillingCycle = 'annual' | 'monthly'
 
-export interface PricingPlanFeatures {
-  professionals: string
-  whatsappMonthly: string
-  whatsappAnnual: string
-  simultaneousAppointments: string
-  clients: string
-  linkText: string
-  aiCredits: string
-}
-
 export interface PricingPlan {
-  id: 'essencial' | 'avancado' | 'profissional'
+  id: 'start' | 'plus' | 'vega' | 'essencial' | 'avancado' | 'profissional'
   name: string
   audience: string
   monthlyPrice: number
@@ -21,9 +11,10 @@ export interface PricingPlan {
   annualTotal: number
   popular?: boolean
   recommendedBadge?: string
+  conditionText: string
   savingsPill: string
   couponText: string
-  features: PricingPlanFeatures
+  features: string[]
 }
 
 /**
@@ -34,81 +25,79 @@ export function roundToCents(value: number): number {
 }
 
 /**
- * Plans matching the reference layout (Essencial, Avançado, Profissional)
- * with monthly and annual discount interactions.
+ * Official Lira pricing plans without artificial restrictions
+ * (no GAIA credits, no message limits, no customer limits).
+ * Categorized by operational capabilities and business size.
  */
 export const LIRA_PRICING_PLANS: PricingPlan[] = [
   {
-    id: 'essencial',
-    name: 'Essencial',
-    audience: 'Controle e gestão essencial para o dia a dia de sua empresa',
-    monthlyPrice: 99.86,
-    annualPricePerMonth: 60.12,
-    annualSavingsPerMonth: 38.74,
-    annualDiscountPercent: 40,
-    annualTotal: 721.45,
+    id: 'start',
+    name: 'Lira Start',
+    audience: 'Ideal para: Profissionais autônomos',
+    monthlyPrice: 69.90,
+    annualPricePerMonth: 55.92,
+    annualSavingsPerMonth: 13.98,
+    annualDiscountPercent: 20,
+    annualTotal: 671.04,
     popular: false,
-    savingsPill: 'ECONOMIZE R$ 38,74 AO MÊS',
-    couponText: 'CUPOM: BEMVINDO',
-    features: {
-      professionals: '2 profissionais cadastrados',
-      whatsappMonthly: '50 mensagens WhatsApp/mês',
-      whatsappAnnual: '200 mensagens WhatsApp/mês',
-      simultaneousAppointments: '4 agendamentos simultâneos',
-      clients: '2000 clientes cadastrados',
-      linkText: 'Link de agend. Seu Logo + Lira',
-      aiCredits: 'Até 200 créditos GAIA (IA)',
-    },
+    conditionText: '1º mês por R$ 59,42 (usando cupom Bem-vindo 1 a 10)',
+    savingsPill: '1º MÊS POR R$ 59,42',
+    couponText: 'CUPOM: BEM-VINDO 1 A 10',
+    features: [
+      'Agendamento online automatizado',
+      'Confirmação via WhatsApp IA',
+      'Integração Pix integrada',
+      'Cadastro de serviços e clientes',
+      'Suporte via chat',
+    ],
   },
   {
-    id: 'avancado',
-    name: 'Avançado',
-    audience: 'Agilize o crescimento de sua empresa com a Lira',
-    monthlyPrice: 178.43,
-    annualPricePerMonth: 107.42,
-    annualSavingsPerMonth: 71.01,
-    annualDiscountPercent: 40,
-    annualTotal: 1289.05,
+    id: 'plus',
+    name: 'Lira Plus',
+    audience: 'Ideal para: Equipes e barbearias estruturadas',
+    monthlyPrice: 99.90,
+    annualPricePerMonth: 79.92,
+    annualSavingsPerMonth: 19.98,
+    annualDiscountPercent: 20,
+    annualTotal: 959.04,
     popular: true,
     recommendedBadge: 'Plano Recomendado',
-    savingsPill: 'ECONOMIZE R$ 71,01 AO MÊS',
-    couponText: 'CUPOM: BEMVINDO',
-    features: {
-      professionals: '6 profissionais cadastrados',
-      whatsappMonthly: '100 mensagens WhatsApp/mês',
-      whatsappAnnual: '400 mensagens WhatsApp/mês',
-      simultaneousAppointments: '12 agendamentos simultâneos',
-      clients: '5000 clientes cadastrados',
-      linkText: 'Link de agendamento com seu logo',
-      aiCredits: 'Até 400 créditos GAIA (IA)',
-    },
+    conditionText: 'Plano Anual equivalente a R$ 79,92 / mês (20% off)',
+    savingsPill: 'PLANO ANUAL: R$ 79,92 / MÊS',
+    couponText: 'ECONOMIZE 20% NO ANUAL',
+    features: [
+      'Tudo do plano Start',
+      'Agenda para múltiplos profissionais',
+      'Central de Atendimento via chat',
+      'Antecipação de comissão via maquininha',
+      'Relatórios financeiros avançados',
+    ],
   },
   {
-    id: 'profissional',
-    name: 'Profissional',
-    audience: 'Total controle de sua empresa e produtividade',
-    monthlyPrice: 311.29,
-    annualPricePerMonth: 187.40,
-    annualSavingsPerMonth: 123.89,
-    annualDiscountPercent: 40,
-    annualTotal: 2248.81,
+    id: 'vega',
+    name: 'Lira Vega',
+    audience: 'Ideal para: Redes e múltiplas unidades/filiais',
+    monthlyPrice: 139.90,
+    annualPricePerMonth: 111.92,
+    annualSavingsPerMonth: 27.98,
+    annualDiscountPercent: 20,
+    annualTotal: 1343.04,
     popular: false,
-    savingsPill: 'ECONOMIZE R$ 123,89 AO MÊS',
-    couponText: 'CUPOM: BEMVINDO',
-    features: {
-      professionals: '15 profissionais cadastrados',
-      whatsappMonthly: '200 mensagens WhatsApp/mês',
-      whatsappAnnual: '800 mensagens WhatsApp/mês',
-      simultaneousAppointments: '30 agendamentos simultâneos',
-      clients: 'Clientes Ilimitados',
-      linkText: 'Link de agendamento com seu logo',
-      aiCredits: 'Até 800 créditos GAIA (IA)',
-    },
+    conditionText: 'Plano Anual equivalente a R$ 111,92 / mês (20% off)',
+    savingsPill: 'PLANO ANUAL: R$ 111,92 / MÊS',
+    couponText: 'ECONOMIZE 20% NO ANUAL',
+    features: [
+      'Tudo do plano Plus',
+      'Gestão de múltiplas unidades / filiais',
+      'API dedicada e relatórios customizados',
+      'Integração WordPress white-label',
+      'Gerente de conta exclusivo',
+    ],
   },
 ]
 
 /**
- * Formats a value as BRL currency string (e.g. "R$ 99,86").
+ * Formats a value as BRL currency string (e.g. "R$ 69,90").
  */
 export function formatBRLWithCents(value: number): string {
   return new Intl.NumberFormat('pt-BR', {
@@ -119,8 +108,14 @@ export function formatBRLWithCents(value: number): string {
   }).format(value)
 }
 
-export function getPlanById(id: PricingPlan['id']): PricingPlan {
-  const plan = LIRA_PRICING_PLANS.find((p) => p.id === id)
+/**
+ * Resolves a plan by id, supporting both new ids (start, plus, vega)
+ * and legacy aliases (essencial, avancado, profissional).
+ */
+export function getPlanById(id: PricingPlan['id'] | string): PricingPlan {
+  const normalizedId =
+    id === 'essencial' ? 'start' : id === 'avancado' ? 'plus' : id === 'profissional' ? 'vega' : id
+  const plan = LIRA_PRICING_PLANS.find((p) => p.id === normalizedId)
   if (!plan) {
     throw new Error(`Unknown Lira pricing plan id: "${id}"`)
   }
