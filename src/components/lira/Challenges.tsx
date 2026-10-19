@@ -542,7 +542,7 @@ const WhatsAppChatMockup: React.FC = () => {
             <div className="relative w-11 h-11 rounded-full overflow-hidden border border-neutral-200 dark:border-[#2E3044] shrink-0 bg-neutral-100 dark:bg-[#171824] flex items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&h=120&q=80"
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&h=160&q=80"
                 alt="Luisa.M"
                 className="w-full h-full object-cover"
               />
@@ -590,40 +590,43 @@ const WhatsAppChatMockup: React.FC = () => {
 
 const features: Feature[] = [
   {
-    tag: 'AGENDA INTELIGENTE & NO-SHOW ZERO',
-    title: 'Agendamento Online ',
-    titleHighlight: 'Instantâneo.',
-    desc: 'Combata o no-show na raiz com sinal Pix antecipado. O cliente escolhe o profissional e o horário pelo link em segundos, sem sobrecarregar sua equipe.',
+    tag: 'GESTÃO FINANCEIRA & PERFORMANCE',
+    title: 'Gestão Financeira, Repasse e Performance da ',
+    titleHighlight: 'Equipe.',
+    desc: 'No Lira Agendamentos, o Administrador tem o controle total e centralizado da operação financeira e da equipe em uma única tela.',
     bullets: [
-      'Agendamento rápido 24h sem precisar baixar nenhum aplicativo',
-      'Confirmação com sinal via Pix que trava o horário e zera o No-show',
-      'Visualização panorâmica em grade por profissional para organização visual',
+      'Visão Completa de Faturamento',
+      'Controle e Detalhamento por Profissional',
+      'Gestão de Comissões e Antecipações',
     ],
     imagePos: 'right',
     mockup: 'charts',
   },
   {
-    tag: 'FINANCEIRO & COMISSÕES',
-    title: 'Repasses exatos e controle de caixa sem ',
-    titleHighlight: 'planilhas.',
-    desc: 'Esqueça cálculos manuais e desentendimentos. A cada atendimento finalizado, o Lira divide as comissões instantaneamente e atualiza o fluxo financeiro.',
+    tag: 'GESTÃO & CONTROLE DE HORÁRIOS',
+    title: 'Gestão e Controle de Horários pelo Administrador ou ',
+    titleHighlight: 'Colaborador.',
+    desc: 'O Lira Agendamentos oferece total autonomia operacional para a sua equipe gerenciar os horários com agilidade diretamente pelo Painel Web (PC) ou pela Visão Mobile Responsiva no celular.',
     bullets: [
-      'Regras flexíveis de comissão: percentual ou fixo, por serviço e produto',
-      'Previsão de receitas e controle de caixa integrados na mesma tela',
-      'Transparência total para o gestor e extrato claro para os parceiros',
+      'Remarcar ou Cancelar com Praticidade',
+      'Encaixes e Agendamentos Manuais',
+      'Bloqueios e Pausas Instantâneas',
+      'Controle na Palma da Mão',
     ],
     imagePos: 'left',
     mockup: 'schedule',
   },
   {
     tag: 'WHATSAPP & ATENDIMENTO VIRTUAL',
-    title: 'Sua recepção sempre ativa no ',
+    title: 'Atendimento Inteligente no ',
     titleHighlight: 'WhatsApp.',
-    desc: 'Não perca clientes por demora na resposta. A inteligência artificial acolhe, consulta a grade e confirma horários 24 horas por dia no WhatsApp.',
+    desc: 'Centralize as conversas em uma fila organizada (via Chat) onde sua equipe alterna facilmente entre IA e atendimento humano na mesma tela.',
     bullets: [
       'Atendimento imediato no WhatsApp com linguagem humanizada e natural',
-      'Lembretes preventivos de agendamento que evitam esquecimentos',
+      'Lembretes preventivos de agendamento que evitam esquecimentos e faltas',
       'Transição suave para atendimento humano sempre que você preferir',
+      'Assistente virtual ativa 24 horas por dia para não perder nenhum cliente por demora na resposta',
+      'Confirmação automática de horários integrada diretamente à grade do sistema',
     ],
     imagePos: 'right',
     mockup: 'whatsapp',

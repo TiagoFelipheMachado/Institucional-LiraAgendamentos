@@ -292,8 +292,8 @@ export const LiraCalendarView: React.FC = () => {
             Sua agenda completa em <br className="hidden sm:block" />
             uma só visão<span className="text-cyan-600 dark:text-[#53EAFD]">.</span>
           </h2>
-          <p className="text-base sm:text-lg text-neutral-600 dark:text-[#9A9DA3] max-w-xl mx-auto leading-relaxed font-normal">
-            Acompanhe a escala da sua equipe no dia ou no mês. Encaixe novos clientes sem conflito de horários e tenha controle visual de cada cadeira em tempo real.
+          <p className="text-base sm:text-lg text-neutral-600 dark:text-[#9A9DA3] max-w-2xl mx-auto leading-relaxed font-normal">
+            Acompanhe os agendamentos da sua equipe no formato diário ou mensal, filtre rapidamente por colaborador e visualize o status de cada horário em tempo real para manter o controle total do seu estabelecimento sem complicações.
           </p>
         </div>
 

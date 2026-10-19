@@ -11,7 +11,7 @@ describe('Challenges ("Desafios") section (TDD)', () => {
 
   it('communicates the core pain points the product solves', () => {
     const html = renderToString(<LiraChallenges />)
-    expect(html).toContain('No-show')
+    expect(html).toMatch(/faltas|No-show/i)
     expect(html).toContain('WhatsApp')
   })
 
