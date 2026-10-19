@@ -31,23 +31,23 @@ function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
         </div>
       )}
 
-      {/* Top Savings Pill (Visible when Annual) */}
-      {isAnnual && (
-        <div className="mb-3 flex items-start">
-          <div
-            className={`flex items-start gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold leading-tight ${
-              isPurple
-                ? 'bg-white/15 border border-white/25 text-white'
-                : 'bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300'
-            }`}
-          >
-            <Icon
-              name="local_offer"
-              size={14}
-              className={`mt-0.5 shrink-0 ${isPurple ? 'text-white' : 'text-sky-600 dark:text-sky-300'}`}
-            />
-            <div>
-              <p>{plan.savingsPill}</p>
+      {/* Condition / Savings Pill */}
+      <div className="mb-3 flex items-start">
+        <div
+          className={`flex items-start gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold leading-tight ${
+            isPurple
+              ? 'bg-white/15 border border-white/25 text-white'
+              : 'bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300'
+          }`}
+        >
+          <Icon
+            name="local_offer"
+            size={14}
+            className={`mt-0.5 shrink-0 ${isPurple ? 'text-white' : 'text-sky-600 dark:text-sky-300'}`}
+          />
+          <div>
+            <p>{isAnnual ? plan.savingsPill : plan.conditionText}</p>
+            {isAnnual && (
               <p
                 className={
                   isPurple
@@ -57,10 +57,10 @@ function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
               >
                 {plan.couponText}
               </p>
-            </div>
+            )}
           </div>
         </div>
-      )}
+      </div>
 
       {/* Title & Description */}
       <h3
@@ -71,8 +71,8 @@ function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
         {plan.name}
       </h3>
       <p
-        className={`text-xs mt-1.5 min-h-[34px] leading-relaxed ${
-          isPurple ? 'text-white/80' : 'text-neutral-500 dark:text-neutral-400'
+        className={`text-xs mt-1.5 min-h-[28px] leading-relaxed font-medium ${
+          isPurple ? 'text-white/85' : 'text-neutral-600 dark:text-neutral-400'
         }`}
       >
         {plan.audience}
@@ -143,58 +143,37 @@ function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
       </div>
 
       {/* Feature list */}
-      <div className="space-y-2.5 text-xs sm:text-[13px] my-4 pt-4 border-t border-black/5 dark:border-white/10">
-        <p className={`font-semibold ${isPurple ? 'text-white' : 'text-neutral-800 dark:text-neutral-200'}`}>
-          {plan.features.professionals}
+      <div className="space-y-3 text-xs sm:text-[13px] my-4 pt-4 border-t border-black/5 dark:border-white/10">
+        <p
+          className={`text-[11px] font-mono uppercase tracking-wider font-semibold ${
+            isPurple ? 'text-white/80' : 'text-neutral-500 dark:text-neutral-400'
+          }`}
+        >
+          Funcionalidades inclusas:
         </p>
-
-        {/* WhatsApp pill */}
-        <div>
-          <span
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
-              isPurple
-                ? 'bg-[#22C55E] text-white shadow-sm'
-                : 'bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
-            }`}
-          >
-            <Icon
-              name="chat"
-              size={13}
-              className={isPurple ? 'text-white' : 'text-emerald-600 dark:text-emerald-300'}
-            />
-            {isAnnual ? plan.features.whatsappAnnual : plan.features.whatsappMonthly}
-          </span>
-        </div>
-
-        <p className={isPurple ? 'text-white/90' : 'text-neutral-700 dark:text-neutral-300'}>
-          {plan.features.simultaneousAppointments}
-        </p>
-
-        <p className={`font-semibold ${isPurple ? 'text-white' : 'text-neutral-800 dark:text-neutral-200'}`}>
-          {plan.features.clients}
-        </p>
-
-        <p className={isPurple ? 'text-white/90' : 'text-neutral-700 dark:text-neutral-300'}>
-          {plan.features.linkText}
-        </p>
-
-        {/* AI credits pill */}
-        <div>
-          <span
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
-              isPurple
-                ? 'bg-white/20 border border-white/30 text-white'
-                : 'bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300'
-            }`}
-          >
-            <Icon
-              name="auto_awesome"
-              size={13}
-              className={isPurple ? 'text-white' : 'text-purple-600 dark:text-purple-300'}
-            />
-            {plan.features.aiCredits}
-          </span>
-        </div>
+        <ul className="space-y-2.5">
+          {plan.features.map((feature, idx) => {
+            const isInherited = feature.startsWith('Tudo do plano')
+            return (
+              <li key={idx} className="flex items-start gap-2.5">
+                <Icon
+                  name="check"
+                  size={16}
+                  className={`mt-0.5 shrink-0 ${
+                    isPurple ? 'text-white' : 'text-emerald-500 dark:text-[#34E5A0]'
+                  }`}
+                />
+                <span
+                  className={`leading-snug ${
+                    isPurple ? 'text-white/95' : 'text-neutral-700 dark:text-neutral-300'
+                  } ${isInherited ? 'font-semibold' : ''}`}
+                >
+                  {feature}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
       </div>
 
       {/* CTA Buttons */}
@@ -230,7 +209,10 @@ export const LiraPricing: React.FC = () => {
   const isAnnual = cycle === 'annual'
 
   return (
-    <section id="planos" className="py-16 md:py-24 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors">
+    <section
+      id="planos"
+      className="py-16 md:py-24 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main card modal wrapper */}
         <div className="bg-white dark:bg-[#0C0D0F] rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-12 border border-neutral-200 dark:border-neutral-800 shadow-xl max-w-5xl mx-auto">
@@ -260,10 +242,12 @@ export const LiraPricing: React.FC = () => {
               </span>
               <span
                 className={`block text-[11px] font-semibold leading-tight mt-0.5 transition-opacity ${
-                  isAnnual ? 'text-neutral-700 dark:text-neutral-300 opacity-100' : 'text-neutral-400 dark:text-neutral-500 opacity-75'
+                  isAnnual
+                    ? 'text-neutral-700 dark:text-neutral-300 opacity-100'
+                    : 'text-neutral-400 dark:text-neutral-500 opacity-75'
                 }`}
               >
-                economize até 40%
+                economize 20%
               </span>
             </button>
 

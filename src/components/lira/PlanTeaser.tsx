@@ -38,12 +38,14 @@ export const LiraPlanTeaser: React.FC = () => {
         </Link>
 
         {/* Assurance / Trust Microcopy */}
-        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-neutral-500 dark:text-[#9A9DA3] mt-5 select-none">
-          <span>14 dias de teste grátis</span>
-          <span className="hidden sm:inline text-neutral-300 dark:text-neutral-700">•</span>
-          <span>Sem cartão de crédito</span>
-          <span className="hidden sm:inline text-neutral-300 dark:text-neutral-700">•</span>
-          <span>Cancele quando quiser</span>
+        <div className="mt-4 flex items-center justify-center">
+          <Link
+            href="#contato"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-cyan-50 hover:bg-cyan-100 dark:bg-[#00D3F2]/10 dark:hover:bg-[#00D3F2]/20 border border-cyan-200 dark:border-[#00D3F2]/30 text-sm sm:text-[15px] font-semibold text-cyan-800 dark:text-[#53EAFD] transition-colors"
+          >
+            <span>Faça o teste de 14 dias</span>
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </div>
     </section>

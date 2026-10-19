@@ -4,6 +4,7 @@ import Link from 'next/link'
 export interface SegmentItem {
   id: string
   title: string
+  tagline?: string
   description: string
   ctaText: string
   image: string
@@ -13,21 +14,27 @@ export const SEGMENT_ITEMS: SegmentItem[] = [
   {
     id: 'barbearia',
     title: 'Barbearia',
-    description: 'Assinatura de corte + barba e agenda sem buraco.',
+    tagline: 'Assinatura de corte + barba e agenda sem buraco.',
+    description:
+      'Focado em estabelecimentos de alto volume com ciclos rápidos de atendimento e foco em zerar as faltas (no-shows) com agendamento instantâneo via WhatsApp e link.',
     ctaText: 'Ver solução para barbearias',
     image: '/segmentos/barbearia.jpg',
   },
   {
     id: 'salao-de-beleza',
     title: 'Salão de beleza',
-    description: 'Todas as cadeiras, comissões e estoque sob controle.',
+    tagline: 'Todas as cadeiras, comissões e estoque sob controle.',
+    description:
+      'Organização completa para equipes de múltiplos profissionais, permitindo controle detalhado de faturamento bruto, relatórios de repasses e gestão eficiente da escala diária ou mensal.',
     ctaText: 'Ver solução para salões de beleza',
     image: '/segmentos/salao.jpg',
   },
   {
     id: 'clinica-de-estetica',
     title: 'Clínica de estética',
-    description: 'Pacotes de sessões, antes e depois e agenda impecável.',
+    tagline: 'Pacotes de sessões, antes e depois e agenda impecável.',
+    description:
+      'Focado em estabelecimentos com ticket médio mais alto e foco em ROI por horário, garantindo total segurança operacional e controle financeiro automatizado.',
     ctaText: 'Ver solução para clínicas de estética',
     image: '/segmentos/estetica.jpg',
   },
@@ -56,7 +63,7 @@ export const LiraSegments: React.FC = () => {
             negócio.
           </h2>
           <p className="text-sm sm:text-base text-neutral-600 dark:text-[#9A9DA3] leading-relaxed max-w-2xl font-normal">
-            Cada segmento tem seu ritmo. O Lira se adapta ao seu — com funcionalidades, números de mercado e planos de assinatura pensados para a sua realidade.
+            Cada segmento tem o seu ritmo, e o Lira Agendamentos se adapta exatamente à sua realidade operacional — com funcionalidades específicas, números de mercado e planos pensados para o seu tipo de estabelecimento.
           </p>
         </div>
 
@@ -66,7 +73,7 @@ export const LiraSegments: React.FC = () => {
             <Link
               key={item.id}
               href="#contato"
-              className="group relative rounded-[24px] overflow-hidden aspect-[4/5] min-h-[380px] sm:min-h-[420px] bg-neutral-900 shadow-sm hover:shadow-2xl hover:shadow-cyan-950/30 border border-neutral-200/40 dark:border-white/10 hover:border-cyan-500/50 dark:hover:border-cyan-400/50 transition-all duration-300 flex flex-col justify-end"
+              className="group relative rounded-[24px] overflow-hidden min-h-[420px] sm:min-h-[460px] bg-neutral-900 shadow-sm hover:shadow-2xl hover:shadow-cyan-950/30 border border-neutral-200/40 dark:border-white/10 hover:border-cyan-500/50 dark:hover:border-cyan-400/50 transition-all duration-300 flex flex-col justify-end"
             >
               {/* Background Image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -78,14 +85,19 @@ export const LiraSegments: React.FC = () => {
               />
 
               {/* Bottom Gradient Overlay for optimal legibility */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 via-55% to-transparent pointer-events-none transition-opacity duration-300 group-hover:via-black/60" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 via-65% to-transparent pointer-events-none transition-opacity duration-300 group-hover:via-black/70" />
 
               {/* Card Bottom Content */}
               <div className="relative z-10 p-6 sm:p-7 flex flex-col justify-end text-left">
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-1.5 leading-tight tracking-tight">
                   {item.title}
                 </h3>
-                <p className="text-xs sm:text-[13px] text-neutral-200/90 leading-snug mb-5 font-normal max-w-xs">
+                {item.tagline && (
+                  <p className="text-xs sm:text-[13px] font-medium text-cyan-300 dark:text-[#53EAFD] mb-2.5 leading-snug">
+                    {item.tagline}
+                  </p>
+                )}
+                <p className="text-xs sm:text-[13px] text-neutral-200/90 leading-relaxed mb-5 font-normal">
                   {item.description}
                 </p>
                 <div className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-medium text-white/95 group-hover:text-cyan-300 dark:group-hover:text-[#53EAFD] transition-colors">
