@@ -18,6 +18,7 @@ const localNetworkIps = Object.values(os.networkInterfaces())
   .map((iface) => iface.address)
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   allowedDevOrigins: Array.from(
     new Set([
       'localhost',
