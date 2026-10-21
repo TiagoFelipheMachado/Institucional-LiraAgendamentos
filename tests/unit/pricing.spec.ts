@@ -71,7 +71,6 @@ describe('Lira pricing plans (TDD)', () => {
   })
 
   it('getPlanById throws for an unknown plan id instead of returning undefined silently', () => {
-    // @ts-expect-error deliberate invalid id to assert runtime safety
     expect(() => getPlanById('enterprise')).toThrow()
   })
 })
