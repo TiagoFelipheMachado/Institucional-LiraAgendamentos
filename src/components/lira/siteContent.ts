@@ -16,7 +16,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: 'Quanto custa?',
     answer:
-      'Temos planos a partir de R$ 69,90/mês (Lira Start, com 1º mês por R$ 59,42 no cupom ou plano anual com 20% off), além dos planos Lira Plus e Lira Vega para operações maiores. Você pode conferir os recursos completos na página de planos.',
+      'Temos planos a partir de R$ 69,90/mês (Lira Start, ou R$ 55,92/mês no plano anual com 20% off), além dos planos Lira Plus e Lira Vega para operações maiores. Você pode conferir os recursos completos na página de planos.',
   },
   {
     question: 'Como funciona o teste grátis?',

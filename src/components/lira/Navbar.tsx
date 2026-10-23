@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Icon } from './Icon'
 import { ThemeSwitch } from '@/components/ThemeSwitch'
 import { FEATURES, SEGMENTS } from './siteContent'
+import { LIRA_APP_URL } from '@/utilities/lira/pricing'
 
 // Native aspect ratio of public/logo-lira.svg (the official brand asset).
 const LOGO_ASPECT_RATIO = 280 / 43
@@ -105,7 +106,7 @@ export const LiraNavbar: React.FC = () => {
             the back-office app confirms it.
           */}
           <a
-            href="https://app.liragenda.com.br/login"
+            href={`${LIRA_APP_URL}/login`}
             className="hidden sm:inline-flex items-center justify-center px-3 py-2 min-h-[44px] text-[14px] font-medium text-neutral-600 dark:text-[#9A9DA3] hover:text-neutral-900 dark:hover:text-white transition-colors"
           >
             Login
@@ -185,7 +186,7 @@ export const LiraNavbar: React.FC = () => {
             <ThemeSwitch showLabel />
           </div>
           <a
-            href="https://app.liragenda.com.br/login"
+            href={`${LIRA_APP_URL}/login`}
             onClick={closeMenu}
             className="min-h-[44px] flex items-center px-2 rounded-[8px] text-[15px] text-neutral-600 dark:text-[#9A9DA3] border-t border-neutral-200 dark:border-[#1A1B1D] pt-3"
           >

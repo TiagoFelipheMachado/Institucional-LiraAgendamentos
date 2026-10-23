@@ -1,5 +1,16 @@
 export type BillingCycle = 'annual' | 'monthly'
 
+/** Sistema (app). Roda em HashRouter: rotas internas vão depois de `/#`. */
+export const LIRA_APP_URL = 'https://app.liragenda.com.br'
+
+/** Checkout no sistema; o preço é calculado lá a partir do nome do plano. */
+export function checkoutUrl(plan: PricingPlan, cycle: BillingCycle): string {
+  const params = new URLSearchParams({ plan: plan.name, period: cycle })
+  return `${LIRA_APP_URL}/#/checkout?${params}`
+}
+
+export const TRIAL_SIGNUP_URL = `${LIRA_APP_URL}/#/register`
+
 export interface PricingPlan {
   id: 'start' | 'plus' | 'vega' | 'essencial' | 'avancado' | 'profissional'
   name: string
@@ -40,9 +51,9 @@ export const LIRA_PRICING_PLANS: PricingPlan[] = [
     annualDiscountPercent: 20,
     annualTotal: 671.04,
     popular: false,
-    conditionText: '1º mês por R$ 59,42 (usando cupom Bem-vindo 1 a 10)',
-    savingsPill: '1º MÊS POR R$ 59,42',
-    couponText: 'CUPOM: BEM-VINDO 1 A 10',
+    conditionText: 'Plano Anual equivalente a R$ 55,92 / mês (20% off)',
+    savingsPill: 'PLANO ANUAL: R$ 55,92 / MÊS',
+    couponText: 'ECONOMIZE 20% NO ANUAL',
     features: [
       'Agendamento online automatizado',
       'Confirmação via WhatsApp IA',

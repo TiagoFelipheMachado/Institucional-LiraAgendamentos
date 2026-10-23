@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { LIRA_PRICING_PLANS, roundToCents, getPlanById } from '@/utilities/lira/pricing'
+import { LIRA_PRICING_PLANS, roundToCents, getPlanById, checkoutUrl } from '@/utilities/lira/pricing'
 
 describe('Lira pricing plans (TDD)', () => {
   it('exposes exactly the 3 official plans with stable ids', () => {
@@ -20,7 +20,7 @@ describe('Lira pricing plans (TDD)', () => {
     expect(plan.annualPricePerMonth).toBe(55.92)
     expect(plan.annualSavingsPerMonth).toBe(13.98)
     expect(plan.annualTotal).toBe(671.04)
-    expect(plan.conditionText).toContain('1º mês por R$ 59,42')
+    expect(plan.conditionText).toContain('Plano Anual equivalente a R$ 55,92 / mês (20% off)')
     expect(plan.features).toContain('Agendamento online automatizado')
     expect(plan.features).toContain('Confirmação via WhatsApp IA')
     expect(plan.features).toContain('Integração Pix integrada')
@@ -72,5 +72,11 @@ describe('Lira pricing plans (TDD)', () => {
 
   it('getPlanById throws for an unknown plan id instead of returning undefined silently', () => {
     expect(() => getPlanById('enterprise')).toThrow()
+  })
+
+  it('checkoutUrl aponta para o checkout do sistema com o nome do plano e o ciclo', () => {
+    expect(checkoutUrl(getPlanById('plus'), 'annual')).toBe(
+      'https://app.liragenda.com.br/#/checkout?plan=Lira+Plus&period=annual',
+    )
   })
 })
