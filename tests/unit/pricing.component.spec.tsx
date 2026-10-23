@@ -39,7 +39,8 @@ describe('LiraPricing section (TDD)', () => {
     expect(screen.getByText(/R\$\s?139,90/)).toBeTruthy()
 
     // Condition text
-    expect(screen.getByText(/1º mês por R\$\s?59,42/i)).toBeTruthy()
+    expect(screen.getAllByText(/Plano Anual equivalente a R\$\s?55,92/i).length).toBeGreaterThan(0)
+    expect(screen.queryByText(/cupom/i)).toBeNull()
     expect(screen.getAllByText(/Plano Anual equivalente a R\$\s?79,92/i).length).toBeGreaterThan(0)
   })
 
@@ -53,7 +54,7 @@ describe('LiraPricing section (TDD)', () => {
     const anualBtn = screen.getByRole('button', { name: /plano anual/i })
     fireEvent.click(anualBtn)
 
-    expect(screen.getByText(/R\$\s?55,92/)).toBeTruthy()
+    expect(screen.getAllByText(/R\$\s?55,92/).length).toBeGreaterThan(0)
   })
 
   it('displays the official operational features without artificial limits', () => {
@@ -71,8 +72,22 @@ describe('LiraPricing section (TDD)', () => {
   it('every plan has accessible CTA buttons and test link', () => {
     render(<LiraPricing />)
     const ctas = screen.getAllByRole('link', { name: /contratar plano/i })
-    expect(ctas.length).toBe(3)
-    const freeTrialLinks = screen.getAllByRole('link', { name: /continuar meu teste gr[aá]tis/i })
-    expect(freeTrialLinks.length).toBe(3)
+    expect(ctas.map((a) => a.getAttribute('href'))).toEqual([
+      'https://app.liragenda.com.br/#/checkout?plan=Lira+Start&period=annual',
+      'https://app.liragenda.com.br/#/checkout?plan=Lira+Plus&period=annual',
+      'https://app.liragenda.com.br/#/checkout?plan=Lira+Vega&period=annual',
+    ])
+    const freeTrialLinks = screen.getAllByRole('link', { name: /testar gr[aá]tis por 14 dias/i })
+    expect(freeTrialLinks.map((a) => a.getAttribute('href'))).toEqual(
+      Array(3).fill('https://app.liragenda.com.br/#/register'),
+    )
+  })
+
+  it('switching to monthly updates the checkout links', () => {
+    render(<LiraPricing />)
+    fireEvent.click(screen.getByRole('button', { name: /plano mensal/i }))
+    expect(screen.getAllByRole('link', { name: /contratar plano/i })[0].getAttribute('href')).toBe(
+      'https://app.liragenda.com.br/#/checkout?plan=Lira+Start&period=monthly',
+    )
   })
 })

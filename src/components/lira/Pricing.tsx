@@ -3,6 +3,8 @@
 import React, { useState } from 'react'
 import {
   LIRA_PRICING_PLANS,
+  TRIAL_SIGNUP_URL,
+  checkoutUrl,
   formatBRLWithCents,
   type BillingCycle,
   type PricingPlan,
@@ -179,7 +181,7 @@ function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
       {/* CTA Buttons */}
       <div className="mt-auto pt-6">
         <a
-          href="#contato"
+          href={checkoutUrl(plan, isAnnual ? 'annual' : 'monthly')}
           className={`w-full py-3 px-6 rounded-full font-semibold text-sm transition-all text-center block ${
             isPurple
               ? 'bg-[#581C87] hover:bg-[#4A1472] text-white shadow-lg shadow-purple-950/30'
@@ -190,14 +192,14 @@ function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
         </a>
 
         <a
-          href="#contato"
+          href={TRIAL_SIGNUP_URL}
           className={`text-xs text-center mt-3 block font-medium transition-colors ${
             isPurple
               ? 'text-white/90 hover:text-white underline-offset-2 hover:underline'
               : 'text-[#1D72FE] dark:text-[#38BDF8] hover:underline'
           }`}
         >
-          Continuar meu teste grátis
+          Testar grátis por 14 dias
         </a>
       </div>
     </div>
@@ -222,7 +224,7 @@ export const LiraPricing: React.FC = () => {
               Conheça os planos
             </h2>
             <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
-              Está gostando de utilizar nosso sistema? Assine um plano e desbloqueie todas as funcionalidades:
+              Todos os planos começam com 14 dias grátis, sem cartão de crédito. Escolha o seu:
             </p>
           </div>
 
