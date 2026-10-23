@@ -1,7 +1,11 @@
 import React from 'react'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { LiraContactPage } from '@/components/lira/ContactPage'
+
+vi.mock('@/utilities/lira/sendContactEmail', () => ({
+  sendContactEmail: vi.fn(async () => ({ ok: true })),
+}))
 
 describe('LiraContactPage component', () => {
   it('renders breadcrumb and main contact headings', () => {

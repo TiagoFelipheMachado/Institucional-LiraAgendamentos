@@ -7,6 +7,7 @@ import {
   ContactFormPayload,
 } from '@/utilities/lira/validation'
 import { sanitizePayload, detectSpamSubmission } from '@/utilities/lira/security'
+import { sendContactEmail } from '@/utilities/lira/sendContactEmail'
 import { Icon } from './Icon'
 
 export const LiraContactSection: React.FC = () => {
@@ -52,7 +53,7 @@ export const LiraContactSection: React.FC = () => {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
@@ -80,11 +81,11 @@ export const LiraContactSection: React.FC = () => {
       return
     }
 
-    // 4. Successful submission
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSuccess(true)
-    }, 600)
+    // 4. Submission (server re-validates and sends via Resend)
+    const result = await sendContactEmail(sanitized)
+    setIsSubmitting(false)
+    if (result.ok) setIsSuccess(true)
+    else setErrors(result.errors)
   }
 
   return (
@@ -346,6 +347,12 @@ export const LiraContactSection: React.FC = () => {
                       </span>
                     )}
                   </div>
+
+                  {errors.form && (
+                    <span role="alert" className="text-[12px] text-rose-500 font-mono block">
+                      {errors.form}
+                    </span>
+                  )}
 
                   {/* Submit Button */}
                   <button

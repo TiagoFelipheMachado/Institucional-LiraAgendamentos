@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { render, fireEvent, screen, waitFor } from '@testing-library/react'
@@ -9,6 +9,10 @@ import { LiraWhiteLabelSimulator } from '@/components/lira/WhiteLabelSimulator'
 import { LiraContactSection } from '@/components/lira/ContactSection'
 import { StatusBadge } from '@/components/lira/StatusBadge'
 import { LiraLandingPage } from '@/components/lira/LiraLandingPage'
+
+vi.mock('@/utilities/lira/sendContactEmail', () => ({
+  sendContactEmail: vi.fn(async () => ({ ok: true })),
+}))
 
 describe('Design System Rules & UI Contracts (TDD)', () => {
   describe('Rule: Branco é o CTA do Site, Ciano é o CTA de Produto', () => {
