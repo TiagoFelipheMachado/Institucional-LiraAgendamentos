@@ -1,4 +1,5 @@
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import { migrations } from './migrations'
 import sharp from 'sharp'
 import path from 'path'
 import { pt } from '@payloadcms/translations/languages/pt'
@@ -63,10 +64,12 @@ export default buildConfig({
     supportedLanguages: { pt },
     fallbackLanguage: 'pt',
   },
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URI || process.env.DATABASE_URL || 'file:./payload.db',
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL || '',
     },
+    // runs pending migrations on boot in production (push is dev-only)
+    prodMigrations: migrations,
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
