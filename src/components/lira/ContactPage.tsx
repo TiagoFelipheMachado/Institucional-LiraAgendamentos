@@ -6,6 +6,7 @@ import { LiraNavbar } from './Navbar'
 import { LiraFooter } from './Footer'
 import { LiraWhatsAppButton } from './WhatsAppButton'
 import { Icon } from './Icon'
+import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '@/utilities/lira/pricing'
 import {
   formatWhatsApp,
   validateContactForm,
@@ -138,7 +139,7 @@ export const LiraContactPage: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-14 sm:mb-20">
             {/* Channel 1: WhatsApp Comercial */}
             <a
-              href="https://wa.me/5541999999999?text=Ol%C3%A1%2C%20gostaria%20de%20conhecer%20o%20Lira%20Agendamentos!"
+              href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="group p-5 rounded-2xl bg-neutral-50 dark:bg-[#0C0E14] border border-neutral-200 dark:border-[#1E2230] hover:border-cyan-500/50 dark:hover:border-cyan-400/50 transition-all shadow-xs hover:shadow-lg flex flex-col justify-between"
@@ -150,9 +151,10 @@ export const LiraContactPage: React.FC = () => {
                 <h2 className="text-base font-semibold text-neutral-900 dark:text-white mb-1">
                   WhatsApp Comercial
                 </h2>
-                <p className="text-xs text-neutral-600 dark:text-[#9A9DA3] leading-relaxed mb-4">
+                <p className="text-xs text-neutral-600 dark:text-[#9A9DA3] leading-relaxed mb-1">
                   Converse em tempo real com um consultor e tire suas dúvidas agora.
                 </p>
+                <p className="text-sm font-mono text-neutral-900 dark:text-white mb-4">{WHATSAPP_DISPLAY}</p>
               </div>
               <span className="text-xs font-semibold text-cyan-600 dark:text-[#53EAFD] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                 Iniciar conversa →
