@@ -4,10 +4,10 @@ import { renderToString } from 'react-dom/server'
 import { LiraSegments, SEGMENT_ITEMS } from '@/components/lira/Segments'
 
 describe('LiraSegments section (TDD)', () => {
-  it('renders with id="segmentos" and legacy anchor id="nichos"', () => {
+  it('renders with id="segmentos" and cards linking to each segment page', () => {
     const html = renderToString(<LiraSegments />)
     expect(html).toContain('id="segmentos"')
-    expect(html).toContain('id="nichos"')
+    expect(html).toContain('href="/segmentos/barbearia"')
   })
 
   it('renders the headline with "Feito para o seu negócio."', () => {

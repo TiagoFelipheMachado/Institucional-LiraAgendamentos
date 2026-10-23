@@ -43,7 +43,7 @@ describe('LiraBlogArchive template', () => {
     render(<LiraBlogArchive posts={[mockPost]} />)
 
     expect(screen.getByText('Início')).toBeDefined()
-    expect(screen.getByText('Blog')).toBeDefined()
+    expect(screen.getAllByText('Blog').length).toBeGreaterThan(0)
     expect(screen.getByPlaceholderText(/Buscar por tema ou título/i)).toBeDefined()
     expect(screen.getByText('Todos os artigos')).toBeDefined()
   })

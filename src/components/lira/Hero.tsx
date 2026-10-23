@@ -53,7 +53,7 @@ export const LiraHero: React.FC = () => {
               </Link>
 
               <Link
-                href="#planos"
+                href="/planos"
                 className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 min-h-[44px] rounded-[12px] text-[15px] font-medium text-neutral-800 bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 dark:bg-[#1A1B1D]/80 dark:text-[#E5E2E3] dark:border-[#14454F] dark:hover:bg-[#1A1B1D] dark:hover:border-[#00D3F2]/60 transition-all active:scale-[0.98]"
               >
                 Conhecer Planos disponíveis

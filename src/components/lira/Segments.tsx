@@ -46,9 +46,6 @@ export const LiraSegments: React.FC = () => {
       id="segmentos"
       className="relative py-20 md:py-28 bg-[#F6F8FA] dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors duration-200 scroll-mt-20"
     >
-      {/* Invisible anchor target for legacy #nichos links */}
-      <span id="nichos" className="absolute -top-24 left-0 pointer-events-none opacity-0" aria-hidden="true" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section — Left aligned matching layout reference */}
         <div className="max-w-3xl mb-12 sm:mb-16">
@@ -72,7 +69,7 @@ export const LiraSegments: React.FC = () => {
           {SEGMENT_ITEMS.map((item) => (
             <Link
               key={item.id}
-              href="#contato"
+              href={`/segmentos/${item.id}`}
               className="group relative rounded-[24px] overflow-hidden min-h-[420px] sm:min-h-[460px] bg-neutral-900 shadow-sm hover:shadow-2xl hover:shadow-cyan-950/30 border border-neutral-200/40 dark:border-white/10 hover:border-cyan-500/50 dark:hover:border-cyan-400/50 transition-all duration-300 flex flex-col justify-end"
             >
               {/* Background Image */}

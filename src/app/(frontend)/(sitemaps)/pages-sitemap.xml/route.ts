@@ -2,6 +2,7 @@ import { getServerSideSitemap } from 'next-sitemap'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
+import { FEATURES, SEGMENTS } from '@/components/lira/siteContent'
 
 const getPagesSitemap = unstable_cache(
   async () => {
@@ -40,6 +41,17 @@ const getPagesSitemap = unstable_cache(
         loc: `${SITE_URL}/posts`,
         lastmod: dateFallback,
       },
+      // Institutional pages live in code, not in the Payload `pages` collection.
+      ...[
+        '/funcionalidades',
+        ...FEATURES.map((f) => `/funcionalidades/${f.slug}`),
+        '/segmentos',
+        ...SEGMENTS.map((s) => `/segmentos/${s.slug}`),
+        '/planos',
+        '/sobre',
+        '/contato',
+        '/blog',
+      ].map((path) => ({ loc: `${SITE_URL}${path}`, lastmod: dateFallback })),
     ]
 
     const sitemap = results.docs

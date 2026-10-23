@@ -13,7 +13,7 @@ export const LiraPillars: React.FC = () => {
       title: 'Central Integrada de Mensagens (WhatsApp)',
       desc: 'Centralize conversas em uma fila de atendimento inteligente, onde a IA tira dúvidas e agenda horários automaticamente, com alternância imediata para a sua equipe.',
       linkText: 'Conhecer central e fluxo de IA →',
-      linkHref: '#fluxo-ia',
+      linkHref: '/funcionalidades/atendimento-ia',
     },
     {
       step: '3',

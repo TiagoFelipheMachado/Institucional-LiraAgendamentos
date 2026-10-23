@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { Icon } from './Icon'
 import { ThemeSwitch } from '@/components/ThemeSwitch'
+import { FEATURES, SEGMENTS } from './siteContent'
 
 // Native aspect ratio of public/logo-lira.svg (the official brand asset).
 const LOGO_ASPECT_RATIO = 280 / 43
@@ -17,19 +18,39 @@ export const LiraLogo: React.FC<{ size?: number; className?: string }> = ({ size
   )
 }
 
-// Exact set from the reference layout (Frame.svg) — only these 4. The other
-// built sections (Nichos, Planos, Calculadora ROI, White-Label, FAQ...)
-// stay reachable via scroll and the footer's "Sistema" links instead of
-// being added here, per explicit instruction to match the reference 1:1.
-const NAV_LINKS: Array<{ href: string; label: string }> = [
-  { href: '/#desafios', label: 'Desafios' },
-  { href: '/#pilares', label: 'Pilares' },
-  { href: '/#primeiros-passos', label: 'Como Funciona' },
-  { href: '/contato', label: 'Contato' },
+type NavItem = { href: string; label: string; children?: Array<{ href: string; label: string }> }
+
+// Every sub-link is a page of its own; the parent link (when it has an href) is the overview page.
+const NAV_ITEMS: NavItem[] = [
+  {
+    href: '/funcionalidades',
+    label: 'Funcionalidades',
+    children: FEATURES.map((f) => ({ href: `/funcionalidades/${f.slug}`, label: f.label })),
+  },
+  {
+    href: '/segmentos',
+    label: 'Segmentos',
+    children: SEGMENTS.map((s) => ({ href: `/segmentos/${s.slug}`, label: s.label })),
+  },
+  { href: '/planos', label: 'Planos' },
+  {
+    href: '/sobre',
+    label: 'Empresa',
+    children: [
+      { href: '/sobre', label: 'Sobre' },
+      { href: '/blog', label: 'Blog' },
+      { href: '/contato', label: 'Contato' },
+    ],
+  },
 ]
+
+const TOP_LINK_CLASS =
+  "inline-flex items-center gap-0.5 hover:text-neutral-900 dark:hover:text-[#E5E2E3] group-hover:text-neutral-900 dark:group-hover:text-[#E5E2E3] transition-colors relative py-1 hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1.5px] hover:after:bg-[#00D3F2]"
 
 export const LiraNavbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [openGroup, setOpenGroup] = useState<string | null>(null)
+  const closeMenu = () => setIsMobileMenuOpen(false)
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#070708]/90 backdrop-blur-md border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors duration-200">
@@ -40,15 +61,35 @@ export const LiraNavbar: React.FC = () => {
 
         {/* Centered independently of the logo/actions widths on either side. */}
         <nav className="hidden md:flex items-center gap-7 text-[14px] text-neutral-600 dark:text-[#9A9DA3] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="hover:text-neutral-900 dark:hover:text-[#E5E2E3] transition-colors relative py-1 hover:after:content-[''] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:right-0 hover:after:h-[1.5px] hover:after:bg-[#00D3F2]"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_ITEMS.map((item) =>
+            item.children ? (
+              // Opens on hover and on keyboard focus (focus-within), no JS needed.
+              <div key={item.label} className="relative group">
+                <Link href={item.href} className={TOP_LINK_CLASS} aria-haspopup="true">
+                  {item.label}
+                  <Icon name="expand_more" size={18} className="transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
+                </Link>
+                <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-0 transition-all duration-150">
+                  <ul className="min-w-[240px] p-2 rounded-[14px] bg-white dark:bg-[#0C0D11] border border-neutral-200 dark:border-[#1A1C24] shadow-[0_12px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.6)]">
+                    {item.children.map((child) => (
+                      <li key={child.href}>
+                        <Link
+                          href={child.href}
+                          className="flex items-center min-h-[40px] px-3 rounded-[8px] text-neutral-700 dark:text-[#B5B8BE] hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-[#1A1B1D] dark:hover:text-white transition-colors"
+                        >
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <Link key={item.label} href={item.href} className={TOP_LINK_CLASS}>
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
@@ -72,7 +113,7 @@ export const LiraNavbar: React.FC = () => {
 
           {/* Design rule: BRANCO/ALTO CONTRASTE É O CTA DO SITE, CIANO É O CTA DE PRODUTO. Alvo mínimo 44px. Raio 12px per design system section 12. */}
           <Link
-            href="#planos"
+            href="/planos"
             className="inline-flex items-center justify-center px-3.5 sm:px-5 py-2 sm:py-2.5 min-h-[44px] rounded-[12px] text-xs sm:text-[14px] font-semibold bg-neutral-900 text-white hover:bg-neutral-800 shadow-[0_2px_12px_rgba(0,0,0,0.12)] dark:bg-white dark:text-[#070708] dark:hover:bg-neutral-100 dark:shadow-[0_2px_12px_rgba(255,255,255,0.15)] transition-all active:scale-[0.98]"
           >
             Cadastre-se
@@ -96,25 +137,56 @@ export const LiraNavbar: React.FC = () => {
       {isMobileMenuOpen && (
         <nav
           id="lira-mobile-menu"
-          className="md:hidden border-t border-neutral-200 dark:border-[#1A1B1D] bg-white dark:bg-[#070708] px-4 py-4 flex flex-col gap-2 shadow-lg"
+          className="md:hidden max-h-[calc(100vh-68px)] overflow-y-auto border-t border-neutral-200 dark:border-[#1A1B1D] bg-white dark:bg-[#070708] px-4 py-4 flex flex-col gap-2 shadow-lg"
         >
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="min-h-[44px] flex items-center px-2 rounded-[8px] text-[15px] text-neutral-800 dark:text-[#E5E2E3] hover:bg-neutral-100 dark:hover:bg-[#1A1B1D] transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_ITEMS.map((item) =>
+            item.children ? (
+              <div key={item.label}>
+                <button
+                  type="button"
+                  aria-expanded={openGroup === item.label}
+                  onClick={() => setOpenGroup((prev) => (prev === item.label ? null : item.label))}
+                  className="w-full min-h-[44px] flex items-center justify-between px-2 rounded-[8px] text-[15px] text-neutral-800 dark:text-[#E5E2E3] hover:bg-neutral-100 dark:hover:bg-[#1A1B1D] transition-colors"
+                >
+                  {item.label}
+                  <Icon name="expand_more" size={20} className={`transition-transform ${openGroup === item.label ? 'rotate-180' : ''}`} />
+                </button>
+                {openGroup === item.label && (
+                  <ul className="pl-4 pb-1">
+                    {[{ href: item.href, label: 'Visão geral' }, ...item.children]
+                      .filter((child, i, all) => all.findIndex((c) => c.href === child.href) === i)
+                      .map((child) => (
+                        <li key={child.href}>
+                          <Link
+                            href={child.href}
+                            onClick={closeMenu}
+                            className="min-h-[44px] flex items-center px-2 rounded-[8px] text-[14px] text-neutral-600 dark:text-[#9A9DA3] hover:bg-neutral-100 dark:hover:bg-[#1A1B1D] transition-colors"
+                          >
+                            {child.label}
+                          </Link>
+                        </li>
+                      ))}
+                  </ul>
+                )}
+              </div>
+            ) : (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={closeMenu}
+                className="min-h-[44px] flex items-center px-2 rounded-[8px] text-[15px] text-neutral-800 dark:text-[#E5E2E3] hover:bg-neutral-100 dark:hover:bg-[#1A1B1D] transition-colors"
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
           <div className="flex items-center justify-between border-t border-neutral-200 dark:border-[#1A1B1D] pt-3 px-2">
             <span className="text-[14px] text-neutral-600 dark:text-[#9A9DA3]">Tema</span>
             <ThemeSwitch showLabel />
           </div>
           <a
             href="https://app.liragenda.com.br/login"
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={closeMenu}
             className="min-h-[44px] flex items-center px-2 rounded-[8px] text-[15px] text-neutral-600 dark:text-[#9A9DA3] border-t border-neutral-200 dark:border-[#1A1B1D] pt-3"
           >
             Login

@@ -25,8 +25,20 @@ describe('Navbar responsive mobile menu (TDD)', () => {
     fireEvent.click(toggle)
 
     expect(toggle.getAttribute('aria-expanded')).toBe('true')
-    expect(screen.getAllByText('Pilares').length).toBeGreaterThan(0)
-    expect(screen.getAllByText('Contato').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Funcionalidades').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Planos').length).toBeGreaterThan(0)
+  })
+
+  it('expands a group into its sub-pages when tapped', () => {
+    render(<LiraNavbar />)
+    fireEvent.click(screen.getByRole('button', { name: /abrir menu/i }))
+    const drawer = document.getElementById('lira-mobile-menu')!
+    const group = Array.from(drawer.querySelectorAll('button')).find((b) => b.textContent === 'Empresaexpand_more')!
+
+    fireEvent.click(group)
+
+    expect(group.getAttribute('aria-expanded')).toBe('true')
+    expect(drawer.querySelector('a[href="/contato"]')).not.toBeNull()
   })
 
   it('closes the menu again when toggled a second time', () => {

@@ -2,6 +2,24 @@ import React from 'react'
 import Link from 'next/link'
 import { LiraLogo } from './Navbar'
 import { ThemeSwitch } from '@/components/ThemeSwitch'
+import { FEATURES, SEGMENTS } from './siteContent'
+
+const FooterColumn: React.FC<{ title: string; links: Array<{ href: string; label: string }> }> = ({ title, links }) => (
+  <div className="md:col-span-2 space-y-3">
+    <span className="text-[11px] font-mono tracking-[0.08em] uppercase text-neutral-900 dark:text-white font-semibold block">
+      {title}
+    </span>
+    <ul className="space-y-2.5 text-neutral-600 dark:text-[#9A9DA3] text-[13px]">
+      {links.map((link) => (
+        <li key={link.href}>
+          <Link href={link.href} className="hover:text-purple-600 dark:hover:text-white transition-colors">
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+)
 
 export const LiraFooter: React.FC = () => {
   return (
@@ -9,80 +27,32 @@ export const LiraFooter: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-10 mb-12">
           {/* Brand & Value Prop */}
-          <div className="sm:col-span-2 md:col-span-5 space-y-4">
+          <div className="sm:col-span-2 md:col-span-3 space-y-4">
             <LiraLogo size={32} />
             <p className="text-neutral-600 dark:text-[#9A9DA3] text-[13px] leading-relaxed max-w-sm">
               Plataforma completa de agendamento inteligente, atendimento automatizado no WhatsApp e gestão financeira para negócios que vivem de agenda.
             </p>
           </div>
 
-          {/* Links Column 1: Navegação do Sistema */}
-          <div className="md:col-span-2 space-y-3">
-            <span className="text-[11px] font-mono tracking-[0.08em] uppercase text-neutral-900 dark:text-white font-semibold block">
-              SISTEMA
-            </span>
-            <ul className="space-y-2.5 text-neutral-600 dark:text-[#9A9DA3] text-[13px]">
-              <li>
-                <Link href="#desafios" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Desafios da Agenda
-                </Link>
-              </li>
-              <li>
-                <Link href="#pilares" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Pilares do Lira
-                </Link>
-              </li>
-              <li>
-                <Link href="#primeiros-passos" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Como Funciona
-                </Link>
-              </li>
-              <li>
-                <Link href="#produtos" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Produtos & Recursos
-                </Link>
-              </li>
-              <li>
-                <Link href="#planos" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Planos e Preços
-                </Link>
-              </li>
-              <li>
-                <Link href="#faq" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Perguntas Frequentes
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Blog &amp; Artigos
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Links Column 2: Segmentos Atendidos */}
-          <div className="md:col-span-2 space-y-3">
-            <span className="text-[11px] font-mono tracking-[0.08em] uppercase text-neutral-900 dark:text-white font-semibold block">
-              SEGMENTOS
-            </span>
-            <ul className="space-y-2.5 text-neutral-600 dark:text-[#9A9DA3] text-[13px]">
-              <li>
-                <Link href="#segmentos" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Barbearias
-                </Link>
-              </li>
-              <li>
-                <Link href="#segmentos" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Salões de Beleza
-                </Link>
-              </li>
-              <li>
-                <Link href="#segmentos" className="hover:text-purple-600 dark:hover:text-white transition-colors">
-                  Clínicas de Estética
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <FooterColumn
+            title="FUNCIONALIDADES"
+            links={[
+              ...FEATURES.map((f) => ({ href: `/funcionalidades/${f.slug}`, label: f.label })),
+              { href: '/planos', label: 'Planos e Preços' },
+            ]}
+          />
+          <FooterColumn
+            title="SEGMENTOS"
+            links={SEGMENTS.map((s) => ({ href: `/segmentos/${s.slug}`, label: s.label }))}
+          />
+          <FooterColumn
+            title="EMPRESA"
+            links={[
+              { href: '/sobre', label: 'Sobre' },
+              { href: '/blog', label: 'Blog & Artigos' },
+              { href: '/contato', label: 'Contato' },
+            ]}
+          />
 
           {/* Links Column 3: Contato & Suporte */}
           <div className="sm:col-span-2 md:col-span-3 space-y-3">
@@ -129,6 +99,12 @@ export const LiraFooter: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-6">
+            <Link href="/politica-de-privacidade" className="hover:text-purple-600 dark:hover:text-white transition-colors">
+              Privacidade
+            </Link>
+            <Link href="/termos-de-uso" className="hover:text-purple-600 dark:hover:text-white transition-colors">
+              Termos de Uso
+            </Link>
             <ThemeSwitch showLabel />
           </div>
         </div>
