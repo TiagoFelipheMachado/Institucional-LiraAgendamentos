@@ -246,7 +246,7 @@ const sections: LegalSection[] = [
       <p>
         Estes termos são regidos pelas leis da República Federativa do Brasil. Fica eleito o foro do
         domicílio do Estabelecimento contratante para dirimir eventuais controvérsias. Dúvidas:{' '}
-        <a href="mailto:atendimento@liragenda.com">atendimento@liragenda.com</a>.
+        <a href="mailto:atendimento@liragenda.com.br">atendimento@liragenda.com.br</a>.
       </p>
     ),
   },

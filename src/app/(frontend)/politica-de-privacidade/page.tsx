@@ -268,7 +268,7 @@ const sections: LegalSection[] = [
         </ul>
         <p>
           Para exercer seus direitos, escreva para{' '}
-          <a href="mailto:atendimento@liragenda.com">atendimento@liragenda.com</a>.
+          <a href="mailto:atendimento@liragenda.com.br">atendimento@liragenda.com.br</a>.
           Responderemos em até 15 dias.
         </p>
       </>
@@ -282,8 +282,8 @@ const sections: LegalSection[] = [
         <p>
           <strong>Estabelecimentos:</strong> para excluir sua conta e os dados associados, inclusive
           os dados recebidos da Meta, envie um e-mail para{' '}
-          <a href="mailto:atendimento@liragenda.com?subject=Exclus%C3%A3o%20de%20dados">
-            atendimento@liragenda.com
+          <a href="mailto:atendimento@liragenda.com.br?subject=Exclus%C3%A3o%20de%20dados">
+            atendimento@liragenda.com.br
           </a>{' '}
           a partir do e-mail cadastrado, com o assunto &quot;Exclusão de dados&quot;. Você também pode
           desconectar o WhatsApp a qualquer momento no painel da Lira ou remover o acesso do aplicativo
@@ -339,7 +339,7 @@ const sections: LegalSection[] = [
       <p>
         Dúvidas sobre esta política ou sobre o tratamento de dados pessoais podem ser enviadas ao
         nosso encarregado pelo e-mail{' '}
-        <a href="mailto:atendimento@liragenda.com">atendimento@liragenda.com</a> ou pela
+        <a href="mailto:atendimento@liragenda.com.br">atendimento@liragenda.com.br</a> ou pela
         página de <a href="/contato">contato</a>.
       </p>
     ),
