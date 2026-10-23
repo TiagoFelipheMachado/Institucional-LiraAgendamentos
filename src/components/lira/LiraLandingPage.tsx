@@ -1,46 +1,33 @@
 import React from 'react'
-import { NotionScrollController } from './NotionScrollController'
-import { LiraNavbar } from './Navbar'
+import { LiraSitePage, LiraCardGrid } from './SitePage'
 import { LiraHero } from './Hero'
 import { LiraFeatureHighlights } from './FeatureHighlights'
 import { LiraTrustSegments } from './TrustSegments'
 import { LiraChallenges } from './Challenges'
-import { LiraMetricsPreview } from './MetricsPreview'
 import { LiraHowItWorks } from './HowItWorks'
-import { LiraPillars } from './Pillars'
-import { LiraProducts } from './Products'
-import { LiraCalendarView } from './CalendarView'
-import { LiraAIFlow } from './AIFlow'
-import { LiraSegments } from './Segments'
 import { LiraPlanTeaser } from './PlanTeaser'
-import { LiraPricing } from './Pricing'
 import { LiraFAQ } from './FAQ'
-import { LiraContactSection } from './ContactSection'
-import { LiraFooter } from './Footer'
-import { LiraWhatsAppButton } from './WhatsAppButton'
+import { FAQ_ITEMS } from './siteContent'
+
+// Entry points to the detailed pages that used to be sections of this one-pager.
+const EXPLORE = [
+  { icon: 'widgets', title: 'Funcionalidades', desc: 'Agenda online, IA no WhatsApp, sinal via Pix, comissões, caixa e white-label.', href: '/funcionalidades' },
+  { icon: 'storefront', title: 'Segmentos', desc: 'Barbearias, salões, clínicas de estética, podologia, esmalterias e studios.', href: '/segmentos' },
+  { icon: 'sell', title: 'Planos', desc: 'A partir de R$ 69,90/mês no plano anual, com 14 dias de teste grátis.', href: '/planos' },
+  { icon: 'diamond', title: 'Sobre a Lira', desc: 'A plataforma all-in-one para clínicas e barbearias premium.', href: '/sobre' },
+]
 
 export const LiraLandingPage: React.FC = () => {
   return (
-    <main className="min-h-screen w-full overflow-x-hidden bg-white dark:bg-[#070708] text-neutral-900 dark:text-[#E5E2E3] selection:bg-[#00D3F2]/30 selection:text-cyan-800 dark:selection:text-[#00D3F2] transition-colors duration-200">
-      <NotionScrollController />
-      <LiraNavbar />
+    <LiraSitePage>
       <LiraHero />
       <LiraFeatureHighlights />
       <LiraTrustSegments />
       <LiraChallenges />
-      {/* <LiraMetricsPreview /> */}
       <LiraHowItWorks />
-      <LiraPillars />
-      <LiraProducts />
-      <LiraCalendarView />
-      <LiraAIFlow />
-      <LiraSegments />
+      <LiraCardGrid title="Conheça o Lira" subtitle="Explore cada parte da plataforma em detalhes." cards={EXPLORE} muted />
       <LiraPlanTeaser />
-      <LiraPricing />
-      <LiraFAQ />
-      <LiraContactSection />
-      <LiraFooter />
-      <LiraWhatsAppButton />
-    </main>
+      <LiraFAQ items={FAQ_ITEMS.slice(0, 4)} />
+    </LiraSitePage>
   )
 }

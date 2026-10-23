@@ -18,9 +18,9 @@ describe('LiraPlanTeaser component (TDD)', () => {
     expect(html).toContain('cresce junto com o seu negócio')
   })
 
-  it('renders the CTA button linking to #planos', () => {
+  it('renders the CTA button linking to /planos', () => {
     const html = renderToString(<LiraPlanTeaser />)
     expect(html).toContain('Comparar todos os planos')
-    expect(html).toContain('href="#planos"')
+    expect(html).toContain('href="/planos"')
   })
 })

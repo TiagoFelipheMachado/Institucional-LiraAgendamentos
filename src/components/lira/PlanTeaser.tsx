@@ -24,7 +24,7 @@ export const LiraPlanTeaser: React.FC = () => {
 
         {/* CTA Button following Lira Primary Site CTA rules */}
         <Link
-          href="#planos"
+          href="/planos"
           className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-9 py-3.5 min-h-[44px] rounded-[14px] text-[15px] font-semibold bg-neutral-900 text-white hover:bg-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.12)] dark:bg-white dark:text-[#070708] dark:hover:bg-neutral-100 dark:shadow-[0_4px_24px_rgba(255,255,255,0.18)] transition-all duration-200 active:scale-[0.98] group"
         >
           <span>Comparar todos os planos</span>

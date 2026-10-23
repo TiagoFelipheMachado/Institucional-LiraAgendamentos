@@ -1,19 +1,7 @@
 import React from 'react'
+import Link from 'next/link'
 import { Icon } from './Icon'
-
-interface Niche {
-  name: string
-  icon: string
-}
-
-const NICHES: Niche[] = [
-  { name: 'Barbearia', icon: 'content_cut' },
-  { name: 'Salão de Beleza', icon: 'styler' },
-  { name: 'Clínica de Estética', icon: 'spa' },
-  { name: 'Podologia', icon: 'healing' },
-  { name: 'Manicure e Pedicure', icon: 'clean_hands' },
-  { name: 'Sobrancelhas e Cílios', icon: 'visibility' },
-]
+import { SEGMENTS } from './siteContent'
 
 export const LiraNiches: React.FC = () => {
   return (
@@ -35,18 +23,19 @@ export const LiraNiches: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-          {NICHES.map((niche) => (
-            <div
-              key={niche.name}
+          {SEGMENTS.map((niche) => (
+            <Link
+              key={niche.slug}
+              href={`/segmentos/${niche.slug}`}
               className="bg-neutral-50 dark:bg-[#0E1A1E]/60 border border-neutral-200 dark:border-[#14454F] rounded-[20px] p-6 flex flex-col items-start gap-4 hover:border-cyan-400 dark:hover:border-[#00D3F2]/40 shadow-xs hover:shadow-md transition-all"
             >
               <span className="w-11 h-11 rounded-[12px] bg-cyan-50 dark:bg-[#053345] border border-cyan-200 dark:border-[#14454F] flex items-center justify-center text-cyan-700 dark:text-[#53EAFD]">
                 <Icon name={niche.icon} size={22} />
               </span>
               <h3 className="text-[15px] font-semibold text-neutral-900 dark:text-white tracking-[-0.01em]">
-                {niche.name}
+                {niche.label}
               </h3>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

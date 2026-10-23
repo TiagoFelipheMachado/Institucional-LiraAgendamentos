@@ -32,11 +32,18 @@ describe('LiraNavbar — reference layout (TDD)', () => {
     expect(login.getAttribute('href')).not.toMatch(/^#contato$/)
   })
 
-  it('center nav matches the reference exactly: only Desafios, Pilares, Como Funciona, Contato', () => {
+  it('center nav has Funcionalidades, Segmentos, Planos and Empresa, with sub-pages as separate routes', () => {
+    const html = renderToString(<LiraNavbar />)
+    ;['Funcionalidades', 'Segmentos', 'Planos', 'Empresa'].forEach((label) => expect(html).toContain(label))
+    ;['/funcionalidades/atendimento-ia', '/segmentos/barbearia', '/sobre', '/blog', '/contato'].forEach((href) =>
+      expect(html).toContain(`href="${href}"`),
+    )
+    expect(html).not.toMatch(/href="\/?#/)
+  })
+
+  it('"Cadastre-se" points to the plans page', () => {
     render(<LiraNavbar />)
-    const nav = screen.getAllByRole('link', { name: /^(Desafios|Pilares|Como Funciona|Contato)$/ })
-    const labels = nav.map((n) => n.textContent).filter((v, i, arr) => arr.indexOf(v) === i)
-    expect(labels.sort()).toEqual(['Como Funciona', 'Contato', 'Desafios', 'Pilares'].sort())
+    expect(screen.getAllByRole('link', { name: /cadastre-se/i })[0].getAttribute('href')).toBe('/planos')
   })
 
   it('mobile drawer also exposes the "Login" link', () => {

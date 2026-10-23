@@ -1,51 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
+import { FAQ_ITEMS, type FaqItem } from './siteContent'
 
-export interface FaqItem {
-  question: string
-  answer: string
-}
-
-export const FAQ_ITEMS: FaqItem[] = [
-  {
-    question: 'Preciso instalar alguma coisa?',
-    answer:
-      'Não. O Lira é 100% online e funciona direto no navegador, tanto no computador quanto no celular. Seus clientes agendam pelo link ou WhatsApp sem precisar baixar nenhum aplicativo.',
-  },
-  {
-    question: 'Quanto custa?',
-    answer:
-      'Temos planos a partir de R$ 69,90/mês (Lira Start, com 1º mês por R$ 59,42 no cupom ou plano anual com 20% off), além dos planos Lira Plus e Lira Vega para operações maiores. Você pode conferir os recursos completos na seção de planos acima.',
-  },
-  {
-    question: 'Como funciona o teste grátis?',
-    answer:
-      'Você pode experimentar o Lira por 14 dias sem taxa de adesão, sem cartão de crédito e sem fidelidade. Teste todos os recursos de agenda inteligente, lembretes automáticos e gestão de equipe na prática.',
-  },
-  {
-    question: 'Consigo migrar meus dados de outro sistema?',
-    answer:
-      'Sim! Nossa equipe auxilia na importação da sua base de clientes, histórico de agendamentos e catálogo de serviços durante o setup inicial, sem custo adicional.',
-  },
-  {
-    question: 'O sinal via Pix é obrigatório para todos os agendamentos?',
-    answer:
-      'Não. A cobrança do sinal antecipado é configurável por serviço e por profissional: você decide quais procedimentos exigem o adiantamento para confirmar o horário e zerar as faltas.',
-  },
-  {
-    question: 'O Clube de Assinaturas está em qual plano?',
-    answer:
-      'A funcionalidade de planos recorrentes e clube de assinaturas está disponível a partir do plano Avançado, permitindo criar mensalidades automáticas de corte, barba, procedimentos ou estética.',
-  },
-  {
-    question: 'Como funciona o White-Label para agências?',
-    answer:
-      'A agência configura os 6 tokens de marca (acento, superfície, texto, raio, fonte e contraste) e o sistema deriva automaticamente o restante da interface, mantendo a identidade visual do cliente ou rede.',
-  },
-]
-
-export const LiraFAQ: React.FC = () => {
+export const LiraFAQ: React.FC<{ items?: FaqItem[] }> = ({ items = FAQ_ITEMS }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
@@ -73,7 +31,7 @@ export const LiraFAQ: React.FC = () => {
 
         {/* Accordion List with polished dividing lines matching Lira identity */}
         <div className="border-t border-neutral-200 dark:border-[#1E202B] divide-y divide-neutral-200 dark:divide-[#1E202B]">
-          {FAQ_ITEMS.map((item, i) => {
+          {items.map((item, i) => {
             const isOpen = openIndex === i
             const answerId = `faq-answer-${i}`
 
