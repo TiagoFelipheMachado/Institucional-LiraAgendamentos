@@ -161,7 +161,7 @@ export const LiraContactPage: React.FC = () => {
 
             {/* Channel 2: E-mail Comercial */}
             <a
-              href="mailto:contato@liraagendamentos.com.br"
+              href="mailto:atendimento@liragenda.com"
               className="group p-5 rounded-2xl bg-neutral-50 dark:bg-[#0C0E14] border border-neutral-200 dark:border-[#1E2230] hover:border-cyan-500/50 dark:hover:border-cyan-400/50 transition-all shadow-xs hover:shadow-lg flex flex-col justify-between"
             >
               <div>
@@ -176,13 +176,13 @@ export const LiraContactPage: React.FC = () => {
                 </p>
               </div>
               <span className="text-xs font-semibold text-cyan-600 dark:text-[#53EAFD] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                contato@liraagendamentos.com.br →
+                atendimento@liragenda.com →
               </span>
             </a>
 
             {/* Channel 3: Suporte Técnico */}
             <a
-              href="mailto:suporte@liraagendamentos.com.br"
+              href="mailto:suporte@liragenda.com.br"
               className="group p-5 rounded-2xl bg-neutral-50 dark:bg-[#0C0E14] border border-neutral-200 dark:border-[#1E2230] hover:border-cyan-500/50 dark:hover:border-cyan-400/50 transition-all shadow-xs hover:shadow-lg flex flex-col justify-between"
             >
               <div>
@@ -197,7 +197,7 @@ export const LiraContactPage: React.FC = () => {
                 </p>
               </div>
               <span className="text-xs font-semibold text-cyan-600 dark:text-[#53EAFD] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                suporte@liraagendamentos.com.br →
+                suporte@liragenda.com.br →
               </span>
             </a>
 
