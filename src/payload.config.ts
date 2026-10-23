@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { migrations } from './migrations'
 import sharp from 'sharp'
 import path from 'path'
@@ -70,6 +71,11 @@ export default buildConfig({
     },
     // runs pending migrations on boot in production (push is dev-only)
     prodMigrations: migrations,
+  }),
+  email: resendAdapter({
+    defaultFromAddress: process.env.RESEND_FROM_EMAIL || 'contato@liragenda.com.br',
+    defaultFromName: 'Lira Agenda',
+    apiKey: process.env.RESEND_API_KEY || '',
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),

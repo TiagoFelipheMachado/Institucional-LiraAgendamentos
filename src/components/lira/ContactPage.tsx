@@ -13,6 +13,7 @@ import {
   ContactFormPayload,
 } from '@/utilities/lira/validation'
 import { sanitizePayload, detectSpamSubmission } from '@/utilities/lira/security'
+import { sendContactEmail } from '@/utilities/lira/sendContactEmail'
 
 interface ContactExtendedPayload extends ContactFormPayload {
   message?: string
@@ -62,7 +63,7 @@ export const LiraContactPage: React.FC = () => {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
@@ -93,11 +94,11 @@ export const LiraContactPage: React.FC = () => {
       return
     }
 
-    // 4. Submission
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSuccess(true)
-    }, 600)
+    // 4. Submission (server re-validates and sends via Resend)
+    const result = await sendContactEmail(sanitized)
+    setIsSubmitting(false)
+    if (result.ok) setIsSuccess(true)
+    else setErrors(result.errors)
   }
 
   return (
@@ -507,6 +508,12 @@ export const LiraContactPage: React.FC = () => {
                         className="w-full px-4 py-3 rounded-[12px] bg-neutral-50/70 dark:bg-[#070708] text-[14px] text-neutral-900 dark:text-white outline-none transition-all border border-neutral-200 dark:border-[#1E2230] focus:border-cyan-500 dark:focus:border-[#00D3F2]/60 focus:bg-white dark:focus:bg-[#090A0E] focus:ring-[3px] focus:ring-cyan-500/15 resize-none"
                       />
                     </div>
+
+                    {errors.form && (
+                      <span role="alert" className="text-[12px] text-rose-500 font-mono block">
+                        {errors.form}
+                      </span>
+                    )}
 
                     {/* Submit Button */}
                     <button
