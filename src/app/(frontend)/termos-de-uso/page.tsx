@@ -61,7 +61,7 @@ const sections: LegalSection[] = [
         </li>
         <li>
           Avise-nos imediatamente em caso de uso não autorizado pelo e-mail{' '}
-          <a href="mailto:suporte@liraagendamentos.com.br">suporte@liraagendamentos.com.br</a>.
+          <a href="mailto:suporte@liragenda.com.br">suporte@liragenda.com.br</a>.
         </li>
       </ul>
     ),
@@ -246,7 +246,7 @@ const sections: LegalSection[] = [
       <p>
         Estes termos são regidos pelas leis da República Federativa do Brasil. Fica eleito o foro do
         domicílio do Estabelecimento contratante para dirimir eventuais controvérsias. Dúvidas:{' '}
-        <a href="mailto:contato@liraagendamentos.com.br">contato@liraagendamentos.com.br</a>.
+        <a href="mailto:atendimento@liragenda.com">atendimento@liragenda.com</a>.
       </p>
     ),
   },
