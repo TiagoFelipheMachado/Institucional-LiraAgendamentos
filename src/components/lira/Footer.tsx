@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { LiraLogo } from './Navbar'
 import { ThemeSwitch } from '@/components/ThemeSwitch'
 import { FEATURES, SEGMENTS } from './siteContent'
-import { WHATSAPP_URL } from '@/utilities/lira/pricing'
+import { INSTAGRAM_URL, WHATSAPP_URL } from '@/utilities/lira/pricing'
 
 const FooterColumn: React.FC<{ title: string; links: Array<{ href: string; label: string }> }> = ({ title, links }) => (
   <div className="md:col-span-2 space-y-3">
@@ -73,7 +73,8 @@ export const LiraFooter: React.FC = () => {
             </div>
             <div className="flex items-center gap-2 pt-2">
               <a
-                href="https://instagram.com"
+                href={INSTAGRAM_URL}
+                aria-label="Instagram do Lira Agendamentos"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3 py-1.5 rounded-[8px] bg-white dark:bg-[#1A1B1D] border border-neutral-300 dark:border-[#14454F] text-[12px] text-neutral-800 dark:text-[#E5E2E3] hover:border-purple-500 dark:hover:border-purple-400 hover:text-purple-600 dark:hover:text-white transition-all font-mono"

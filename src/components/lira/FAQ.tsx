@@ -20,7 +20,7 @@ export const LiraFAQ: React.FC<{ items?: FaqItem[] }> = ({ items = FAQ_ITEMS }) 
 
           <h2 className="text-3xl sm:text-4xl md:text-[42px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.12] mb-3">
             Perguntas{' '}
-            <span className="italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
+            <span className="inline box-decoration-clone pr-2 bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
               frequentes.
             </span>
           </h2>

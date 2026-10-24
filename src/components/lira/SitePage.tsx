@@ -68,7 +68,7 @@ export const LiraPageHero: React.FC<PageHeroProps> = ({ breadcrumb, eyebrow, tit
         </p>
         <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.12] mb-5">
           {title}{' '}
-          <span className="italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent pr-1">
+          <span className="inline box-decoration-clone pr-2 bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
             {highlight}
           </span>
         </h1>
