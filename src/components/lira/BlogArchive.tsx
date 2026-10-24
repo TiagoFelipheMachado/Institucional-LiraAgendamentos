@@ -157,7 +157,7 @@ export const LiraBlogArchive: React.FC<BlogArchiveProps> = ({
           <div className="max-w-3xl mb-12 sm:mb-16">
             <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.1] mb-5">
               Inteligência, gestão e crescimento para quem{' '}
-              <span className="italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
+              <span className="inline box-decoration-clone pr-2 bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
                 vive de agenda.
               </span>
             </h1>

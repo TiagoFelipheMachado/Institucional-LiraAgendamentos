@@ -34,7 +34,7 @@ export const LiraHero: React.FC = () => {
               Finanças no verde.
               <br />
               Clientes que{' '}
-              <span className="italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
+              <span className="inline box-decoration-clone pr-2 bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
                 voltam sempre.
               </span>
             </h1>

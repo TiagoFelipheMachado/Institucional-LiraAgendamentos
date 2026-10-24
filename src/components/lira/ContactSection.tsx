@@ -112,7 +112,7 @@ export const LiraContactSection: React.FC = () => {
               Evoluir o seu espaço todos os dias não é sorte.{' '}
               <span className="block mt-1 sm:mt-1.5">
                 É gestão inteligente com o{' '}
-                <span className="inline-block italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent pr-1">
+                <span className="inline box-decoration-clone pr-2 bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
                   Lira.
                 </span>
               </span>

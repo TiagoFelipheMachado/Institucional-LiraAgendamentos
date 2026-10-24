@@ -13,6 +13,8 @@ export const TRIAL_SIGNUP_URL = `${LIRA_APP_URL}/#/register`
 
 export const LOGIN_URL = `${LIRA_APP_URL}/#/login`
 
+export const INSTAGRAM_URL = 'https://www.instagram.com/liragendaoficial/'
+
 export const WHATSAPP_DISPLAY = '(41) 98877-0854'
 export const WHATSAPP_URL =
   'https://wa.me/5541988770854?text=Ol%C3%A1%2C%20gostaria%20de%20conhecer%20o%20Lira%20Agendamentos!'

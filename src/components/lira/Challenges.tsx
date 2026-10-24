@@ -644,9 +644,9 @@ export const LiraChallenges: React.FC = () => {
         <div className="max-w-3xl mb-20 md:mb-32">
           <h2 className="text-4xl md:text-5xl font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.1]">
             Tudo o que o seu negócio precisa,{' '}
-            <em className="italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
+            <span className="inline box-decoration-clone pr-2 bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
               sem planilhas confusas.
-            </em>
+            </span>
           </h2>
         </div>
 
@@ -667,7 +667,7 @@ export const LiraChallenges: React.FC = () => {
                 </span>
                 <h3 className="text-3xl md:text-4xl font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.1] mb-6">
                   {feature.title}
-                  <em className="italic text-cyan-600 dark:text-[#00D3F2]">{feature.titleHighlight}</em>
+                  <span className="text-cyan-600 dark:text-[#00D3F2]">{feature.titleHighlight}</span>
                 </h3>
                 <p className="text-lg text-neutral-600 dark:text-[#9A9DA3] mb-8 leading-relaxed font-normal">
                   {feature.desc}

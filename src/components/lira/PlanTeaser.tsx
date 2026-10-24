@@ -12,7 +12,7 @@ export const LiraPlanTeaser: React.FC = () => {
         {/* Main Headline */}
         <h2 className="text-3xl sm:text-5xl lg:text-[48px] font-semibold tracking-[-0.03em] text-neutral-900 dark:text-[#E5E2E3] leading-[1.15] mb-5 sm:mb-6 max-w-3xl">
           Um plano para cada{' '}
-          <span className="inline-block italic bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent pr-1">
+          <span className="inline box-decoration-clone pr-2 bg-gradient-to-r from-neutral-900 via-cyan-600 to-cyan-500 dark:from-white dark:via-[#CEFAFE] dark:to-[#00D3F2] bg-clip-text text-transparent">
             tamanho de negócio.
           </span>
         </h2>
