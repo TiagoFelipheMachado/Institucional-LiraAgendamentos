@@ -37,11 +37,11 @@ export const LiraTrustSegments: React.FC = () => {
             className="flex flex-col sm:flex-row items-center gap-3 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer group"
           >
             <div className="flex items-center text-[#E5B542] group-hover:scale-105 transition-transform">
-              <Icon name="star" size={16} />
-              <Icon name="star" size={16} />
-              <Icon name="star" size={16} />
-              <Icon name="star" size={16} />
-              <Icon name="star" size={16} />
+              <Icon name="star" size={16} filled />
+              <Icon name="star" size={16} filled />
+              <Icon name="star" size={16} filled />
+              <Icon name="star" size={16} filled />
+              <Icon name="star" size={16} filled />
             </div>
             <div className="flex items-center gap-2">
               <strong className="text-neutral-900 dark:text-white font-medium">5,0</strong>
