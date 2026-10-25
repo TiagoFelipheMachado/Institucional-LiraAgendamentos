@@ -27,4 +27,12 @@ describe('Icon component — single icon family (Material Symbols Rounded) (TDD)
     const emojiRegex = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u
     expect(emojiRegex.test(html)).toBe(false)
   })
+
+  it('supports filled icons via FILL font variation setting', () => {
+    const defaultHtml = renderToString(<Icon name="star" />)
+    expect(defaultHtml).toContain("&#x27;FILL&#x27; 0")
+
+    const filledHtml = renderToString(<Icon name="star" filled />)
+    expect(filledHtml).toContain("&#x27;FILL&#x27; 1")
+  })
 })

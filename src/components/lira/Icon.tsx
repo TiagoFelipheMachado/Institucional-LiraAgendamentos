@@ -16,6 +16,10 @@ interface IconProps {
   label?: string
   className?: string
   size?: number
+  /**
+   * Whether to render the filled variant (FILL 1) instead of outlined (FILL 0).
+   */
+  filled?: boolean
 }
 
 /**
@@ -23,7 +27,7 @@ interface IconProps {
  * weight 300, grade 0, optical size 24 by default) — the only icon family
  * the design system allows. No raw SVGs, no emoji, no other icon library.
  */
-export const Icon: React.FC<IconProps> = ({ name, label, className = '', size = 24 }) => {
+export const Icon: React.FC<IconProps> = ({ name, label, className = '', size = 24, filled = false }) => {
   const accessibilityProps = label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true }
 
   return (
@@ -31,7 +35,7 @@ export const Icon: React.FC<IconProps> = ({ name, label, className = '', size = 
       className={`material-symbols-rounded select-none ${className}`}
       style={{
         fontSize: size,
-        fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24",
+        fontVariationSettings: `'FILL' ${filled ? 1 : 0}, 'wght' 300, 'GRAD' 0, 'opsz' 24`,
         lineHeight: 1,
       }}
       {...accessibilityProps}
