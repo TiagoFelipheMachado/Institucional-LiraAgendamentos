@@ -6,7 +6,7 @@ export const revalidatePlans: GlobalAfterChangeHook = ({ doc, req: { payload, co
     payload.logger.info(`Revalidating plans global`)
 
     try {
-      revalidateTag('global_plans')
+      revalidateTag('global_plans', 'max')
       revalidatePath('/planos')
       revalidatePath('/')
     } catch {
