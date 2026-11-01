@@ -16,12 +16,28 @@ export interface PlansData {
 }
 
 async function fetchPlansFromPayload(): Promise<PlansData> {
+  const dbUri = process.env.DATABASE_URI || process.env.DATABASE_URL
+  if (!dbUri) {
+    return {
+      plans: LIRA_PRICING_PLANS,
+      annualDiscountPercent: 20,
+    }
+  }
+
   try {
-    const payload = await getPayload({ config: configPromise })
-    const data = await payload.findGlobal({
-      slug: 'plans',
-      depth: 1,
-    })
+    const fetchPromise = async () => {
+      const payload = await getPayload({ config: configPromise })
+      return await payload.findGlobal({
+        slug: 'plans',
+        depth: 1,
+      })
+    }
+
+    const timeoutPromise = new Promise<null>((_, reject) =>
+      setTimeout(() => reject(new Error('Payload connection timeout')), 2500),
+    )
+
+    const data = (await Promise.race([fetchPromise(), timeoutPromise])) as any
 
     if (data?.plans && Array.isArray(data.plans) && data.plans.length > 0) {
       const discount = data.annualDiscountPercent ?? 20
