@@ -5,6 +5,7 @@ export const LIRA_APP_URL = 'https://app.liragenda.com.br'
 
 /** Checkout no sistema; o preço é calculado lá a partir do nome do plano. */
 export function checkoutUrl(plan: PricingPlan, cycle: BillingCycle): string {
+  if (plan.customCheckoutUrl) return plan.customCheckoutUrl
   const params = new URLSearchParams({ plan: plan.name, period: cycle })
   return `${LIRA_APP_URL}/#/checkout?${params}`
 }
@@ -20,7 +21,7 @@ export const WHATSAPP_URL =
   'https://wa.me/5541988770854?text=Ol%C3%A1%2C%20gostaria%20de%20conhecer%20o%20Lira%20Agendamentos!'
 
 export interface PricingPlan {
-  id: 'start' | 'plus' | 'vega' | 'essencial' | 'avancado' | 'profissional'
+  id: 'start' | 'plus' | 'vega' | 'essencial' | 'avancado' | 'profissional' | (string & {})
   name: string
   audience: string
   monthlyPrice: number
@@ -34,6 +35,7 @@ export interface PricingPlan {
   savingsPill: string
   couponText: string
   features: string[]
+  customCheckoutUrl?: string
 }
 
 /**
@@ -139,4 +141,64 @@ export function getPlanById(id: PricingPlan['id'] | string): PricingPlan {
     throw new Error(`Unknown Lira pricing plan id: "${id}"`)
   }
   return plan
+}
+
+
+export interface RawPayloadPlan {
+  id?: string | null
+  name: string
+  audience?: string | null
+  monthlyPrice: number
+  annualPricePerMonth?: number | null
+  annualDiscountPercent?: number | null
+  popular?: boolean | null
+  recommendedBadge?: string | null
+  conditionText?: string | null
+  savingsPill?: string | null
+  couponText?: string | null
+  customCheckoutUrl?: string | null
+  features?: Array<{ feature?: string } | string> | null
+}
+
+export function buildPricingPlan(raw: RawPayloadPlan, defaultDiscount = 20): PricingPlan {
+  const discount =
+    raw.annualDiscountPercent !== undefined && raw.annualDiscountPercent !== null
+      ? Number(raw.annualDiscountPercent)
+      : defaultDiscount
+  const monthlyPrice = Number(raw.monthlyPrice) || 0
+  const annualPricePerMonth =
+    raw.annualPricePerMonth && Number(raw.annualPricePerMonth) > 0
+      ? Number(raw.annualPricePerMonth)
+      : roundToCents(monthlyPrice * (1 - discount / 100))
+  const annualSavingsPerMonth = roundToCents(monthlyPrice - annualPricePerMonth)
+  const annualTotal = roundToCents(annualPricePerMonth * 12)
+
+  const formattedAnnualMonthly = formatBRLWithCents(annualPricePerMonth)
+
+  const featuresList = (raw.features || [])
+    .map((f) => (typeof f === 'string' ? f : f?.feature))
+    .filter((f): f is string => Boolean(f))
+
+  const planId = (raw.id || raw.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')) as PricingPlan['id']
+
+  return {
+    id: planId,
+    name: raw.name,
+    audience: raw.audience || '',
+    monthlyPrice,
+    annualPricePerMonth,
+    annualSavingsPerMonth,
+    annualDiscountPercent: discount,
+    annualTotal,
+    popular: Boolean(raw.popular),
+    recommendedBadge: raw.recommendedBadge || 'Plano Recomendado',
+    conditionText:
+      raw.conditionText ||
+      `Plano Anual equivalente a ${formattedAnnualMonthly} / mês (${discount}% off)`,
+    savingsPill:
+      raw.savingsPill || `PLANO ANUAL: ${formattedAnnualMonthly.toUpperCase()} / MÊS`,
+    couponText: raw.couponText || `ECONOMIZE ${discount}% NO ANUAL`,
+    features: featuresList,
+    ...(raw.customCheckoutUrl ? { customCheckoutUrl: raw.customCheckoutUrl } : {}),
+  }
 }

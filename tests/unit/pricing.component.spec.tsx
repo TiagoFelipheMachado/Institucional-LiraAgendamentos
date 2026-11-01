@@ -90,4 +90,45 @@ describe('LiraPricing section (TDD)', () => {
       'https://app.liragenda.com.br/#/checkout?plan=Lira+Start&period=monthly',
     )
   })
+
+  it('renders custom dynamic plans and title/subtitle passed via props', () => {
+    const customPlans = [
+      {
+        id: 'custom-pro',
+        name: 'Plano Customizado Pro',
+        audience: 'Ideal para: Franquias e Redes',
+        monthlyPrice: 199.9,
+        annualPricePerMonth: 159.92,
+        annualSavingsPerMonth: 39.98,
+        annualDiscountPercent: 20,
+        annualTotal: 1919.04,
+        popular: true,
+        recommendedBadge: 'Mais Escolhido',
+        conditionText: 'Plano Anual equivalente a R$ 159,92 / mês (20% off)',
+        savingsPill: 'PLANO ANUAL: R$ 159,92 / MÊS',
+        couponText: 'ECONOMIZE 20% NO ANUAL',
+        features: ['Recurso Exclusivo A', 'Recurso Exclusivo B'],
+        customCheckoutUrl: 'https://checkout.customizado.com/pro',
+      },
+    ]
+
+    render(
+      <LiraPricing
+        initialPlans={customPlans}
+        title="Nossos Planos Personalizados"
+        subtitle="Escolha o melhor plano para sua empresa"
+        annualDiscountPercent={25}
+      />,
+    )
+
+    expect(screen.getByText('Nossos Planos Personalizados')).toBeTruthy()
+    expect(screen.getByText('Escolha o melhor plano para sua empresa')).toBeTruthy()
+    expect(screen.getByText('Plano Customizado Pro')).toBeTruthy()
+    expect(screen.getByText('Ideal para: Franquias e Redes')).toBeTruthy()
+    expect(screen.getByText('Recurso Exclusivo A')).toBeTruthy()
+    expect(screen.getByText('economize 25%')).toBeTruthy()
+
+    const checkoutLink = screen.getByRole('link', { name: /contratar plano/i })
+    expect(checkoutLink.getAttribute('href')).toBe('https://checkout.customizado.com/pro')
+  })
 })
