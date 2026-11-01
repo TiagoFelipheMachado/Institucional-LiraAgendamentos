@@ -1,0 +1,12 @@
+# Configuration for Coolify / Nixpacks / Railpack deployments
+[phases.setup]
+nixPkgs = ["nodejs_22", "pnpm"]
+
+[phases.install]
+cmds = ["corepack enable pnpm", "pnpm install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["pnpm run build"]
+
+[start]
+cmd = "node .next/standalone/server.js"
