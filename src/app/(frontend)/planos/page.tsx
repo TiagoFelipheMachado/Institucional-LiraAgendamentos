@@ -6,6 +6,9 @@ import { LiraRoiCalculator } from '@/components/lira/RoiCalculator'
 import { LiraFAQ } from '@/components/lira/FAQ'
 import { getPlansData } from '@/utilities/lira/getPlansData'
 
+export const dynamic = 'force-static'
+export const revalidate = 600
+
 const description =
   'Planos a partir de R$ 69,90/mês no plano anual, com 14 dias de teste grátis, sem taxa de adesão e sem fidelidade.'
 
