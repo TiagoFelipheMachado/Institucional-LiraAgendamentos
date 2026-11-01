@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { LIRA_PRICING_PLANS, roundToCents, getPlanById, checkoutUrl } from '@/utilities/lira/pricing'
+import {
+  LIRA_PRICING_PLANS,
+  roundToCents,
+  getPlanById,
+  checkoutUrl,
+  buildPricingPlan,
+} from '@/utilities/lira/pricing'
 
 describe('Lira pricing plans (TDD)', () => {
   it('exposes exactly the 3 official plans with stable ids', () => {
@@ -16,7 +22,7 @@ describe('Lira pricing plans (TDD)', () => {
   it('Lira Start: R$ 69,90/mês and R$ 55,92/mês on annual (saving R$ 13,98/mês, 20% off)', () => {
     const plan = getPlanById('start')
     expect(plan.name).toBe('Lira Start')
-    expect(plan.monthlyPrice).toBe(69.90)
+    expect(plan.monthlyPrice).toBe(69.9)
     expect(plan.annualPricePerMonth).toBe(55.92)
     expect(plan.annualSavingsPerMonth).toBe(13.98)
     expect(plan.annualTotal).toBe(671.04)
@@ -31,7 +37,7 @@ describe('Lira pricing plans (TDD)', () => {
   it('Lira Plus: R$ 99,90/mês and R$ 79,92/mês on annual (saving R$ 19,98/mês, 20% off)', () => {
     const plan = getPlanById('plus')
     expect(plan.name).toBe('Lira Plus')
-    expect(plan.monthlyPrice).toBe(99.90)
+    expect(plan.monthlyPrice).toBe(99.9)
     expect(plan.annualPricePerMonth).toBe(79.92)
     expect(plan.annualSavingsPerMonth).toBe(19.98)
     expect(plan.annualTotal).toBe(959.04)
@@ -46,7 +52,7 @@ describe('Lira pricing plans (TDD)', () => {
   it('Lira Vega: R$ 139,90/mês and R$ 111,92/mês on annual (saving R$ 27,98/mês, 20% off)', () => {
     const plan = getPlanById('vega')
     expect(plan.name).toBe('Lira Vega')
-    expect(plan.monthlyPrice).toBe(139.90)
+    expect(plan.monthlyPrice).toBe(139.9)
     expect(plan.annualPricePerMonth).toBe(111.92)
     expect(plan.annualSavingsPerMonth).toBe(27.98)
     expect(plan.annualTotal).toBe(1343.04)
@@ -78,5 +84,25 @@ describe('Lira pricing plans (TDD)', () => {
     expect(checkoutUrl(getPlanById('plus'), 'annual')).toBe(
       'https://app.liragenda.com.br/#/checkout?plan=Lira+Plus&period=annual',
     )
+  })
+
+  it('buildPricingPlan auto-calculates annual discounts, savings, totals and custom URLs', () => {
+    const raw = {
+      id: 'custom-plan',
+      name: 'Plano Personalizado',
+      monthlyPrice: 100,
+      features: [{ feature: 'Recurso A' }, { feature: 'Recurso B' }],
+      customCheckoutUrl: 'https://pay.custom.com/checkout',
+    }
+
+    const built = buildPricingPlan(raw, 20)
+    expect(built.id).toBe('custom-plan')
+    expect(built.name).toBe('Plano Personalizado')
+    expect(built.monthlyPrice).toBe(100)
+    expect(built.annualPricePerMonth).toBe(80)
+    expect(built.annualSavingsPerMonth).toBe(20)
+    expect(built.annualTotal).toBe(960)
+    expect(built.features).toEqual(['Recurso A', 'Recurso B'])
+    expect(checkoutUrl(built, 'annual')).toBe('https://pay.custom.com/checkout')
   })
 })

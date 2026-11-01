@@ -112,10 +112,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    plans: Plan;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    plans: PlansSelect<false> | PlansSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1683,6 +1685,41 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Gerencie os planos de preços, valores, descontos e recursos exibidos no site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plans".
+ */
+export interface Plan {
+  id: number;
+  sectionTitle?: string | null;
+  sectionSubtitle?: string | null;
+  annualDiscountPercent?: number | null;
+  plans?:
+    | {
+        name: string;
+        id: string;
+        audience: string;
+        monthlyPrice: number;
+        annualPricePerMonth?: number | null;
+        popular?: boolean | null;
+        recommendedBadge?: string | null;
+        conditionText?: string | null;
+        savingsPill?: string | null;
+        couponText?: string | null;
+        customCheckoutUrl?: string | null;
+        features?:
+          | {
+              feature: string;
+              id?: string | null;
+            }[]
+          | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -1723,6 +1760,39 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "plans_select".
+ */
+export interface PlansSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  sectionSubtitle?: T;
+  annualDiscountPercent?: T;
+  plans?:
+    | T
+    | {
+        name?: T;
+        id?: T;
+        audience?: T;
+        monthlyPrice?: T;
+        annualPricePerMonth?: T;
+        popular?: T;
+        recommendedBadge?: T;
+        conditionText?: T;
+        savingsPill?: T;
+        couponText?: T;
+        customCheckoutUrl?: T;
+        features?:
+          | T
+          | {
+              feature?: T;
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

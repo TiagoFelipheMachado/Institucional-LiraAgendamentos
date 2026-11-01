@@ -206,7 +206,20 @@ function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
   )
 }
 
-export const LiraPricing: React.FC = () => {
+export interface LiraPricingProps {
+  initialPlans?: PricingPlan[]
+  title?: string
+  subtitle?: string
+  annualDiscountPercent?: number
+}
+
+export const LiraPricing: React.FC<LiraPricingProps> = ({
+  initialPlans,
+  title,
+  subtitle,
+  annualDiscountPercent,
+}) => {
+  const plans = initialPlans && initialPlans.length > 0 ? initialPlans : LIRA_PRICING_PLANS
   const [cycle, setCycle] = useState<BillingCycle>('annual')
   const isAnnual = cycle === 'annual'
 
@@ -221,10 +234,10 @@ export const LiraPricing: React.FC = () => {
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-white mb-2">
-              Conheça os planos
+              {title || 'Conheça os planos'}
             </h2>
             <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
-              Todos os planos começam com 14 dias grátis, sem cartão de crédito. Escolha o seu:
+              {subtitle || 'Todos os planos começam com 14 dias grátis, sem cartão de crédito. Escolha o seu:'}
             </p>
           </div>
 
@@ -249,7 +262,7 @@ export const LiraPricing: React.FC = () => {
                     : 'text-neutral-400 dark:text-neutral-500 opacity-75'
                 }`}
               >
-                economize 20%
+                economize {annualDiscountPercent ?? 20}%
               </span>
             </button>
 
@@ -306,7 +319,7 @@ export const LiraPricing: React.FC = () => {
 
           {/* 3 Pricing Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 items-stretch">
-            {LIRA_PRICING_PLANS.map((plan) => (
+            {plans.map((plan) => (
               <PricingCard key={plan.id} plan={plan} isAnnual={isAnnual} />
             ))}
           </div>
