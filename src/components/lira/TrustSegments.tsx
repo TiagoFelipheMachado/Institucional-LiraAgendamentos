@@ -26,7 +26,22 @@ export const LiraTrustSegments: React.FC = () => {
               className="h-14 md:h-16 w-auto object-contain hidden dark:block"
             />
           </div>
-          {/* Adicione mais tags <img> aqui conforme novos parceiros entrarem */}
+
+          <div className="p-3 px-6 rounded-2xl bg-neutral-100/70 hover:bg-neutral-100 dark:bg-[#0E1A1E]/50 dark:hover:bg-[#0E1A1E]/80 border border-neutral-200 dark:border-[#14454F] transition-colors flex items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element -- static partner brand asset */}
+            <img 
+              src="/rose-brows-for-light.png" 
+              alt="Parceiro Studio de beleza Rose Brows" 
+              className="h-14 md:h-16 w-auto object-contain dark:hidden"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element -- static partner brand asset */}
+            <img 
+              src="/rose-brows-for-dark.png" 
+              alt="Parceiro Studio de beleza Rose Brows" 
+              className="h-14 md:h-16 w-auto object-contain hidden dark:block"
+            />
+          </div>
+          {/* Adicione mais parceiros aqui conforme novos parceiros entrarem */}
         </div>
 
         <div className="w-full max-w-3xl border-t border-neutral-200 dark:border-[#1A1B1D] pt-6 flex justify-center text-[13px] text-neutral-600 dark:text-[#9A9DA3]">
