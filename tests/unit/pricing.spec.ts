@@ -56,6 +56,7 @@ describe('Lira pricing plans (TDD)', () => {
   it('Lira Vega: R$ 139,90/mês and R$ 111,92/mês on annual (saving R$ 27,98/mês, 20% off)', () => {
     const plan = getPlanById('vega')
     expect(plan.name).toBe('Lira Vega')
+    expect(plan.pricePrefix).toBe('A partir de')
     expect(plan.monthlyPrice).toBe(139.9)
     expect(plan.annualPricePerMonth).toBe(111.92)
     expect(plan.annualSavingsPerMonth).toBe(27.98)

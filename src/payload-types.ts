@@ -1700,6 +1700,7 @@ export interface Plan {
         name: string;
         id: string;
         audience: string;
+        pricePrefix?: string | null;
         monthlyPrice: number;
         annualPricePerMonth?: number | null;
         popular?: boolean | null;
@@ -1779,6 +1780,7 @@ export interface PlansSelect<T extends boolean = true> {
         name?: T;
         id?: T;
         audience?: T;
+        pricePrefix?: T;
         monthlyPrice?: T;
         annualPricePerMonth?: T;
         popular?: T;

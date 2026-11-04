@@ -47,6 +47,7 @@ export const defaultPlansData = [
     id: 'vega',
     name: 'Lira Vega',
     audience: 'Ideal para: Redes e múltiplas unidades/filiais',
+    pricePrefix: 'A partir de',
     monthlyPrice: 139.9,
     annualPricePerMonth: 111.92,
     popular: false,
@@ -125,6 +126,11 @@ export const Plans: GlobalConfig = {
           type: 'text',
           label: 'Público Ideal (ex: Ideal para: Profissionais autônomos)',
           required: true,
+        },
+        {
+          name: 'pricePrefix',
+          type: 'text',
+          label: 'Prefixo do Preço (ex: A partir de)',
         },
         {
           type: 'row',

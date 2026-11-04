@@ -13,6 +13,10 @@ import { Icon } from './Icon'
 
 function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean }) {
   const isPurple = plan.popular
+  const isVega =
+    plan.id === 'vega' ||
+    plan.id === 'profissional' ||
+    Boolean(plan.name?.toLowerCase().includes('vega'))
 
   return (
     <div
@@ -82,7 +86,42 @@ function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean 
 
       {/* Price section */}
       <div className="my-5 min-h-[72px]">
-        {isAnnual ? (
+        {isVega ? (
+          <div>
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span
+                className={`text-sm sm:text-base font-semibold ${
+                  isPurple ? 'text-white/80' : 'text-neutral-500 dark:text-neutral-400'
+                }`}
+              >
+                a partir de
+              </span>
+              <span
+                className={`text-3xl sm:text-4xl font-extrabold font-mono tracking-tight ${
+                  isPurple ? 'text-white' : 'text-[#1D72FE] dark:text-[#38BDF8]'
+                }`}
+              >
+                {formatBRLWithCents(plan.annualPricePerMonth || 111.92)}
+              </span>
+            </div>
+            <p
+              className={`text-xs mt-0.5 ${
+                isPurple ? 'text-white/80' : 'text-neutral-500 dark:text-neutral-400'
+              }`}
+            >
+              por mês
+            </p>
+            {isAnnual && (
+              <p
+                className={`text-[11px] font-mono mt-1 ${
+                  isPurple ? 'text-white/70' : 'text-neutral-400 dark:text-neutral-500'
+                }`}
+              >
+                * {formatBRLWithCents(plan.annualTotal || 1343.04)} / ano (Em até 12x no cartão)
+              </p>
+            )}
+          </div>
+        ) : isAnnual ? (
           <div>
             <div className="flex items-baseline gap-2 flex-wrap">
               <span
