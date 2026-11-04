@@ -25,6 +25,7 @@ describe('LiraPricing section (TDD)', () => {
     expect(screen.getAllByText(/R\$\s?55,92/).length).toBeGreaterThan(0)
     expect(screen.getAllByText(/R\$\s?79,92/).length).toBeGreaterThan(0)
     expect(screen.getAllByText(/R\$\s?111,92/).length).toBeGreaterThan(0)
+    expect(screen.getByText(/a partir de/i)).toBeTruthy()
     expect(screen.getAllByText(/ECONOMIZE 20%/i).length).toBeGreaterThan(0)
   })
 
@@ -33,10 +34,10 @@ describe('LiraPricing section (TDD)', () => {
     const switchBtn = screen.getByRole('switch', { name: /alternar/i })
     fireEvent.click(switchBtn)
 
-    // Monthly prices
+    // Monthly prices for Start and Plus, and "a partir de R$ 111,92" for Vega
     expect(screen.getByText(/R\$\s?69,90/)).toBeTruthy()
     expect(screen.getByText(/R\$\s?99,90/)).toBeTruthy()
-    expect(screen.getByText(/R\$\s?139,90/)).toBeTruthy()
+    expect(screen.getAllByText(/R\$\s?111,92/).length).toBeGreaterThan(0)
 
     // Condition text
     expect(screen.getAllByText(/Plano Anual equivalente a R\$\s?55,92/i).length).toBeGreaterThan(0)

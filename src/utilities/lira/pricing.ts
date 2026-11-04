@@ -24,6 +24,7 @@ export interface PricingPlan {
   id: 'start' | 'plus' | 'vega' | 'essencial' | 'avancado' | 'profissional' | (string & {})
   name: string
   audience: string
+  pricePrefix?: string
   monthlyPrice: number
   annualPricePerMonth: number
   annualSavingsPerMonth: number
@@ -101,6 +102,7 @@ export const LIRA_PRICING_PLANS: PricingPlan[] = [
     id: 'vega',
     name: 'Lira Vega',
     audience: 'Ideal para: Redes e múltiplas unidades/filiais',
+    pricePrefix: 'A partir de',
     monthlyPrice: 139.90,
     annualPricePerMonth: 111.92,
     annualSavingsPerMonth: 27.98,
@@ -151,6 +153,7 @@ export interface RawPayloadPlan {
   id?: string | null
   name: string
   audience?: string | null
+  pricePrefix?: string | null
   monthlyPrice: number
   annualPricePerMonth?: number | null
   annualDiscountPercent?: number | null
@@ -188,6 +191,7 @@ export function buildPricingPlan(raw: RawPayloadPlan, defaultDiscount = 20): Pri
     id: planId,
     name: raw.name,
     audience: raw.audience || '',
+    pricePrefix: raw.pricePrefix || (planId === 'vega' ? 'A partir de' : undefined),
     monthlyPrice,
     annualPricePerMonth,
     annualSavingsPerMonth,
