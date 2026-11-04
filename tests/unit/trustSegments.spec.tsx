@@ -14,6 +14,8 @@ describe('LiraTrustSegments strip (TDD)', () => {
     const html = renderToString(<LiraTrustSegments />)
     expect(html).toContain('/parceiro-1-for-light.png')
     expect(html).toContain('/parceiro-1-for-dark.png')
+    expect(html).toContain('/rose-brows-for-light.png')
+    expect(html).toContain('/rose-brows-for-dark.png')
     expect(html).toContain('5,0')
     expect(html).toContain('Google')
     // 5 filled stars
