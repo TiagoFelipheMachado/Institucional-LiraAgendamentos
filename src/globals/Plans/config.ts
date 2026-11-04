@@ -14,11 +14,13 @@ export const defaultPlansData = [
     savingsPill: 'PLANO ANUAL: R$ 55,92 / MÊS',
     couponText: 'ECONOMIZE 20% NO ANUAL',
     features: [
-      { feature: 'Agendamento online automatizado' },
-      { feature: 'Confirmação via WhatsApp IA' },
-      { feature: 'Integração Pix integrada' },
-      { feature: 'Cadastro de serviços e clientes' },
-      { feature: 'Suporte via chat' },
+      { feature: 'Agendamento Online Automatizado' },
+      { feature: 'Integração Pix Integrada' },
+      { feature: 'Cadastro de Serviços e Clientes' },
+      { feature: 'Suporte via Chat' },
+      { feature: 'Gestão e Visualização de Comissões' },
+      { feature: 'Repasse Automatizado de Comissões' },
+      { feature: 'Portal de Solicitações dos Colaboradores' },
     ],
   },
   {
@@ -34,6 +36,7 @@ export const defaultPlansData = [
     couponText: 'ECONOMIZE 20% NO ANUAL',
     features: [
       { feature: 'Tudo do plano Start' },
+      { feature: 'Confirmação via WhatsApp IA' },
       { feature: 'Agenda para múltiplos profissionais' },
       { feature: 'Central de Atendimento via chat' },
       { feature: 'Antecipação de comissão via maquininha' },

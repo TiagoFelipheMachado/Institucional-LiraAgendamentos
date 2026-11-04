@@ -59,7 +59,7 @@ describe('LiraPricing section (TDD)', () => {
 
   it('displays the official operational features without artificial limits', () => {
     render(<LiraPricing />)
-    expect(screen.getByText('Agendamento online automatizado')).toBeTruthy()
+    expect(screen.getByText('Agendamento Online Automatizado')).toBeTruthy()
     expect(screen.getByText('Central de Atendimento via chat')).toBeTruthy()
     expect(screen.getByText('Integração WordPress white-label')).toBeTruthy()
 
