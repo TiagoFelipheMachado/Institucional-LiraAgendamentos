@@ -65,11 +65,13 @@ export const LIRA_PRICING_PLANS: PricingPlan[] = [
     savingsPill: 'PLANO ANUAL: R$ 55,92 / MÊS',
     couponText: 'ECONOMIZE 20% NO ANUAL',
     features: [
-      'Agendamento online automatizado',
-      'Confirmação via WhatsApp IA',
-      'Integração Pix integrada',
-      'Cadastro de serviços e clientes',
-      'Suporte via chat',
+      'Agendamento Online Automatizado',
+      'Integração Pix Integrada',
+      'Cadastro de Serviços e Clientes',
+      'Suporte via Chat',
+      'Gestão e Visualização de Comissões',
+      'Repasse Automatizado de Comissões',
+      'Portal de Solicitações dos Colaboradores',
     ],
   },
   {
@@ -88,6 +90,7 @@ export const LIRA_PRICING_PLANS: PricingPlan[] = [
     couponText: 'ECONOMIZE 20% NO ANUAL',
     features: [
       'Tudo do plano Start',
+      'Confirmação via WhatsApp IA',
       'Agenda para múltiplos profissionais',
       'Central de Atendimento via chat',
       'Antecipação de comissão via maquininha',
