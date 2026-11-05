@@ -110,4 +110,25 @@ describe('Lira pricing plans (TDD)', () => {
     expect(built.features).toEqual(['Recurso A', 'Recurso B'])
     expect(checkoutUrl(built, 'annual')).toBe('https://pay.custom.com/checkout')
   })
+
+  it('buildPricingPlan replaces obsolete Start features from older DB global with official canonical features', () => {
+    const obsoleteStart = {
+      id: 'start',
+      name: 'Lira Start',
+      monthlyPrice: 69.9,
+      features: [
+        { feature: 'Agendamento online automatizado' },
+        { feature: 'Confirmação via WhatsApp IA' },
+        { feature: 'Integração Pix integrada' },
+        { feature: 'Cadastro de serviços e clientes' },
+        { feature: 'Suporte via chat' },
+      ],
+    }
+
+    const built = buildPricingPlan(obsoleteStart, 20)
+    expect(built.features).toContain('Gestão e Visualização de Comissões')
+    expect(built.features).toContain('Repasse Automatizado de Comissões')
+    expect(built.features).toContain('Portal de Solicitações dos Colaboradores')
+    expect(built.features).not.toContain('Confirmação via WhatsApp IA')
+  })
 })
