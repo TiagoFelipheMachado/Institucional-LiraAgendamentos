@@ -1,6 +1,7 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
+import { defaultPlansData } from '@/globals/Plans/config'
 import {
   buildPricingPlan,
   LIRA_PRICING_PLANS,
@@ -27,10 +28,43 @@ async function fetchPlansFromPayload(): Promise<PlansData> {
   try {
     const fetchPromise = async () => {
       const payload = await getPayload({ config: configPromise })
-      return await payload.findGlobal({
+      const data = await payload.findGlobal({
         slug: 'plans',
         depth: 1,
       })
+
+      if (data?.plans && Array.isArray(data.plans) && data.plans.length > 0) {
+        const startPlan = data.plans.find(
+          (p: any) =>
+            p.id === 'start' || p.id === 'essencial' || p.name?.toLowerCase().includes('start'),
+        )
+        const startFeatures = (startPlan?.features || []).map((f: any) =>
+          (typeof f === 'string' ? f : f?.feature || '').toLowerCase(),
+        )
+
+        const isObsolete =
+          !startFeatures.some((f: string) => f.includes('comiss')) ||
+          startFeatures.some((f: string) => f.includes('whatsapp'))
+
+        if (isObsolete) {
+          try {
+            await payload.updateGlobal({
+              slug: 'plans',
+              data: {
+                plans: defaultPlansData,
+              },
+              context: {
+                disableRevalidate: true,
+              },
+            })
+            data.plans = defaultPlansData as any
+          } catch {
+            data.plans = defaultPlansData as any
+          }
+        }
+      }
+
+      return data
     }
 
     const timeoutPromise = new Promise<null>((_, reject) =>

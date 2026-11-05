@@ -181,11 +181,37 @@ export function buildPricingPlan(raw: RawPayloadPlan, defaultDiscount = 20): Pri
 
   const formattedAnnualMonthly = formatBRLWithCents(annualPricePerMonth)
 
-  const featuresList = (raw.features || [])
+  let featuresList = (raw.features || [])
     .map((f) => (typeof f === 'string' ? f : f?.feature))
     .filter((f): f is string => Boolean(f))
 
   const planId = (raw.id || raw.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')) as PricingPlan['id']
+
+  const isVega =
+    planId === 'vega' || planId === 'profissional' || Boolean(raw.name?.toLowerCase().includes('vega'))
+  const isStart =
+    planId === 'start' || planId === 'essencial' || Boolean(raw.name?.toLowerCase().includes('start'))
+  const isPlus =
+    planId === 'plus' || planId === 'avancado' || Boolean(raw.name?.toLowerCase().includes('plus'))
+
+  const canonicalStart = LIRA_PRICING_PLANS.find((p) => p.id === 'start')!
+  const canonicalPlus = LIRA_PRICING_PLANS.find((p) => p.id === 'plus')!
+  const canonicalVega = LIRA_PRICING_PLANS.find((p) => p.id === 'vega')!
+
+  if (isStart) {
+    const hasOldWhatsApp = featuresList.some((f) => f.toLowerCase().includes('whatsapp'))
+    const hasComissoes = featuresList.some((f) => f.toLowerCase().includes('comiss'))
+    if (hasOldWhatsApp || !hasComissoes) {
+      featuresList = canonicalStart.features
+    }
+  } else if (isPlus) {
+    const hasWhatsApp = featuresList.some((f) => f.toLowerCase().includes('whatsapp'))
+    if (!hasWhatsApp) {
+      featuresList = canonicalPlus.features
+    }
+  } else if (isVega && featuresList.length === 0) {
+    featuresList = canonicalVega.features
+  }
 
   return {
     id: planId,
