@@ -85,3 +85,23 @@ export function detectSpamSubmission(data: SpamCheckData): SpamCheckResult {
     isSpam: false,
   }
 }
+
+const hits = new Map<string, number[]>()
+
+/**
+ * Sliding-window rate limit: true while `key` made fewer than `limit` calls in the last `windowMs`.
+ * shortcut: in-memory per server process, resets on restart; move to Redis/DB if the site runs on several instances.
+ */
+export function allowRequest(key: string, limit: number, windowMs: number, now = Date.now()): boolean {
+  const recent = (hits.get(key) ?? []).filter((t) => now - t < windowMs)
+  if (hits.size > 10_000) hits.clear() // keep memory bounded under a flood of distinct keys
+  const allowed = recent.length < limit
+  if (allowed) recent.push(now)
+  hits.set(key, recent)
+  return allowed
+}
+
+/** Client IP from the reverse proxy headers; 'unknown' groups requests that carry none. */
+export function clientIp(headers: Headers): string {
+  return headers.get('x-forwarded-for')?.split(',')[0]?.trim() || headers.get('x-real-ip') || 'unknown'
+}

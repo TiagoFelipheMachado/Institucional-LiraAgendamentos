@@ -6,6 +6,11 @@ import { headers } from 'next/headers'
 export const maxDuration = 60 // This function can run for a maximum of 60 seconds
 
 export async function POST(): Promise<Response> {
+  // Seeding wipes pages, posts, forms and submissions — never allow it against the live database.
+  if (process.env.NODE_ENV === 'production') {
+    return new Response('Seeding is disabled in production.', { status: 403 })
+  }
+
   const payload = await getPayload({ config })
   const requestHeaders = await headers()
 

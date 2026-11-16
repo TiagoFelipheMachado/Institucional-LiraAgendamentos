@@ -20,3 +20,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Local SQLite DBs (contain user data — never commit)
+*.db
+*.db-journal

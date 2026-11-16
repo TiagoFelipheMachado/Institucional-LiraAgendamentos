@@ -3,7 +3,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
-import { Plugin } from 'payload'
+import { APIError, Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -12,6 +12,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { allowRequest, clientIp } from '@/utilities/lira/security'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -57,6 +58,20 @@ export const plugins: Plugin[] = [
   formBuilderPlugin({
     fields: {
       payment: false,
+    },
+    formSubmissionOverrides: {
+      hooks: {
+        beforeChange: [
+          ({ operation, req }) => {
+            // Submissions are public; cap them per IP so bots can't flood the collection.
+            if (operation === 'create' && !req.user) {
+              if (!allowRequest(`form:${clientIp(req.headers)}`, 10, 60 * 60 * 1000)) {
+                throw new APIError('Muitas tentativas. Tente novamente mais tarde.', 429)
+              }
+            }
+          },
+        ],
+      },
     },
     formOverrides: {
       fields: ({ defaultFields }) => {

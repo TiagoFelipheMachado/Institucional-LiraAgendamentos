@@ -82,7 +82,8 @@ export default buildConfig({
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, Plans],
   plugins,
-  secret: process.env.PAYLOAD_SECRET || 'lira-default-payload-secret-key-change-in-production',
+  // No fallback: a public default would let anyone forge admin JWTs. Payload refuses to start without it.
+  secret: process.env.PAYLOAD_SECRET || '',
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

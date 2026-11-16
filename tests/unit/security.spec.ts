@@ -85,3 +85,15 @@ describe('Security & XSS Prevention (TDD)', () => {
     })
   })
 })
+
+describe('allowRequest rate limit', () => {
+  it('blocks after the limit and frees the slot once the window passes', async () => {
+    const { allowRequest } = await import('@/utilities/lira/security')
+    const t = 1_000_000
+    expect(allowRequest('t:ip', 2, 1000, t)).toBe(true)
+    expect(allowRequest('t:ip', 2, 1000, t + 1)).toBe(true)
+    expect(allowRequest('t:ip', 2, 1000, t + 2)).toBe(false)
+    expect(allowRequest('t:other', 2, 1000, t + 2)).toBe(true)
+    expect(allowRequest('t:ip', 2, 1000, t + 1001)).toBe(true)
+  })
+})

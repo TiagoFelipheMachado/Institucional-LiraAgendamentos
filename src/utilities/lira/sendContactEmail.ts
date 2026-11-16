@@ -1,15 +1,24 @@
 'use server'
 
 import configPromise from '@payload-config'
+import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 
-import { sanitizePayload } from './security'
+import { allowRequest, clientIp, sanitizePayload } from './security'
 import { validateContactForm, type ContactFormPayload } from './validation'
 
 // Server-side counterpart of the contact forms: client checks can be bypassed, so validate again here.
 export async function sendContactEmail(
   data: ContactFormPayload,
 ): Promise<{ ok: true } | { ok: false; errors: Record<string, string> }> {
+  // Server actions are public endpoints: cap sends per IP so bots can't flood the inbox or burn the Resend quota.
+  if (!allowRequest(`contact:${clientIp(await headers())}`, 5, 60 * 60 * 1000)) {
+    return {
+      ok: false,
+      errors: { form: 'Muitas tentativas. Tente novamente mais tarde ou fale pelo WhatsApp.' },
+    }
+  }
+
   const sanitized = sanitizePayload(data)
   const validation = validateContactForm(sanitized)
   if (!validation.isValid) return { ok: false, errors: validation.errors }
