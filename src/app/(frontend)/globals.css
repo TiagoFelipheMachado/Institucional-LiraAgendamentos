@@ -270,3 +270,19 @@ html[data-theme='light'] {
   .notion-stagger-5 { transition-delay: 250ms; }
   .notion-stagger-6 { transition-delay: 300ms; }
 }
+
+/* Pricing: floating % rising in an infinite loop */
+@keyframes pricing-float-up {
+  0% { transform: translateY(0) rotate(var(--r, 0deg)); opacity: 0; }
+  10% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(calc(-100% - var(--travel, 900px))) rotate(calc(var(--r, 0deg) + 20deg)); opacity: 0; }
+}
+.pricing-float-up {
+  animation: pricing-float-up var(--dur, 14s) linear infinite;
+  animation-delay: var(--delay, 0s);
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pricing-float-up { animation: none; opacity: 0.6; }
+}

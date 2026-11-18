@@ -11,6 +11,18 @@ import {
 } from '@/utilities/lira/pricing'
 import { Icon } from './Icon'
 
+// Negative delays start each % mid-flight so the loop looks continuous from first paint.
+const FLOATING_PERCENTS = [
+  { src: '/Image.png', left: '6%', size: 200, dur: '18s', delay: '-4s', r: '-12deg' },
+  { src: '/Porcentagem • subida 1.png', left: '82%', size: 150, dur: '16s', delay: '-10s', r: '10deg' },
+  { src: '/Presente • subida 2.png', left: '78%', size: 140, dur: '20s', delay: '-2s', r: '-8deg' },
+  { src: '/Porcentagem • subida 3.png', left: '2%', size: 70, dur: '14s', delay: '-12s', r: '15deg' },
+  { src: '/Presente • subida 4.png', left: '18%', size: 70, dur: '17s', delay: '-7s', r: '-20deg' },
+  { src: '/Porcentagem • subida 5.png', left: '90%', size: 80, dur: '15s', delay: '-5s', r: '8deg' },
+  { src: '/Presente • subida 6.png', left: '12%', size: 60, dur: '19s', delay: '-15s', r: '0deg' },
+  { src: '/Presente • subida 8.png', left: '93%', size: 60, dur: '21s', delay: '-13s', r: '-5deg' },
+]
+
 function PricingCard({ plan, isAnnual }: { plan: PricingPlan; isAnnual: boolean }) {
   const isPurple = plan.popular
   const isVega =
@@ -265,9 +277,29 @@ export const LiraPricing: React.FC<LiraPricingProps> = ({
   return (
     <section
       id="planos"
-      className="py-16 md:py-24 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors"
+      className="relative overflow-hidden py-16 md:py-24 bg-white dark:bg-[#070708] border-b border-neutral-200 dark:border-[#1A1B1D] transition-colors"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        {FLOATING_PERCENTS.map((f) => (
+          <img
+            key={f.src}
+            src={encodeURI(f.src)}
+            alt=""
+            className="pricing-float-up absolute bottom-[-260px] select-none"
+            style={
+              {
+                left: f.left,
+                width: f.size,
+                '--dur': f.dur,
+                '--delay': f.delay,
+                '--r': f.r,
+                '--travel': '1400px',
+              } as React.CSSProperties
+            }
+          />
+        ))}
+      </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main card modal wrapper */}
         <div className="bg-white dark:bg-[#0C0D0F] rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-12 border border-neutral-200 dark:border-neutral-800 shadow-xl max-w-5xl mx-auto">
           {/* Header */}
